@@ -13,7 +13,8 @@ public class WebSecurityConfig {
 		
 		http.csrf().disable().authorizeHttpRequests()
 		.requestMatchers("/").permitAll()
-		.anyRequest().authenticated();
+		.anyRequest().authenticated()
+		.and();
 		
 		return http.build();	
 	}

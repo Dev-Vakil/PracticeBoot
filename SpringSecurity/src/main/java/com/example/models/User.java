@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @Table(name="user")
 public class User {
 	
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -27,9 +26,7 @@ public class User {
 	private String lastname;
 	private String email;
 	private String password;
-	
-	
-	
+		
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
