@@ -1,0 +1,23 @@
+package com.example.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.example.entities.Providers;
+import com.example.repository.ProvidersRepository;
+
+@Service
+public class ProvidersService implements UserDetailsService{
+
+	@Autowired
+	private ProvidersRepository providersRepository;
+	
+	@Override
+	public Providers loadUserByUsername(String email) throws UsernameNotFoundException {		
+		return providersRepository.findByEmail(email)
+				.orElseThrow(()-> new UsernameNotFoundException("user not found"));
+	}
+	
+}
