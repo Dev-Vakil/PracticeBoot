@@ -1,13 +1,13 @@
 -- liquibase formatted sql
 
--- changeset liquibase:2
+-- changeset dev:1
 
 
 CREATE TABLE providers (
     provider_id INT UNIQUE,
     provider_name VARCHAR(128),
     provider_code VARCHAR(30),
-    username VARCHAR(30) UNIQUE,
+    username VARCHAR(30),
     password VARCHAR(30),
     email VARCHAR(256)UNIQUE,
     is_active TINYINT,
