@@ -1,0 +1,49 @@
+<div class="bootstrap wrapper">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 card px-5 py-4 bg-form">                
+                <h1 class="strong text-primary text-center">Register</h1>
+                <form>
+                    <mat-form-field class="w-100" >
+                        <mat-label>Provider Id</mat-label>
+                        <input type="text" matInput />
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>Provider Name</mat-label>
+                        <input type="text" matInput />
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>Provider Code</mat-label>
+                        <input type="text" matInput />
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>UserName</mat-label>
+                        <input type="text" matInput />
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" >
+                        <mat-label>Email</mat-label>
+                        <input type="text" matInput />
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100">
+                        <mat-label>Password</mat-label>
+                        <input type="password" matInput />
+                    </mat-form-field>
+
+                    <div class="container text-center">
+                        <button routerLink="/login" class="m-2" type="submit" mat-raised-button color="primary">
+                            Register
+                        </button>
+                        <button class="m-2" type="reset" mat-raised-button color="accent">
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
