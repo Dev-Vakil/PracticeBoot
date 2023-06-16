@@ -1,5 +1,6 @@
 import { Component} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, NgForm, Validators } from '@angular/forms';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -8,8 +9,8 @@ import { FormGroup, FormControl, FormBuilder, NgForm, Validators } from '@angula
 })
 export class RegisterComponent {
   registerForm!: FormGroup;  
-  
-  constructor( private formBuilder:FormBuilder){  }
+  // email:string = '';
+  constructor( private formBuilder:FormBuilder, private authService:AuthenticationService){  }
   
   ngOnInit(){   
     this.registerForm = this.formBuilder.group({
@@ -23,6 +24,23 @@ export class RegisterComponent {
   }
 
   registerData(form:FormGroup){    
-   
+    const username = form.get('userName');
+    const email = form.get('email');
+    const password = form.get('password');
+    var cred = {
+      username: username?.value,
+      email: email?.value,
+      password: password?.value
+    }
+    console.log(username?.value,email?.value,password?.value);
+    this.authService.register(cred).subscribe(
+      response=>{
+        console.log(response);
+        
+      },
+      error=>{
+        console.log(error);       
+      }
+    )
   }
 }
