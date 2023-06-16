@@ -1,28 +1,42 @@
 <div class="bootstrap wrapper">
     <div class="container mt-3">
         <div class="row">
-            <div class="col-md-6 offset-md-3 card p-5 bg-form">                
+            <div class="col-md-6 offset-md-3 card p-sm-5 p-3 bg-form">                
                 <h1 class="strong text-primary text-center">Login</h1>
-                <form>
-                    <mat-form-field class="w-100" >
+                <form [formGroup]="loginForm" (ngSubmit)="PostData(loginForm)">
+                    <div class="custom">
+                    <mat-form-field class="w-100 formGroup" >
                         <mat-label>Email</mat-label>
-                        <input type="text" matInput />
+                        <input formControlName="email" type="text" matInput />
+                            <mat-error *ngIf="loginForm.get('email')?.['touched'] && loginForm.get('email')?.errors?.['required']">
+                                Email is Required
+                            </mat-error>
+                            <mat-error *ngIf="loginForm.get('email')?.['touched'] && loginForm.get('email')?.errors?.['pattern']">
+                                Enter valid email address
+                            </mat-error>                                                
                     </mat-form-field>
 
                     <mat-form-field class="w-100">
                         <mat-label>Password</mat-label>
-                        <input type="password" matInput />
+                        <input  formControlName="password" type="password" matInput />                                                                       
+                        <mat-error *ngIf="loginForm.get('password')?.['touched'] && loginForm.get('password')?.errors?.['required']">
+                            password is Required
+                        </mat-error>
+                        <mat-error *ngIf="loginForm.get('password')?.['touched'] && loginForm.get('password')?.errors?.['pattern']">
+                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters
+                        </mat-error>
                     </mat-form-field>
-
+                    </div>
+                    <br>
                     <div class="container text-center">
-                        <button routerLink="/dashboard" class="m-2" type="submit" mat-raised-button color="primary">
+                        <button class="m-2" type="submit" mat-raised-button color="primary">
                             Login
                         </button>
                         <button routerLink="/register" class="m-2" mat-raised-button color="accent">
                             Register
                         </button>
                     </div>
-                </form>
+                </form>                
             </div>
         </div>
     </div>
