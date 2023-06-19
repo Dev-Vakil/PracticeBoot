@@ -35,6 +35,8 @@ public class Providers  implements UserDetails{
 	 @GeneratedValue
 	 private Integer provider_id;
 	 private String provider_name;
+	 
+	 @Column(unique=true)
 	 private String provider_code;	 
 	 
 	 @Column(unique=true)

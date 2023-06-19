@@ -3,6 +3,9 @@
         <div class="row">
             <div class="col-md-6 offset-md-3 card p-sm-5 p-3 bg-form">                
                 <h1 class="strong text-primary text-center">Login</h1>
+                <span class="text-danger m-3" *ngIf="loginError == true">
+                    <small>Incorrect User Credentials</small> 
+                </span>
                 <form [formGroup]="loginForm" (ngSubmit)="PostData(loginForm)">
                     <div class="custom">
                     <mat-form-field class="w-100 formGroup" >
@@ -21,15 +24,12 @@
                         <input  formControlName="password" type="password" matInput />                                                                       
                         <mat-error *ngIf="loginForm.get('password')?.['touched'] && loginForm.get('password')?.errors?.['required']">
                             password is Required
-                        </mat-error>
-                        <mat-error *ngIf="loginForm.get('password')?.['touched'] && loginForm.get('password')?.errors?.['pattern']">
-                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters
-                        </mat-error>
+                        </mat-error>                       
                     </mat-form-field>
                     </div>
                     <br>
                     <div class="container text-center">
-                        <button class="m-2" type="submit" mat-raised-button color="primary">
+                        <button class="m-2" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">
                             Login
                         </button>
                         <button routerLink="/register" class="m-2" mat-raised-button color="accent">

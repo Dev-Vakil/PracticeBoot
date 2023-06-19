@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, NgForm, Validators } from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -9,16 +10,31 @@ import {ErrorStateMatcher} from '@angular/material/core';
 })
 export class LoginComponent implements OnInit{
   loginForm!: FormGroup;  
-
-  constructor( private formBuilder:FormBuilder){ }
+  loginError!: Boolean;
+  constructor( private formBuilder:FormBuilder, private authService:AuthenticationService){ }
   ngOnInit(){   
     this.loginForm = this.formBuilder.group({
       email:['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$")]],
-      password:['',[Validators.required, Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}")]]  
+      password:['',[Validators.required]]  
     })
   }
 
   PostData(form:FormGroup){    
-   
+    const email = form.get('email');
+    const password = form.get('password');
+    var cred = {      
+      email: email?.value,
+      password: password?.value
+    }
+    this.authService.login(cred).subscribe(
+      (response:any)=>{                       
+        this.authService.saveToken(response.token);
+        window.location.href="/dashboard";
+      },
+      (error:any)=>{
+          console.log(error.status);          
+          this.loginError = true;
+      }
+    )
   }
 }

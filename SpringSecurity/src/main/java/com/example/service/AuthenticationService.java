@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.config.JwtService;
 import com.example.dto.ProviderDto;
+import com.example.dto.AuthResponseDto;
 import com.example.entities.Providers;
 import com.example.repository.ProvidersRepository;
 
@@ -26,24 +27,28 @@ public class AuthenticationService {
 	@Autowired
 	private JwtService jwtService;
 
-	public String register(ProviderDto details) {
+	public AuthResponseDto register(ProviderDto details) {
 		try {
 			Providers provider = Providers.builder()
+					.provider_code(details.getProvider_code())
+					.provider_name(details.getProvider_name())
 					.username(details.getUsername())
 					.email(details.getEmail())
-					.password(new BCryptPasswordEncoder().encode(details.getPassword()))
+					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();
 			providersRepository.save(provider);
-			var token = jwtService.generateToken(provider);		
-			return token;
+			AuthResponseDto response = new AuthResponseDto();
+			String token = jwtService.generateToken(provider);		
+			response.setToken(token);
+			return response;
 		}		
 		catch(Exception e) {
-			return "User Not Registered";
+			return null;
 		}
 							
 	}
 
-	public String login(ProviderDto details) {
+	public AuthResponseDto login(ProviderDto details) {
 		try {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
@@ -52,11 +57,13 @@ public class AuthenticationService {
 					)
 				);
 				var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();
-				var token = jwtService.generateToken(user);		
-				return token;
+				String token = jwtService.generateToken(user);
+				AuthResponseDto response = new AuthResponseDto();
+				response.setToken(token);
+				return response;
 		}
 		catch(Exception e) {
-			return "Invalid User Credentials";
+			return null;
 		}
 	}
 	

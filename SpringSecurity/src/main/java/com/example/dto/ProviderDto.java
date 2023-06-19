@@ -7,7 +7,9 @@ import lombok.Data;
 @Builder
 @Data
 public class ProviderDto {
-	private String username;	
+	private String provider_name;
+	private String provider_code;	
+	private String username;
 	private String email;
 	private String password;
 }

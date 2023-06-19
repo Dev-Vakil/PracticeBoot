@@ -3,15 +3,10 @@
         <div class="row">
             <div class="col-md-6 offset-md-3 card px-sm-5 py-4 px-3 bg-form">                
                 <h1 class="strong text-primary text-center">Register</h1>
-                <form [formGroup]="registerForm" (ngSubmit)="registerData(registerForm)">
-                    <mat-form-field class="w-100" >
-                        <mat-label>Provider Id</mat-label>                        
-                        <input formControlName="providerId" type="text" matInput />
-                        <mat-error *ngIf="registerForm.get('providerId')?.['touched'] && registerForm.get('providerId')?.errors?.['required']">
-                            Provider Id is Required
-                        </mat-error>                        
-                    </mat-form-field>
-                    
+                <span class="text-danger m-3" *ngIf="providerCodeError == true">
+                    <small>Enter Unique Provider Code</small> 
+                </span>
+                <form [formGroup]="registerForm" (ngSubmit)="registerData(registerForm)">                    
                     <mat-form-field class="w-100" >
                         <mat-label>Provider Name</mat-label>
                         <input formControlName="providerName" type="text" matInput />
@@ -25,7 +20,7 @@
                         <input formControlName="providerCode" type="text" matInput />
                         <mat-error *ngIf="registerForm.get('providerCode')?.['touched'] && registerForm.get('providerCode')?.errors?.['required']">
                             Provider Code is Required
-                        </mat-error>                        
+                        </mat-error>                                                 
                     </mat-form-field>
                     
                     <mat-form-field class="w-100" >
@@ -59,7 +54,7 @@
                     </mat-form-field>
                     <br><br>
                     <div class="container text-center">
-                        <button class="m-2" type="submit" mat-raised-button color="primary">
+                        <button class="m-2" type="submit" mat-raised-button color="primary" [disabled]="registerForm.invalid">
                             Register
                         </button>
                         <button class="m-2" type="reset" mat-raised-button color="accent">

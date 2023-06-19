@@ -19,5 +19,22 @@ public class ProvidersService implements UserDetailsService{
 		return providersRepository.findByEmail(email)
 				.orElseThrow(()-> new UsernameNotFoundException("user not found"));
 	}
+
+	
+	public Boolean findProviderCode(String provider_code) {
+		Providers provider = providersRepository.findByProvider__code(provider_code).orElse(null);
+		try {
+			if(provider != null) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+	}
 	
 }
