@@ -3,8 +3,11 @@
         <div class="row">
             <div class="col-md-6 offset-md-3 card px-sm-5 py-4 px-3 bg-form">                
                 <h1 class="strong text-primary text-center">Register</h1>
-                <span class="text-danger m-3" *ngIf="providerCodeError == true">
+                <span class="text-danger mx-3" *ngIf="providerCodeError == true">
                     <small>Enter Unique Provider Code</small> 
+                </span>
+                <span class="text-danger m-3" *ngIf="emailError == true">
+                    <small>Enter Unique Email</small> 
                 </span>
                 <form [formGroup]="registerForm" (ngSubmit)="registerData(registerForm)">                    
                     <mat-form-field class="w-100" >
@@ -49,7 +52,7 @@
                             password is Required
                         </mat-error>
                         <mat-error *ngIf="registerForm.get('password')?.['touched'] && registerForm.get('password')?.errors?.['pattern']">
-                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters
+                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or max 15 characters.
                         </mat-error>
                     </mat-form-field>
                     <br><br>

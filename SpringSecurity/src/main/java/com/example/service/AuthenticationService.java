@@ -43,6 +43,7 @@ public class AuthenticationService {
 			return response;
 		}		
 		catch(Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 							

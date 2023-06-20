@@ -33,8 +33,7 @@ public class ProvidersService implements UserDetailsService{
 		}
 		catch(Exception e) {
 			return false;
-		}
-		
+		}		
 	}
 	
 }

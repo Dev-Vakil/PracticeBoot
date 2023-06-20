@@ -4,14 +4,17 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.config.JwtService;
 import com.example.dto.AuthResponseDto;
 import com.example.dto.ProviderDto;
+import com.example.entities.Providers;
 import com.example.service.AuthenticationService;
 import com.example.service.ProvidersService;
 
@@ -31,7 +34,7 @@ public class AuthenticationController {
 		AuthResponseDto result = new AuthResponseDto();  
 		result = service.register(provider);		
 		if(result != null) {
-			return ResponseEntity.ok("Registered Successfully");
+			return ResponseEntity.ok(result);
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -43,7 +46,7 @@ public class AuthenticationController {
 		AuthResponseDto result = new AuthResponseDto();  
 		result = service.login(provider);
 		if(result != null) {
-			return ResponseEntity.ok("LogedIn Successfully");
+			return ResponseEntity.ok(result);
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -54,5 +57,16 @@ public class AuthenticationController {
 	public ResponseEntity<?> findProviderCode(String provider_code){
 		Boolean result = providersService.findProviderCode(provider_code);
 		return ResponseEntity.ok(result);
+	}
+	
+	@PostMapping("/findEmail")
+	public ResponseEntity<?> findEmail(String email){
+		try {
+			Providers result = providersService.loadUserByUsername(email);
+			return ResponseEntity.ok(result);
+		}
+		catch(UsernameNotFoundException e) {
+			return null;
+		}		
 	}
 }

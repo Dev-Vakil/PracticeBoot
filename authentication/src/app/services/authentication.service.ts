@@ -6,16 +6,16 @@ import { Injectable } from '@angular/core';
 })
 export class AuthenticationService {
 
-  url="http://localhost:8081/auth"
+  authUrl="http://localhost:8081/auth"  
 
   constructor(private http:HttpClient) { }
 
   register(credentials:object){
-      return this.http.post(`${this.url}/register`,credentials);
+      return this.http.post(`${this.authUrl}/register`,credentials);
   }
   
   login(credentials:object){
-      return this.http.post(`${this.url}/login`,credentials);
+      return this.http.post(`${this.authUrl}/login`,credentials);
   }
 
   saveToken(token:string){
@@ -33,7 +33,11 @@ export class AuthenticationService {
   }
 
   findProviderCode(provider_code:string){
-    return this.http.post(`${this.url}/findProviderCode`,provider_code);
+    return this.http.post(`${this.authUrl}/findProviderCode`,provider_code);
+  }
+
+  findEmail(email: string){
+    return this.http.post(`${this.authUrl}/findEmail`,email);
   }
 
   logout(){

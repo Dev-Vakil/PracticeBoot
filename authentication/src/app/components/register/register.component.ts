@@ -11,7 +11,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 export class RegisterComponent {
   registerForm!: FormGroup;
   providerCodeError!: Boolean;
-  // email:string = '';
+  emailError!: Boolean;
   constructor( private formBuilder:FormBuilder, private authService:AuthenticationService){  }
   
   ngOnInit(){   
@@ -37,20 +37,34 @@ export class RegisterComponent {
       email: email?.value,
       password: password?.value
     }
+
     this.authService.findProviderCode(provider_code?.value).subscribe(
       (response:any)=>{                          
         if(response == false){              
-          this.providerCodeError = true;              
+          this.providerCodeError = false;              
         }
         else{          
-          this.providerCodeError = false;
+          this.providerCodeError = true;
         }
       },
       (error:any)=>{
         this.providerCodeError = true;        
       }
     );    
-    if(this.providerCodeError == false ){              
+    this.authService.findEmail(email?.value).subscribe(
+      (response:any)=>{
+        if(response == null){
+          this.emailError = false;
+        }
+        else{
+          this.emailError = true;
+        }
+      },
+      (error:any)=>{
+        this.emailError = true;
+      }
+    )
+    if(this.providerCodeError == false && this.emailError == false){              
       this.authService.register(cred).subscribe(
         (response:any)=>{
           window.location.href="/login";    
