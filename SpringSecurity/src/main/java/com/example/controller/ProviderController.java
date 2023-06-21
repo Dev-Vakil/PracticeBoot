@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import com.example.dto.ProviderDto;
 import com.example.entities.Providers;
 import com.example.service.ProvidersService;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/providers")
@@ -24,42 +27,37 @@ public class ProviderController {
 	@Autowired
 	ProvidersService providersService;
 	
-//	@Autowired
-//	private JwtService jwtService;
+	@Autowired
+	private JwtService jwtService;
 	
 	@PostMapping("/fetchUserDetails")
-	public ResponseEntity<?> userDetailsFromToken(){	
+	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){	
 		try {	
-			Providers providers = (Providers) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			ProviderDto result = new ProviderDto(providers.getProvider_name(),providers.getProvider_code(),providers.getUsername(),providers.getEmail(),null);						
-			return ResponseEntity.ok(result);					
+			final String authHeader = request.getHeader("Authorization");
+			if(authHeader == null || !authHeader.startsWith("Bearer ")) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			String token = authHeader.substring(7);						
+			Providers provider = new Providers();
+			provider.setEmail(jwtService.extractEmail(token));
+			
+			ProviderDto result = new ProviderDto();
+			if(jwtService.isTokenValid(token, provider)){
+				Map<String,Object> claims = jwtService.extractAllClaims(token);
+				result.setEmail(claims.get("provider_name").toString());
+				result.setProvider_name(claims.get("provider_name").toString());
+				result.setProvider_code(claims.get("provider_code").toString());
+				result.setUsername(claims.get("username").toString());
+				result.setEmail(claims.get("email").toString());
+				result.setPassword("********");
+				return ResponseEntity.ok(result);
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
-	
-//	@PostMapping("/fetchUserDetails")
-//	public ResponseEntity<?> userDetailsFromToken2(HttpServletRequest request){	
-//		try {	
-//			final String authHeader = request.getHeader("Authorization");
-//			if(authHeader == null || !authHeader.startsWith("Bearer ")) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//			String token = authHeader.substring(7);
-//			String userEmail =  jwtService.extractEmail(token);
-//			Providers providers = (Providers) this.providersService.loadUserByUsername(userEmail);
-//			if(jwtService.isTokenValid(token, providers)){
-//				ProviderDto result = new ProviderDto(providers.getProvider_name(),providers.getProvider_code(),providers.getUsername(),providers.getEmail(),null);						
-//				return ResponseEntity.ok(result);							
-//			}
-//			else {
-//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//			}
-//		}
-//		catch(Exception e) {
-//			e.printStackTrace();
-//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//		}
-//	}
 	
 }

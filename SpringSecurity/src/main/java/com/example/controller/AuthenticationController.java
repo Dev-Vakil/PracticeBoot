@@ -54,19 +54,30 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/findProviderCode")
-	public ResponseEntity<?> findProviderCode(String provider_code){
-		Boolean result = providersService.findProviderCode(provider_code);
-		return ResponseEntity.ok(result);
+	public ResponseEntity<?> findProviderCode(@RequestBody String provider_code){		
+		System.out.println(provider_code);
+		try {			
+			Boolean result = providersService.findProviderCode(provider_code);
+			return ResponseEntity.ok(result);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok(false);
+		}
 	}
 	
 	@PostMapping("/findEmail")
-	public ResponseEntity<?> findEmail(String email){
+	public ResponseEntity<?> findEmail(@RequestBody String email){
+		System.out.println(email);
 		try {
 			Providers result = providersService.loadUserByUsername(email);
 			return ResponseEntity.ok(result);
 		}
 		catch(UsernameNotFoundException e) {
-			return null;
-		}		
+			return ResponseEntity.ok(null);
+		}
+		catch(Exception e) {
+			return ResponseEntity.ok(null);
+		}
 	}
 }

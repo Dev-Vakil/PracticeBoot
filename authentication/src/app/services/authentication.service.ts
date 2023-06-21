@@ -32,11 +32,11 @@ export class AuthenticationService {
     }
   }
 
-  findProviderCode(provider_code:string){
+  findProviderCode(provider_code:string){    
     return this.http.post(`${this.authUrl}/findProviderCode`,provider_code);
   }
 
-  findEmail(email: string){
+  findEmail(email: string){    
     return this.http.post(`${this.authUrl}/findEmail`,email);
   }
 

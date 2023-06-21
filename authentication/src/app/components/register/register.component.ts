@@ -39,9 +39,9 @@ export class RegisterComponent {
     }
 
     this.authService.findProviderCode(provider_code?.value).subscribe(
-      (response:any)=>{                          
+      (response:any)=>{             
         if(response == false){              
-          this.providerCodeError = false;              
+          this.providerCodeError = false;    
         }
         else{          
           this.providerCodeError = true;

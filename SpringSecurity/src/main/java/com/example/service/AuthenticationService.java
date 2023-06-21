@@ -34,6 +34,7 @@ public class AuthenticationService {
 					.provider_name(details.getProvider_name())
 					.username(details.getUsername())
 					.email(details.getEmail())
+					.is_active(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();
 			providersRepository.save(provider);
@@ -64,6 +65,7 @@ public class AuthenticationService {
 				return response;
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
