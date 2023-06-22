@@ -64,7 +64,7 @@ public class AuthenticationController {
 		}
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/current-user")
 	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){		
 		try {				
