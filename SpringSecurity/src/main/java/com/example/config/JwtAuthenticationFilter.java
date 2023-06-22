@@ -14,9 +14,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.dto.ProviderDto;
 import com.example.entities.Providers;
 import com.example.entities.Providers.Role;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,8 +52,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			Providers providers = (Providers) this.userDetailsService.loadUserByUsername(userEmail);
 			if(jwtService.isTokenValid(jwt, providers)) {	
+				
+				Claims claims = jwtService.extractAllClaims(jwt);
+				ProviderDto providerDto = new ProviderDto();
+				providerDto.setEmail(claims.get("provider_name").toString());
+				providerDto.setProvider_name(claims.get("provider_name").toString());
+				providerDto.setProvider_code(claims.get("provider_code").toString());
+				providerDto.setUsername(claims.get("username").toString());
+				providerDto.setEmail(claims.get("email").toString());
+				providerDto.setPassword("********");
+				
 				Collection<? extends GrantedAuthority> authorities =List.of(new SimpleGrantedAuthority(Role.USER.name()));
-				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(providers,null,authorities);
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(providerDto,null,authorities);
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));				
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}else {

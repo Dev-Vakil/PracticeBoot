@@ -1,20 +1,33 @@
 package com.example.dto;
 
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
 public class ProviderDto {
+		
+	@NotBlank(message = "Product name cannot be blank")	
 	private String provider_name;
-	private String provider_code;	
+		
+	@NotBlank(message = "Product code cannot be blank")	
+	private String provider_code;
+	
+	@NotBlank(message = "username cannot be blank")
 	private String username;
+	
+	@NotBlank(message = "email cannot be blank")
+	@Pattern(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$", message="Invalid Email")
 	private String email;
+		
+	@NotBlank(message = "passoword cannot be blank")
+	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$", message="Invalid Password")
 	private String password;
 }

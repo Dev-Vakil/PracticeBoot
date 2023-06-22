@@ -34,22 +34,19 @@ public class Providers  implements UserDetails{
 	 @GeneratedValue
 	 private Integer provider_id;
 	 
-	 @Column(length = 128)	 
+	 @Column(unique=true, nullable = false, length = 128)	 
 	 private String provider_name;
 	 
-	 @Column(unique=true,nullable = false, length = 30)
-	 @NotBlank(message = "Product code cannot be blank")	 
+	 @Column(unique=true,nullable = false, length = 30)	 
 	 private String provider_code;	 
 	 
 	 @Column(unique=true, nullable = false, length = 30)	
 	 private String username;
 	 
-	 @Column(nullable = false, length = 128)
-	 @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$", message="Invalid Password")	 
+	 @Column(nullable = false, length = 128)	 	
 	 private String password;
 	 
-	 @Column(unique=true, nullable = false, length=256)	 
-	 @Pattern(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$", message="Invalid Email")
+	 @Column(unique=true, nullable = false, length=256)	 	 
 	 private String email;
 	 
 	 private Boolean is_active;
