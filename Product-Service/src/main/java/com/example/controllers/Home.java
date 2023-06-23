@@ -16,9 +16,10 @@ public class Home {
 	@Autowired
 	private ProvidersService providersService;
 	
-	@GetMapping("/provider")
+	@GetMapping("/current-user")
 	public ResponseEntity<Providers> fetchUserDetails(HttpServletRequest request) {
 		return providersService.fetchUserDetails(request);
 	}
+		
 	
 }
