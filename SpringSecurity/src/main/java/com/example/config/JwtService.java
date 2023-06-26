@@ -85,4 +85,8 @@ public class JwtService {
 		}
 		return false;
 	}	
+	
+	public void validateToken(final String token) {
+		extractAllClaims(token);
+	}
 }

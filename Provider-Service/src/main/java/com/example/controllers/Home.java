@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.dto.TokenDataDto;
 import com.example.entities.Providers;
 import com.example.service.ProvidersService;
 
@@ -19,7 +20,7 @@ public class Home {
 	private ProvidersService providersService;
 	
 	@GetMapping("/current-user")
-	public ResponseEntity<Providers> fetchUserDetails(HttpServletRequest request) {
+	public ResponseEntity<TokenDataDto> fetchUserDetails(HttpServletRequest request) {
 		return providersService.fetchUserDetails(request);
 	}
 		

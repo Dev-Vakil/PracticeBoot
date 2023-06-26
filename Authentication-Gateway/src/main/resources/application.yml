@@ -1,0 +1,18 @@
+spring:
+   cloud:
+      gateway:
+         routes:
+                        
+            - id: provider-service
+              uri: lb://PROVIDER-SERVICE
+              predicates:
+                 - Path=/provider/**
+              filters: 
+                 - AuthenticationFilter
+                                             
+            - id: authentication
+              uri: lb://AUTHENTICATION
+              predicates:
+                 - Path=/auth/**
+              filters: 
+                 - AuthenticationFilter

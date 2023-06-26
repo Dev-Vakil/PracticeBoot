@@ -64,7 +64,19 @@ public class AuthenticationController {
 		}
 	}
 	
-	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/validate")
+	public String validateToken(String token) {
+		try {
+			service.validateToken(token);
+			return "Token is valid";			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "Invalid token";
+		}
+	}
+	
+	
 	@GetMapping("/current-user")
 	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){		
 		try {				

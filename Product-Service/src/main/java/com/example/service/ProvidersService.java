@@ -23,8 +23,7 @@ public class ProvidersService {
 	
 	final String ROOT_URI = "http://localhost:8081/providers/current-user";
 		
-	public ResponseEntity<Providers> fetchUserDetails(HttpServletRequest request){
-		
+	public ResponseEntity<Providers> fetchUserDetails(HttpServletRequest request){		
 		String token = request.getHeader("Authorization");
 		
 		HttpHeaders headers = new HttpHeaders();
