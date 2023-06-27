@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @Component
@@ -13,6 +14,8 @@ public class RouteValidator {
 	  public static final List<String> openApiEndpoints = List.of(
 	            "/auth/register",
 	            "/auth/login",
+	            "/auth/findProviderCode",
+	            "/auth/findEmail",
 	            "/eureka"
 	    );
 

@@ -2,6 +2,7 @@ package com.example.entities;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -61,6 +63,9 @@ public class Providers  implements UserDetails{
 	 @Column(name = "modified_at", updatable = true, nullable = true)
 	 private Date modified_at;
 
+     @OneToMany(mappedBy="provider")
+     private List<RoleAssociation> roleAssociation; 
+     
      public enum Role{
     	 USER,ADMIN
      }

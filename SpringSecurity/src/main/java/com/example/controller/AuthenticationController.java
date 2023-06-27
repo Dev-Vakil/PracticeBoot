@@ -4,17 +4,14 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.config.JwtService;
 import com.example.dto.AuthResponseDto;
 import com.example.dto.ProviderDto;
 import com.example.entities.Providers;
@@ -25,7 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/auth")
 @RestController
-@CrossOrigin
 public class AuthenticationController {
 	
 	@Autowired
@@ -111,7 +107,7 @@ public class AuthenticationController {
 			return ResponseEntity.ok(null);
 		}
 		catch(Exception e) {
-			return ResponseEntity.ok(null);
+			return ResponseEntity.ok(null);	
 		}
 	}
 }
