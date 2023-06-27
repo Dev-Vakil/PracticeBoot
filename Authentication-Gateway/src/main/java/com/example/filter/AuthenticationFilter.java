@@ -1,12 +1,12 @@
 package com.example.filter;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.client.RestTemplate;
 
 import com.example.util.JwtUtil;
 import com.google.common.net.HttpHeaders;
@@ -48,12 +48,15 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 					jwtUtil.validateToken(authHeader);
 					
 					Claims claims = jwtUtil.extractAllClaims(authHeader);											
+					List<String> list = (List<String>) claims.get("roles");				
+					String[] roles = list.toArray(new String[0]);
 					
 					request = exchange.getRequest().mutate()
 							.header("provider_name", claims.get("provider_name").toString())
 							.header("provider_code",  claims.get("provider_code").toString())
 							.header("username", claims.get("username").toString())
 							.header("email", claims.get("email").toString())
+							.header("roles", roles)
 							.build();										
 				}
 				catch (MalformedJwtException ex) {

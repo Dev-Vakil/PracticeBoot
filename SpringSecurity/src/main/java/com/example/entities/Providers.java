@@ -8,16 +8,18 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +35,7 @@ public class Providers  implements UserDetails{
 	
 	 @Column(unique=true)
 	 @Id
-	 @GeneratedValue
+	 @GeneratedValue(strategy= GenerationType.AUTO)
 	 private Integer provider_id;
 	 
 	 @Column(unique=true, nullable = false, length = 128)	 
@@ -63,17 +65,17 @@ public class Providers  implements UserDetails{
 	 @Column(name = "modified_at", updatable = true, nullable = true)
 	 private Date modified_at;
 
+     @JsonManagedReference
      @OneToMany(mappedBy="provider")
-     private List<RoleAssociation> roleAssociation; 
+     private List<RoleAssociation> roleAssociation;
      
      public enum Role{
-    	 USER,ADMIN
+    	 USER,ADMIN,PAYER
      }
      
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		return null;
+		return null;	
 	}
 
 	@Override

@@ -8,14 +8,14 @@ spring:
               predicates:
                  - Path=/provider/**
               filters: 
-                 - AuthenticationFilter
+                 - AuthenticationFilter               
                                              
             - id: authentication
               uri: lb://AUTHENTICATION
               predicates:
                  - Path=/auth/**
               filters: 
-                 - AuthenticationFilter
+                 - AuthenticationFilter                 
                  
          default-filters:
             - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin

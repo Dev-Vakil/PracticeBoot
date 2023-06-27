@@ -1,14 +1,17 @@
 package com.example.config;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Service;
 
 import com.example.entities.Providers;
+import com.example.entities.RoleAssociation;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -45,12 +48,19 @@ public class JwtService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public String generateToken(Providers providers) {
+	public String generateToken(Providers providers, List<RoleAssociation> roleAssociation) {
 		Map<String, Object> map= new HashMap<>();
 		map.put("provider_name", providers.getProvider_name());
 		map.put("provider_code", providers.getProvider_code());
 		map.put("username", providers.getUsername());
 		map.put("email", providers.getEmail());
+		
+		List<String> roles = new ArrayList<>();		
+		for(RoleAssociation r :roleAssociation) {
+			roles.add(r.getRole().getName());
+		}
+		
+		map.put("roles", roles);
 		return generateToken(map,providers);
 	}
 	

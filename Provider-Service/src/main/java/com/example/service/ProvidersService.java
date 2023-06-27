@@ -16,6 +16,7 @@ public class ProvidersService {
 		data.setProvider_code(request.getHeader("provider_code"));
 		data.setUsername(request.getHeader("username"));
 		data.setEmail(request.getHeader("email"));		
+		data.setRoles(request.getHeader("roles"));
 		return ResponseEntity.ok(data);
 	}
 }
