@@ -42,12 +42,12 @@ public class JwtUtil {
 		extractAllClaims(token);
 	}
 
-//	public boolean hasRole(ServerHttpRequest request, String role) {
-//		Claims claims = extractAllClaims(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
-//		List<String> roles =  (List<String>) claims.get("roles");
-//		if(roles.contains(role)) {
-//			return true;
-//		}		
-//		return false;
-//	}
+	public boolean hasRole(ServerHttpRequest request, String role) {
+		Claims claims = extractAllClaims(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0).substring(7));
+		List<String> roles =  (List<String>) claims.get("roles");
+		if(roles.contains(role)) {
+			return true;
+		}		
+		return false;
+	}
 }
