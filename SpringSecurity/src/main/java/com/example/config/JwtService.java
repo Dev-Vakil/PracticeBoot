@@ -50,8 +50,8 @@ public class JwtService {
 	
 	public String generateToken(Providers providers, List<RoleAssociation> roleAssociation) {
 		Map<String, Object> map= new HashMap<>();
-		map.put("provider_name", providers.getProvider_name());
-		map.put("provider_code", providers.getProvider_code());
+		map.put("providerName", providers.getProviderName());
+		map.put("providerCode", providers.getProviderCode());
 		map.put("username", providers.getUsername());
 		map.put("email", providers.getEmail());
 		

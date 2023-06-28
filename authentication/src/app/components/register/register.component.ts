@@ -25,20 +25,20 @@ export class RegisterComponent {
   }
 
   registerData(form:FormGroup){    
-    const provider_name = form.get('providerName');
-    const provider_code = form.get('providerCode');    
+    const providerName = form.get('providerName');
+    const providerCode = form.get('providerCode');    
     const username = form.get('userName');
     const email = form.get('email');
     const password = form.get('password');
     var cred = {
-      provider_name: provider_name?.value,
-      provider_code: provider_code?.value,
+      providerName: providerName?.value,
+      providerCode: providerCode?.value,
       username: username?.value,
       email: email?.value,
       password: password?.value
     }
 
-    this.authService.findProviderCode(provider_code?.value).subscribe(
+    this.authService.findProviderCode(providerCode?.value).subscribe(
       (response:any)=>{                     
         if(response == false){              
           this.providerCodeError = false;

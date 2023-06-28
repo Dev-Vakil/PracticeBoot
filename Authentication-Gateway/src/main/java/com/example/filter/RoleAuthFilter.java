@@ -14,13 +14,13 @@ import com.example.util.JwtUtil;
 import lombok.Data;
 
 @Component
-public class RoleAuthGatewayFilterFactory extends
-        AbstractGatewayFilterFactory<RoleAuthGatewayFilterFactory.Config> {
+public class RoleAuthFilter extends
+        AbstractGatewayFilterFactory<RoleAuthFilter.Config> {
 	
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-    public RoleAuthGatewayFilterFactory() {
+    public RoleAuthFilter() {
         super(Config.class);
     }
 

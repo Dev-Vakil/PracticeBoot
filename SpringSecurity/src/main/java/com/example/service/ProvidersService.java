@@ -22,7 +22,7 @@ public class ProvidersService implements UserDetailsService{
 
 	
 	public Boolean findProviderCode(String provider_code) {
-		Providers provider = providersRepository.findByProvider__code(provider_code).orElse(null);		
+		Providers provider = providersRepository.findByProviderCode(provider_code).orElse(null);		
 		try {
 			if(provider != null) {
 				return true;

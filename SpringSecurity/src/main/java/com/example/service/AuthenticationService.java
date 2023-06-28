@@ -44,11 +44,11 @@ public class AuthenticationService {
 	public AuthResponseDto register(ProviderDto details) {
 		try {
 			Providers provider = Providers.builder()
-					.provider_code(details.getProvider_code())
-					.provider_name(details.getProvider_name())
+					.providerCode(details.getProviderCode())
+					.providerName(details.getProviderName())
 					.username(details.getUsername())
 					.email(details.getEmail())					
-					.is_active(true)
+					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();			
 			providersRepository.save(provider);			

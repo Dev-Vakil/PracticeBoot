@@ -33,16 +33,16 @@ import lombok.NoArgsConstructor;
 @Table(name="providers")
 public class Providers  implements UserDetails{
 	
-	 @Column(unique=true)
+	 @Column(unique=true,name="provider_id")
 	 @Id
 	 @GeneratedValue(strategy= GenerationType.AUTO)
-	 private Integer provider_id;
+	 private Integer providerId;
 	 
-	 @Column(unique=true, nullable = false, length = 128)	 
-	 private String provider_name;
+	 @Column(name="provider_name", unique=true, nullable = false, length = 128)	 
+	 private String providerName;
 	 
-	 @Column(unique=true,nullable = false, length = 30)	 
-	 private String provider_code;	 
+	 @Column(name="provider_code", unique=true,nullable = false, length = 30)	 
+	 private String providerCode;	 
 	 
 	 @Column(unique=true, nullable = false, length = 30)	
 	 private String username;
@@ -53,17 +53,18 @@ public class Providers  implements UserDetails{
 	 @Column(unique=true, nullable = false, length=256)	 	 
 	 private String email;
 	 
-	 private Boolean is_active;
+	 @Column(name="is_active")
+	 private Boolean isActive;
 	
 	 @CreationTimestamp
 	 @Temporal(TemporalType.TIMESTAMP)
 	 @Column(name = "created_at", updatable = true, nullable = true)
-	 private Date created_at;
+	 private Date createdAt;
 
      @UpdateTimestamp
 	 @Temporal(TemporalType.TIMESTAMP)
 	 @Column(name = "modified_at", updatable = true, nullable = true)
-	 private Date modified_at;
+	 private Date modifiedAt;
 
      @JsonManagedReference
      @OneToMany(mappedBy="provider")

@@ -9,7 +9,7 @@ spring:
                  - Path=/provider/**
               filters: 
                  - AuthenticationFilter
-                 - RoleAuth=USER               
+                 - RoleAuthFilter=USER              
                                              
             - id: authentication
               uri: lb://AUTHENTICATION

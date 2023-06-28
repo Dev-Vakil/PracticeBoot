@@ -7,8 +7,8 @@ import lombok.ToString;
 @Data
 public class TokenDataDto {	
 
-	 private String provider_name;
-	 private String provider_code;	
+	 private String providerName;
+	 private String providerCode;	
 	 private String username;	 
 	 private String email;
 	 private String roles;

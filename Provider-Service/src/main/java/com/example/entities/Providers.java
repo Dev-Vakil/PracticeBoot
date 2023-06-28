@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Providers{
 		
-	 private Integer provider_id;	
-	 private String provider_name;	 		 
-	 private String provider_code;	 	 		
+	 private Integer providerId;	
+	 private String providerName;	 		 
+	 private String providerCode;	 	 		
 	 private String username;	 		 
 	 private String password;	 	
 	 private String email;	 
-	 private Boolean is_active;		
-	 private Date created_at;
-	 private Date modified_at;
+	 private Boolean isActive;		
+	 private Date createdAt;
+	 private Date modifiedAt;
 
      public enum Role{
     	 USER,ADMIN

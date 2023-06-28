@@ -12,8 +12,8 @@ public class ProvidersService {
 		
 	public ResponseEntity<TokenDataDto> fetchUserDetails(HttpServletRequest request){				
 		TokenDataDto data = new TokenDataDto();
-		data.setProvider_name(request.getHeader("provider_name"));
-		data.setProvider_code(request.getHeader("provider_code"));
+		data.setProviderName(request.getHeader("provider_name"));
+		data.setProviderCode(request.getHeader("provider_code"));
 		data.setUsername(request.getHeader("username"));
 		data.setEmail(request.getHeader("email"));		
 		data.setRoles(request.getHeader("roles"));
