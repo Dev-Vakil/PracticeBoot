@@ -2,6 +2,8 @@ package com.example.filter;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -18,14 +20,13 @@ import io.jsonwebtoken.MalformedJwtException;
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config>{
 	
+	 Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+	
 	@Autowired
 	private RouteValidator routeValidator;
 	
 	@Autowired
 	private JwtUtil jwtUtil;
-	
-//	@Autowired
-//	private RestTemplate restTemplate;
 	
 	public AuthenticationFilter() {
 		super(Config.class);
@@ -37,14 +38,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 			ServerHttpRequest request = null;
 			if(routeValidator.isSecured.test(exchange.getRequest())) {
 				if(!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-					throw new RuntimeException("Auth Header not found");
+					throw new NullPointerException("Auth Header not found");
 				}
 				String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
 				if(authHeader != null && authHeader.startsWith("Bearer ")) {
 					authHeader = authHeader.substring(7);					
 				}
 				try {
-//					restTemplate.getForObject("http://AUTHENTICATION//validate?token+authHeader", String.class);
 					jwtUtil.validateToken(authHeader);
 					
 					Claims claims = jwtUtil.extractAllClaims(authHeader);											
@@ -60,14 +60,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 							.build();										
 				}
 				catch (MalformedJwtException ex) {
-					System.out.println("Invalid JWT token");
+					logger.error("Invalid Jwt Token",ex);
 				} catch (ExpiredJwtException ex) {
-					System.out.println("Expired JWT token");
+					ex.printStackTrace();
 				}  catch (IllegalArgumentException ex) {
-					System.out.println("JWT claims string is empty.");
+					ex.printStackTrace();
 				}  catch(Exception e) {
-					e.printStackTrace();
-					System.out.println("Invalid JWT token");
+					e.printStackTrace();				
 				}				
 			}
 			return chain.filter(exchange.mutate().request(request).build());

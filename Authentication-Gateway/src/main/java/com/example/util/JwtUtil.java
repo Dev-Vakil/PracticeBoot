@@ -1,11 +1,7 @@
 package com.example.util;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
@@ -13,9 +9,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.net.HttpHeaders;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
@@ -43,11 +37,17 @@ public class JwtUtil {
 	}
 
 	public boolean hasRole(ServerHttpRequest request, String role) {
-		Claims claims = extractAllClaims(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0).substring(7));
-		List<String> roles =  (List<String>) claims.get("roles");
-		if(roles.contains(role)) {
-			return true;
-		}		
-		return false;
+		try {			
+			Claims claims = extractAllClaims(request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0).substring(7));
+			List<String> roles =  (List<String>) claims.get("roles");
+			if(roles.contains(role)) {
+				return true;
+			}		
+			return false;
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

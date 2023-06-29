@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.entities.Providers;
@@ -24,6 +26,9 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 	
 	private String jwtSecret = "25442A472D4B6150645367566B58703273357638792F423F4528482B4D625165";
+	
+	 Logger logger
+     = LoggerFactory.getLogger(JwtService.class);
 	
 	public String extractEmail(String token) {
 		return extractClaim(token, Claims::getSubject);		
@@ -84,7 +89,7 @@ public class JwtService {
 		try {
 			return extractClaim(token, Claims::getExpiration).before(new Date());
 		} catch (MalformedJwtException ex) {
-			System.out.println("Invalid JWT token");
+			logger.error("Invalid Jwt Token");
 		} catch (ExpiredJwtException ex) {
 			System.out.println("Expired JWT token");
 		}  catch (IllegalArgumentException ex) {

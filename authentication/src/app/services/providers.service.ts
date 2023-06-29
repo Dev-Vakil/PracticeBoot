@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,11 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class ProvidersService {
 
-  providersUrl="http://localhost:8081/providers"  
+  providersUrl="http://localhost:8080/provider"  
   constructor(private http:HttpClient) { }
 
-  userDetails(){
-    return this.http.post(`${this.providersUrl}/fetchUserDetails`,localStorage.getItem("token"));
+  allProviders(){
+    return this.http.get(`${this.providersUrl}/providers`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+ });
+    // return this.http.get(`${this.providersUrl}/providers`,localStorage.getItem("token"));
+    
   }
 
 }

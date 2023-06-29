@@ -1,6 +1,5 @@
 package com.example.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +13,10 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig {
-	
-	@Autowired
-	private ProvidersService providersService;
+public class ApplicationConfig {	
 	
 	@Bean
-	public AuthenticationProvider authenticationProvider() {		
+	public AuthenticationProvider authenticationProvider(ProvidersService providersService) {		
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(providersService);
 		authProvider.setPasswordEncoder(new BCryptPasswordEncoder());

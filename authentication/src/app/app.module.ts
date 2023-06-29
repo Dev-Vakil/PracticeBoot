@@ -1,3 +1,4 @@
+import {MediaMatcher} from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
@@ -13,6 +14,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import {MatRadioModule} from '@angular/material/radio';
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -22,6 +27,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { AuthenticatedComponent } from './components/authenticated/authenticated.component';
+import { ProviderListComponent } from './components/provider-list/provider-list.component';
 
 
 @NgModule({
@@ -32,7 +38,8 @@ import { AuthenticatedComponent } from './components/authenticated/authenticated
     RegisterComponent,
     DashboardComponent,
     SideBarComponent,
-    AuthenticatedComponent
+    AuthenticatedComponent,
+    ProviderListComponent,      
   ],
   imports: [
     BrowserModule,
@@ -44,7 +51,10 @@ import { AuthenticatedComponent } from './components/authenticated/authenticated
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-    MatInputModule,
+    MatInputModule,    
+    MatTableModule,
+    MatSortModule,
+    MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

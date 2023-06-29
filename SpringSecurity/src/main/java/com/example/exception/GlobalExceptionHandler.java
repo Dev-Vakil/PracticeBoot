@@ -28,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(value = NullPointerException.class)
-	public ResponseEntity<Object> NullPointer(NullPointerException exception){
+	public ResponseEntity<Object> nullPointer(NullPointerException exception){
 		return new ResponseEntity<>("Null pointer exception has occured",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
