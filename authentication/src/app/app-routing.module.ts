@@ -11,6 +11,7 @@ import { AdminSignupComponent } from './components/admin/admin-signup/admin-sign
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AdminGuard } from './services/admin.guard';
 import { UserGuard } from './services/user.guard';
+import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
   
 const routes: Routes = [
   { 
@@ -37,6 +38,7 @@ const routes: Routes = [
       {path:'login',component:AdminLoginComponent,pathMatch:'full'},
       {path:'register',component:AdminSignupComponent,pathMatch:'full'},
       {path:'provider-list',component:ProviderListComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
+      {path:'payer-list',component:PayerListComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
     ]
   },
   

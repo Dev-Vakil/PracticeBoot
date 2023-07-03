@@ -56,8 +56,8 @@ public class JwtService {
 	
 	public String generateToken(UserDto details, List<RoleAssociation> roleAssociation) {
 		Map<String, Object> map= new HashMap<>();
-		map.put("Name", details.getProviderName());
-		map.put("Code", details.getProviderCode());
+		map.put("name", details.getProviderName());
+		map.put("code", details.getProviderCode());
 		map.put("username", details.getUsername());
 		map.put("email", details.getEmail());
 		

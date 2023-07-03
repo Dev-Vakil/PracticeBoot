@@ -29,6 +29,7 @@ import { AdminLoginComponent } from './components/admin/admin-login/admin-login.
 import { AuthGuard } from './services/auth.guard';
 import { AdminGuard } from './services/admin.guard';
 import { ProviderListComponent } from './components/admin/provider-list/provider-list.component';
+import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ProviderListComponent } from './components/admin/provider-list/provider
     AdminSignupComponent,
     UserComponent,
     AdminLoginComponent,
-    ProviderListComponent  
+    ProviderListComponent,
+    PayerListComponent  
   ],
   imports: [
     BrowserModule,

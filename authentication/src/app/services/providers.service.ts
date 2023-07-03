@@ -11,9 +11,12 @@ export class ProvidersService {
 
   allProviders(){
     return this.http.get(`${this.providersUrl}/providers`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
- });
-    // return this.http.get(`${this.providersUrl}/providers`,localStorage.getItem("token"));
-    
+    });
+  }
+
+  allPayers(){
+    return this.http.get(`${this.providersUrl}/payers`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    });
   }
 
 }

@@ -52,8 +52,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 					String[] roles = list.toArray(new String[0]);
 					
 					request = exchange.getRequest().mutate()
-							.header("providerName", claims.get("providerName").toString())
-							.header("providerCode",  claims.get("providerCode").toString())
+							.header("name", claims.get("name").toString())
+							.header("node",  claims.get("code").toString())
 							.header("username", claims.get("username").toString())
 							.header("email", claims.get("email").toString())
 							.header("roles", roles)
