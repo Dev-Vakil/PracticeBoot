@@ -14,38 +14,33 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import {MatRadioModule} from '@angular/material/radio';
-
+import { MatTableModule } from '@angular/material/table';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { NavBarComponent } from './components/user/nav-bar/nav-bar.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { DashboardComponent } from './components/user/dashboard/dashboard.component';
-import { SideBarComponent } from './components/user/side-bar/side-bar.component';
-import { ProviderListComponent } from './components/user/provider-list/provider-list.component';
 import { AdminComponent } from './components/admin/admin/admin.component';
 import { AdminSignupComponent } from './components/admin/admin-signup/admin-signup.component';
 import { UserComponent } from './components/user/user/user.component';
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AuthGuard } from './services/auth.guard';
 import { AdminGuard } from './services/admin.guard';
+import { ProviderListComponent } from './components/admin/provider-list/provider-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavBarComponent,
     LoginComponent,
     DashboardComponent,
-    SideBarComponent,
-    ProviderListComponent,
     AdminComponent,
     AdminSignupComponent,
     UserComponent,
-    AdminLoginComponent,      
+    AdminLoginComponent,
+    ProviderListComponent  
   ],
   imports: [
     BrowserModule,
@@ -58,9 +53,9 @@ import { AdminGuard } from './services/admin.guard';
     MatListModule,
     MatIconModule,
     MatInputModule,    
-    MatTableModule,
     MatSortModule,
     MatRadioModule,
+    MatTableModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

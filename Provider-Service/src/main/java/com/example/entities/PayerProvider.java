@@ -47,14 +47,14 @@ public class PayerProvider {
 	private Status status = Status.INACTIVE;
 	
 	@CreationTimestamp
-	 @Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "created_at", updatable = true, nullable = true)
-	 private Date createdAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at", updatable = true, nullable = true)
+	private Date createdAt;
 
     @UpdateTimestamp
-	 @Temporal(TemporalType.TIMESTAMP)
-	 @Column(name = "modified_at", updatable = true, nullable = true)
-	 private Date modifiedAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "modified_at", updatable = true, nullable = true)
+	private Date modifiedAt;
 	
 	public enum Status{
 		ACTIVE,INACTIVE

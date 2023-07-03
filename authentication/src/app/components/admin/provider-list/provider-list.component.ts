@@ -1,10 +1,10 @@
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { ProvidersService } from 'src/app/services/providers.service';
 
-export interface PeriodicElement {
+export interface Provider {
   providerId: number;
   providerName: string;
   providerCode: string;
@@ -17,8 +17,6 @@ export interface PeriodicElement {
   roleAssociation: number[];
 }
 
-
-// providerId: 1, providerName: "dev", providerCode: "23", username: "dev", password: "sds", email: "dwdas", isActive: true, createdAt: "54:00", modifiedAt: "12:43", roleAssociation: [1,2]
 @Component({
   selector: 'app-provider-list',
   templateUrl: './provider-list.component.html',
@@ -26,9 +24,8 @@ export interface PeriodicElement {
 })
 export class ProviderListComponent {
   displayedColumns: string[] = ['providerId', 'providerName', 'providerCode', 'username'];
-  dataSource !:MatTableDataSource<PeriodicElement>;
-  ELEMENT_DATA!: PeriodicElement[];
-  
+  dataSource !:MatTableDataSource<Provider>;
+  ELEMENT_DATA!: Provider[];
   
   constructor(private _liveAnnouncer: LiveAnnouncer, public providersService:ProvidersService) {   
   }
