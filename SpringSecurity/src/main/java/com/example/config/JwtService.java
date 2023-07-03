@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.example.dto.UserDto;
 import com.example.entities.Providers;
 import com.example.entities.RoleAssociation;
 
@@ -53,12 +54,13 @@ public class JwtService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public String generateToken(Providers providers, List<RoleAssociation> roleAssociation) {
+	public String generateToken(UserDto details, List<RoleAssociation> roleAssociation) {
 		Map<String, Object> map= new HashMap<>();
-		map.put("providerName", providers.getProviderName());
-		map.put("providerCode", providers.getProviderCode());
-		map.put("username", providers.getUsername());
-		map.put("email", providers.getEmail());
+		map.put("Name", details.getProviderName());
+		map.put("Code", details.getProviderCode());
+		map.put("username", details.getUsername());
+		map.put("email", details.getEmail());
+		
 		
 		List<String> roles = new ArrayList<>();		
 		for(RoleAssociation r :roleAssociation) {
@@ -66,14 +68,14 @@ public class JwtService {
 		}
 		
 		map.put("roles", roles);
-		return generateToken(map,providers);
+		return generateToken(map,details);
 	}
 	
-	public String generateToken(Map<String, Object> extraClaims,Providers providers) {
+	public String generateToken(Map<String, Object> extraClaims,UserDto details) {
 		return Jwts
 				.builder()
 				.addClaims(extraClaims)
-				.setSubject(providers.getEmail())
+				.setSubject(details.getEmail())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 *7))
 				.signWith(getSignInKey())

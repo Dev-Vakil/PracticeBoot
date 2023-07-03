@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.AuthResponseDto;
-import com.example.dto.ProviderDto;
+import com.example.dto.LoginDto;
+import com.example.dto.UserDto;
 import com.example.entities.Providers;
 import com.example.service.AuthenticationService;
 import com.example.service.ProvidersService;
@@ -32,9 +33,22 @@ public class AuthenticationController {
 	private ProvidersService providersService;
 	
 	
-	@PostMapping("/register")
-	public ResponseEntity<?> register(@RequestBody ProviderDto provider){
-		AuthResponseDto result =  service.register(provider);		
+	@PostMapping("/provider/register")
+	public ResponseEntity<?> registerProvider(@RequestBody UserDto provider){
+		
+		AuthResponseDto result =  service.registerProvider(provider);			
+		if(result != null) {
+			return ResponseEntity.ok(result);
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+	
+	@PostMapping("/payer/register")
+	public ResponseEntity<?> registerPayer(@RequestBody UserDto payer){
+		
+		AuthResponseDto result =  service.registerPayer(payer);			
 		if(result != null) {
 			return ResponseEntity.ok(result);
 		}
@@ -44,9 +58,9 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody ProviderDto provider){
+	public ResponseEntity<?> login(@RequestBody LoginDto details){
 		try {					
-			AuthResponseDto result = service.login(provider);
+			AuthResponseDto result = service.login(details);
 			if(result != null) {
 				return ResponseEntity.ok(result);
 			}
@@ -55,6 +69,7 @@ public class AuthenticationController {
 			}
 		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
@@ -75,8 +90,8 @@ public class AuthenticationController {
 	@GetMapping("/current-user")
 	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){		
 		try {				
-			ProviderDto providerDto = (ProviderDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();					
-			return ResponseEntity.ok(providerDto);
+			UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();					
+			return ResponseEntity.ok(userDto);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

@@ -69,4 +69,8 @@ public class Payer {
     @OneToMany(mappedBy="payer")
     private List<PayerProvider> payerProvider;
     
+    @JsonManagedReference
+    @OneToMany(mappedBy="payer")
+    private List<RoleAssociation> roleAssociation;
+    
 }

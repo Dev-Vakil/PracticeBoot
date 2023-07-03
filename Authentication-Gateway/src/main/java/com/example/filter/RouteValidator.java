@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 public class RouteValidator {
 	
 	  public static final List<String> openApiEndpoints = List.of(
-	            "/auth/register",
 	            "/auth/login",
+	            "/auth/provider/register",
+	            "/auth/payer/register",
 	            "/auth/findProviderCode",
 	            "/auth/findEmail",
 	            "/auth/validate",

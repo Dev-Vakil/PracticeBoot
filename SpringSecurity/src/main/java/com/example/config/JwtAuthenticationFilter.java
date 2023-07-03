@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.dto.ProviderDto;
+import com.example.dto.UserDto;
 import com.example.entities.Providers;
 import com.example.entities.Providers.Role;
 

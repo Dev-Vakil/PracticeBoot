@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class ProviderDto {
+public class UserDto {
 		
 	@NotBlank(message = "Product name cannot be blank")	
 	private String providerName;

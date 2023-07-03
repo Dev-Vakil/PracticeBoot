@@ -8,6 +8,11 @@
                 </span>
                 <form [formGroup]="loginForm" (ngSubmit)="PostData(loginForm)">
                     <div class="custom">
+                        <mat-radio-group class="m-2" aria-label="Select an option" formControlName="userType" matInput>
+                            <mat-label class="fw-bold text-secondary m-1">Select Type of User: </mat-label><br>                    
+                            <mat-radio-button name="" value="PROVIDER" >Provider</mat-radio-button>
+                            <mat-radio-button name="" value="PAYER">Payer</mat-radio-button>                                             
+                        </mat-radio-group>
                     <mat-form-field class="w-100 formGroup" >
                         <mat-label>Email</mat-label>
                         <input formControlName="email" type="text" placeholder="Email" matInput />
@@ -27,7 +32,8 @@
                         </mat-error>                       
                     </mat-form-field>
                     </div>
-                    <br>
+                    <br>                   
+
                     <div class="container text-center">
                         <button class="m-2" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">
                             Login

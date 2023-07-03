@@ -15,16 +15,20 @@ export class LoginComponent implements OnInit{
   ngOnInit(){   
     this.loginForm = this.formBuilder.group({
       email:['', [Validators.required, Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$")]],
-      password:['',[Validators.required]]  
+      password:['',[Validators.required]],
+      userType:['', Validators.required]
     })
   }
 
-  PostData(form:FormGroup){    
+  PostData(form:FormGroup){        
     const email = form.get('email');
     const password = form.get('password');
+    const userType = form.get('userType');
+    console.log(userType);
     var cred = {      
       email: email?.value,
-      password: password?.value
+      password: password?.value,
+      role: userType?.value
     }
     this.authService.login(cred).subscribe(
       (response:any)=>{                       
