@@ -1,0 +1,125 @@
+<div class="bootstrap wrapper">
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 card px-sm-5 py-4 px-3 bg-form">                
+                <h1 class="strong text-primary text-center">Register</h1>
+                <span class="text-danger mx-3" *ngIf="providerCodeError == true">
+                    <small>Enter Unique Provider Code</small> 
+                </span>
+                <span class="text-danger m-3" *ngIf="emailError == true">
+                    <small>Enter Unique Email</small> 
+                </span>
+                <mat-radio-group class="m-2" aria-label="Select an option" [(ngModel)] = "userType">
+                    <mat-label class="fw-bold text-secondary m-1">Select Type of User: </mat-label><br>                    
+                    <mat-radio-button name="userType" value="1" >Provider</mat-radio-button>
+                    <mat-radio-button name="userType" value="2">Payer</mat-radio-button>                    
+                </mat-radio-group>                
+                <form *ngIf="userType == '1'" [formGroup]="providerForm" (ngSubmit)="registerProvider(providerForm)">  
+                    <mat-form-field class="w-100 mt-3" >
+                        <mat-label>Provider Name</mat-label>
+                        <input formControlName="providerName" type="text" placeholder="Provider Name" matInput/>
+                        <mat-error *ngIf="providerForm.get('providerName')?.['touched'] && providerForm.get('providerName')?.errors?.['required']">
+                            Provider Name is Required
+                        </mat-error>                        
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>Provider Code</mat-label>
+                        <input formControlName="providerCode" type="text" placeholder="Provider Code" matInput />
+                        <mat-error *ngIf="providerForm.get('providerCode')?.['touched'] && providerForm.get('providerCode')?.errors?.['required']">
+                            Provider Code is Required
+                        </mat-error>                                                 
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>UserName</mat-label>
+                        <input formControlName="userName" type="text" placeholder="Username" matInput />
+                        <mat-error *ngIf="providerForm.get('userName')?.['touched'] && providerForm.get('userName')?.errors?.['required']">
+                            UserName is Required
+                        </mat-error>                        
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100" >
+                        <mat-label>Email</mat-label>
+                        <input formControlName="email" type="text" placeholder="Email" matInput />
+                        <mat-error *ngIf="providerForm.get('email')?.['touched'] && providerForm.get('email')?.errors?.['required']">
+                            Email is Required
+                        </mat-error>
+                        <mat-error *ngIf="providerForm.get('email')?.['touched'] && providerForm.get('email')?.errors?.['pattern']">
+                            Enter valid email address
+                        </mat-error>                                                
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" type="password" placeholder="Password" matInput />
+                        <mat-error *ngIf="providerForm.get('password')?.['touched'] && providerForm.get('password')?.errors?.['required']">
+                            password is Required
+                        </mat-error>
+                        <mat-error *ngIf="providerForm.get('password')?.['touched'] && providerForm.get('password')?.errors?.['pattern']">
+                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or max 15 characters.
+                        </mat-error>
+                    </mat-form-field>
+                    <br><br>
+                    <div class="container text-center">
+                        <button class="m-2" type="submit" mat-raised-button color="primary" [disabled]="providerForm.invalid">
+                            Register
+                        </button>
+                        <button class="m-2" type="reset" mat-raised-button color="accent">
+                            Reset
+                        </button>
+                    </div>
+                </form>
+                
+                <form *ngIf="userType == '2'" [formGroup]="payerForm" (ngSubmit)="registerPayer(payerForm)">  
+                    <mat-form-field class="w-100 mt-3" >
+                        <mat-label>Payer Name</mat-label>
+                        <input formControlName="payerName" type="text" placeholder="Payer Name" matInput/>
+                        <mat-error *ngIf="payerForm.get('payerName')?.['touched'] && payerForm.get('payerName')?.errors?.['required']">
+                            Payer Name is Required
+                        </mat-error>                        
+                    </mat-form-field>
+                    
+                    <mat-form-field class="w-100" >
+                        <mat-label>Payer Code</mat-label>
+                        <input formControlName="payerCode" type="text" placeholder="Payer Code" matInput />
+                        <mat-error *ngIf="payerForm.get('payerCode')?.['touched'] && payerForm.get('payerCode')?.errors?.['required']">
+                            Payer Code is Required
+                        </mat-error>                                                 
+                    </mat-form-field>                                       
+
+                    <mat-form-field class="w-100" >
+                        <mat-label>Email</mat-label>
+                        <input formControlName="email" type="text" placeholder="Email" matInput />
+                        <mat-error *ngIf="payerForm.get('email')?.['touched'] && payerForm.get('email')?.errors?.['required']">
+                            Email is Required
+                        </mat-error>
+                        <mat-error *ngIf="payerForm.get('email')?.['touched'] && payerForm.get('email')?.errors?.['pattern']">
+                            Enter valid email address
+                        </mat-error>                                                
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" type="password" placeholder="Password" matInput />
+                        <mat-error *ngIf="payerForm.get('password')?.['touched'] && payerForm.get('password')?.errors?.['required']">
+                            password is Required
+                        </mat-error>
+                        <mat-error *ngIf="payerForm.get('password')?.['touched'] && payerForm.get('password')?.errors?.['pattern']">
+                            Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or max 15 characters.
+                        </mat-error>
+                    </mat-form-field>
+                    <br><br>
+                    <div class="container text-center">
+                        <button class="m-2" type="submit" mat-raised-button color="primary" [disabled]="payerForm.invalid">
+                            Register
+                        </button>
+                        <button class="m-2" type="reset" mat-raised-button color="accent">
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

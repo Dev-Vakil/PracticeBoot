@@ -1,29 +1,45 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { DashboardComponent } from './components/user/dashboard/dashboard.component';
 import { AuthGuard, authGuard } from './services/auth.guard';
-import { AuthenticatedComponent } from './components/authenticated/authenticated.component';
-import { ProviderListComponent } from './components/provider-list/provider-list.component';
+import { ProviderListComponent } from './components/user/provider-list/provider-list.component';
+import { AppComponent } from './app.component';
+import { AdminComponent } from './components/admin/admin/admin.component';
+import { UserComponent } from './components/user/user/user.component';
+import { AdminSignupComponent } from './components/admin/admin-signup/admin-signup.component';
+import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
+import { AdminGuard } from './services/admin.guard';
+import { UserGuard } from './services/user.guard';
   
 const routes: Routes = [
-  {path:'',redirectTo: '/login',pathMatch:'full'},
-//   { 
-//     path: '', 
-//     component: SiteLayoutComponent,
-//     children: [
-//       { path: '', component: HomeComponent, pathMatch: 'full'},
-//       { path: 'about', component: AboutComponent },
-//       { path: 'test/:id', component: AboutComponent }
-//     ]
-// },
-  {path:'login',component:LoginComponent,pathMatch:'full'},
-  {path:'register',component:RegisterComponent,pathMatch:'full'},
-  {path:'authenticated',component:AuthenticatedComponent,pathMatch:'full'},
-  {path:'dashboard',component:DashboardComponent,pathMatch:'full',canActivate:[AuthGuard]},
-  {path:'provider-list',component:ProviderListComponent,pathMatch:'full',canActivate:[AuthGuard]},
-
+  { 
+    path: '', 
+    component: AppComponent,
+    children: [
+      { path: 'user', component: UserComponent, pathMatch: 'full'},
+      { path: 'admin', component: AdminComponent, pathMatch: "full"},
+      {path: '',redirectTo:'/user/login',pathMatch:'full'},
+    ]
+  },
+  { 
+    path: 'user', 
+    component: UserComponent,
+    children: [      
+      {path:'login',component:LoginComponent,pathMatch:'full'},
+      {path:'dashboard',component:DashboardComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},
+    ]
+  },
+  { 
+    path: 'admin', 
+    component: AdminComponent,
+    children: [
+      {path:'login',component:AdminLoginComponent,pathMatch:'full'},
+      {path:'register',component:AdminSignupComponent,pathMatch:'full'},
+      {path:'provider-list',component:ProviderListComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
+    ]
+  },
+  
 ];
 
 @NgModule({

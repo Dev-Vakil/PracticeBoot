@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -66,6 +67,10 @@ public class Providers{
      @JsonManagedReference
      @OneToMany(mappedBy="provider")
      private List<RoleAssociation> roleAssociation;
+     
+     @JsonManagedReference
+     @OneToMany(mappedBy="provider")
+     private List<PayerProvider> payerProvider;
      
      public enum Role{
     	 USER,ADMIN,PAYER

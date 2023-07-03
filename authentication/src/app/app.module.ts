@@ -21,13 +21,17 @@ import {MatRadioModule} from '@angular/material/radio';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SideBarComponent } from './components/side-bar/side-bar.component';
-import { AuthenticatedComponent } from './components/authenticated/authenticated.component';
-import { ProviderListComponent } from './components/provider-list/provider-list.component';
+import { NavBarComponent } from './components/user/nav-bar/nav-bar.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { DashboardComponent } from './components/user/dashboard/dashboard.component';
+import { SideBarComponent } from './components/user/side-bar/side-bar.component';
+import { ProviderListComponent } from './components/user/provider-list/provider-list.component';
+import { AdminComponent } from './components/admin/admin/admin.component';
+import { AdminSignupComponent } from './components/admin/admin-signup/admin-signup.component';
+import { UserComponent } from './components/user/user/user.component';
+import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
+import { AuthGuard } from './services/auth.guard';
+import { AdminGuard } from './services/admin.guard';
 
 
 @NgModule({
@@ -35,11 +39,13 @@ import { ProviderListComponent } from './components/provider-list/provider-list.
     AppComponent,
     NavBarComponent,
     LoginComponent,
-    RegisterComponent,
     DashboardComponent,
     SideBarComponent,
-    AuthenticatedComponent,
-    ProviderListComponent,      
+    ProviderListComponent,
+    AdminComponent,
+    AdminSignupComponent,
+    UserComponent,
+    AdminLoginComponent,      
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,8 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  loggedIn: Boolean = this.authService.isLoggedIn();
+  // loggedIn: Boolean = this.authService.isLoggedIn();
+  loggedIn: Boolean = true;
   constructor(private authService:AuthenticationService){}
 
   logout(){

@@ -8,7 +8,9 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./side-bar.component.css']
 })
 export class SideBarComponent {
-  loggedIn: Boolean = this.authService.isLoggedIn();
+  // token = localStorage.getItem("token");
+  loggedIn: Boolean = true;
+  // loggedIn: Boolean = this.authService.isLoggedIn(token,);
   constructor(private authService:AuthenticationService){}
   events: string[] = [];
   opened!: boolean;

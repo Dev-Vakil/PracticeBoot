@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,11 @@ public class AuthenticationService {
 				String token = jwtService.generateToken(user,roles);
 				AuthResponseDto response = new AuthResponseDto();
 				response.setToken(token);
+				List<String>roleNames = new ArrayList<String>();
+				for(RoleAssociation role : roles) {
+					roleNames.add(role.getRole().getName());
+				}
+				response.setRoles(roleNames);
 				return response;
 		}
 		catch(BadCredentialsException e) {			
