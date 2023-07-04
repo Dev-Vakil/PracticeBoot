@@ -2,9 +2,9 @@
 
 -- changeset dev:6
 
-INSERT INTO securitydemo.role (id,name)
-VALUES (1,"USER");
-INSERT INTO securitydemo.role (id,name)
-VALUES (2,"ADMIN");
-INSERT INTO securitydemo.role (id,name)
-VALUES (3,"PAYER");
+INSERT INTO securitydemo.role (name)
+VALUES ("USER");
+INSERT INTO securitydemo.role (name)
+VALUES ("ADMIN");
+INSERT INTO securitydemo.role (name)
+VALUES ("PAYER");

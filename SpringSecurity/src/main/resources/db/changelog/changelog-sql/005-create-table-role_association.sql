@@ -4,7 +4,7 @@
 
 
 CREATE TABLE role_association (
-    id INT UNIQUE,
+    id INT UNIQUE AUTO_INCREMENT,
     provider_id INT,
     role_id int,    
     PRIMARY KEY (id),

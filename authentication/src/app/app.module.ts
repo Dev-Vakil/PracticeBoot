@@ -30,6 +30,7 @@ import { AuthGuard } from './services/auth.guard';
 import { AdminGuard } from './services/admin.guard';
 import { ProviderListComponent } from './components/admin/provider-list/provider-list.component';
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
+import { PayerProviderComponent } from './components/admin/payer-provider/payer-provider.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { PayerListComponent } from './components/admin/payer-list/payer-list.com
     UserComponent,
     AdminLoginComponent,
     ProviderListComponent,
-    PayerListComponent  
+    PayerListComponent,
+    PayerProviderComponent  
   ],
   imports: [
     BrowserModule,

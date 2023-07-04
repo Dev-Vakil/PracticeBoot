@@ -10,9 +10,12 @@ export class AuthenticationService {
 
   constructor(private http:HttpClient) { }
 
-  register(credentials:object){
-      return this.http.post(`${this.authUrl}/register`,credentials);
+  registerProvider(credentials:object){
+      return this.http.post(`${this.authUrl}/provider/register`,credentials);
   }
+  registerPayer(credentials:object){
+    return this.http.post(`${this.authUrl}/payer/register`,credentials);
+}
   
   login(credentials:object){
       return this.http.post(`${this.authUrl}/login`,credentials);
@@ -64,8 +67,16 @@ export class AuthenticationService {
     return this.http.post(`${this.authUrl}/findProviderCode`,provider_code);
   }
 
-  findEmail(email: string){    
-    return this.http.post(`${this.authUrl}/findEmail`,email);
+  findProviderEmail(email: string){    
+    return this.http.post(`${this.authUrl}/findProviderEmail`,email);
+  }
+
+  findPayerCode(payer_code:string){    
+    return this.http.post(`${this.authUrl}/findPayerCode`,payer_code);
+  }
+
+  findPayerEmail(email: string){    
+    return this.http.post(`${this.authUrl}/findPayerEmail`,email);
   }
 
   logout(){

@@ -6,7 +6,13 @@
                 <span class="text-danger mx-3" *ngIf="providerCodeError == true">
                     <small>Enter Unique Provider Code</small> 
                 </span>
-                <span class="text-danger m-3" *ngIf="emailError == true">
+                <span class="text-danger m-3" *ngIf="providerEmailError == true">
+                    <small>Enter Unique Email</small> 
+                </span>
+                <span class="text-danger mx-3" *ngIf="payerCodeError == true">
+                    <small>Enter Unique Payer Code</small> 
+                </span>
+                <span class="text-danger m-3" *ngIf="payerEmailError == true">
                     <small>Enter Unique Email</small> 
                 </span>
                 <mat-radio-group class="m-2" aria-label="Select an option" [(ngModel)] = "userType">

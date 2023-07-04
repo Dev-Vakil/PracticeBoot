@@ -4,7 +4,7 @@
 
 
 CREATE TABLE providers (
-    provider_id INT UNIQUE,
+    provider_id INT UNIQUE AUTO_INCREMENT,
     provider_name VARCHAR(128),
     provider_code VARCHAR(30) UNIQUE,
     username VARCHAR(30),

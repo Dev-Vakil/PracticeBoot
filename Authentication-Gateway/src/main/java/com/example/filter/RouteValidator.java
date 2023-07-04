@@ -15,7 +15,9 @@ public class RouteValidator {
 	            "/auth/provider/register",
 	            "/auth/payer/register",
 	            "/auth/findProviderCode",
-	            "/auth/findEmail",
+	            "/auth/findProviderEmail",
+	            "/auth/findPayerCode",
+	            "/auth/findPayerEmail",
 	            "/auth/validate",
 	            "/eureka"
 	    );

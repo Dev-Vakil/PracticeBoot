@@ -3,7 +3,7 @@
 -- changeset dev:7
 
 CREATE TABLE payer (
-    payer_id INT UNIQUE,
+    payer_id INT UNIQUE AUTO_INCREMENT,
     payer_name VARCHAR(128),
     payer_code VARCHAR(30) UNIQUE,    
     password VARCHAR(128),

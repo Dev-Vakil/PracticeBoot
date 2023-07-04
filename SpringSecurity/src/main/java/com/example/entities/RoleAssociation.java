@@ -1,6 +1,7 @@
 package com.example.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
@@ -20,21 +21,21 @@ public class RoleAssociation {
 	
 	 @Column(unique=true)
 	 @Id
-	 @GeneratedValue(strategy= GenerationType.AUTO)
+	 @GeneratedValue(strategy= GenerationType.IDENTITY)
 	 private Integer id;
 	 
-	 @JsonBackReference
+	 @JsonManagedReference
 	 @ManyToOne	 
 	 @JoinColumn(name="provider_id")
 	 private Providers provider; 
 	 
-	 @JsonBackReference
+	 @JsonManagedReference
 	 @ManyToOne	 
 	 @JoinColumn(name="payer_id",nullable = true)
 	 @Nullable
 	 private Payer payer; 
 	 	 
-	 @JsonBackReference
+	 @JsonManagedReference
 	 @ManyToOne
 	 @JoinColumn(name="role_id",nullable = true)
 	 private Role role;

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,14 +37,14 @@ public class PayerProvider {
 	
 	@Id
 	@ManyToOne
-	@JsonBackReference
+	@JsonManagedReference
     @MapsId("providerId")
     @JoinColumn(name = "provider_id")
 	private Providers provider;
 	
 	@Id
 	@ManyToOne
-	@JsonBackReference
+	@JsonManagedReference
     @MapsId("payerId")
     @JoinColumn(name = "payer_id")
 	private Payer payer;

@@ -52,19 +52,16 @@ public class AuthenticationService {
 		try {
 			
 			Providers provider = Providers.builder()
-					.providerCode(details.getProviderCode())
-					.providerName(details.getProviderName())
+					.providerCode(details.getCode())
+					.providerName(details.getName())
 					.username(details.getUsername())
 					.email(details.getEmail())					
 					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();			
-			providersRepository.save(provider);			
-			Providers newProviders = providersRepository.findByEmail(provider.getEmail())
-					.orElseThrow(()-> new UsernameNotFoundException("user not found"));			
-			
+			Providers save = providersRepository.save(provider);			
 			RoleAssociation roleAssociation = new RoleAssociation();
-			roleAssociation.setProvider(newProviders);
+			roleAssociation.setProvider(provider);
 			roleAssociation.setPayer(null);
 			Role role = roleRepository.findByName("USER")
 					.orElseThrow(()-> new UsernameNotFoundException("user role not found"));
@@ -73,10 +70,15 @@ public class AuthenticationService {
 			
 			AuthResponseDto response = new AuthResponseDto();		
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(newProviders);
+			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(provider);
 			
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
+			List<String>roleNames = new ArrayList<>();
+			for(RoleAssociation r : roles) {
+				roleNames.add(r.getRole().getName());
+			}
+			response.setRoles(roleNames);
 			return response;
 		}		
 		catch(Exception e) {
@@ -89,8 +91,8 @@ public class AuthenticationService {
 	public AuthResponseDto registerPayer(UserDto details) {
 		try {
 			Payer payer = Payer.builder()
-					.payerName(details.getProviderName())
-					.payerCode(details.getProviderCode())
+					.payerName(details.getName())
+					.payerCode(details.getCode())
 					.email(details.getEmail())
 					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
@@ -112,6 +114,11 @@ public class AuthenticationService {
 			
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
+			List<String>roleNames = new ArrayList<>();
+			for(RoleAssociation r : roles) {
+				roleNames.add(r.getRole().getName());
+			}
+			response.setRoles(roleNames);
 			return response;
 		}		
 		catch(Exception e) {
@@ -133,16 +140,16 @@ public class AuthenticationService {
 				if(details.getRole().equals("PROVIDER")) {
 					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();				
 					roles = roleAssociationRepository.findByProvider(user);
-					userDto.setProviderName(user.getProviderName());
-					userDto.setProviderCode(user.getProviderCode());
+					userDto.setName(user.getProviderName());
+					userDto.setCode(user.getProviderCode());
 					userDto.setUsername(user.getUsername());
 					userDto.setEmail(user.getEmail());
 				}
 				else {
 					var user = payerRepository.findByEmail(details.getEmail()).orElseThrow();
 					roles = roleAssociationRepository.findByPayer(user);
-					userDto.setProviderName(user.getPayerName());
-					userDto.setProviderCode(user.getPayerCode());
+					userDto.setName(user.getPayerName());
+					userDto.setCode(user.getPayerCode());
 					userDto.setEmail(user.getEmail());
 				}								
 				

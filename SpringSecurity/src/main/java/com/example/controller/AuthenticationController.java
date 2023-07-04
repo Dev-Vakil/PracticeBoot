@@ -18,6 +18,7 @@ import com.example.dto.LoginDto;
 import com.example.dto.UserDto;
 import com.example.entities.Providers;
 import com.example.service.AuthenticationService;
+import com.example.service.PayerService;
 import com.example.service.ProvidersService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +32,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private ProvidersService providersService;
+	
+	@Autowired
+	private PayerService payerService;	
 	
 	
 	@PostMapping("/provider/register")
@@ -111,8 +115,32 @@ public class AuthenticationController {
 		}
 	}
 	
-	@PostMapping("/findEmail")
-	public ResponseEntity<?> findEmail(@RequestBody String email){
+	@PostMapping("/findPayerCode")
+	public ResponseEntity<?> findPayerCode(@RequestBody String payer_code){		
+		try {			
+			Boolean result = payerService.findByPayerCode(payer_code);
+			return ResponseEntity.ok(result);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok(false);
+		}
+	}
+	
+	@PostMapping("/findPayerEmail")
+	public ResponseEntity<?> findPayerEmail(@RequestBody String email){
+		try {			
+			Boolean result = payerService.findByEmail(email);
+			return ResponseEntity.ok(result);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok(false);
+		}
+	}
+	
+	@PostMapping("/findProviderEmail")
+	public ResponseEntity<?> findProviderEmail(@RequestBody String email){
 		try {
 			Providers result = providersService.loadUserByUsername(email);
 			return ResponseEntity.ok(result);

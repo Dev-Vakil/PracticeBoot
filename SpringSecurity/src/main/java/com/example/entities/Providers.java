@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -33,10 +34,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name="providers")
 public class Providers  implements UserDetails{
-	
-	 @Column(unique=true,name="provider_id")
+		 
+
+	@Column(unique=true,name="provider_id")
 	 @Id
-	 @GeneratedValue(strategy= GenerationType.AUTO)
+	 @GeneratedValue(strategy= GenerationType.IDENTITY)
 	 private Integer providerId;
 	 
 	 @Column(name="provider_name", unique=true, nullable = false, length = 128)	 
@@ -67,11 +69,11 @@ public class Providers  implements UserDetails{
 	 @Column(name = "modified_at", updatable = true, nullable = true)
 	 private Date modifiedAt;
 
-     @JsonManagedReference
+     @JsonBackReference
      @OneToMany(mappedBy="provider")
      private List<RoleAssociation> roleAssociation;
      
-     @JsonManagedReference
+     @JsonBackReference
      @OneToMany(mappedBy="provider")
      private List<PayerProvider> payerProvider;
      

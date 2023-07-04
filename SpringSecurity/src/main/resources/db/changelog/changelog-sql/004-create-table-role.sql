@@ -4,7 +4,7 @@
 
 
 CREATE TABLE role (
-    id INT UNIQUE,
+    id INT UNIQUE AUTO_INCREMENT,
     name varchar(15) UNIQUE,    
     PRIMARY KEY (id)
 )

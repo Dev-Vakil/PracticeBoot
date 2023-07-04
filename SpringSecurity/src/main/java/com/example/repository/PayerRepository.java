@@ -9,5 +9,7 @@ import com.example.entities.Payer;
 public interface PayerRepository extends JpaRepository<Payer, Integer>{
 
 	Optional<Payer> findByEmail(String email);
+
+	Optional<Payer> findByPayerCode(String payer_code);
 	
 }

@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 public class UserDto {
 		
 	@NotBlank(message = "Product name cannot be blank")	
-	private String providerName;
+	private String name;
 		
 	@NotBlank(message = "Product code cannot be blank")	
-	private String providerCode;
+	private String code;
 	
 	@NotBlank(message = "username cannot be blank")
 	private String username;

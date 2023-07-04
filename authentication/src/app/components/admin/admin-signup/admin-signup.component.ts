@@ -12,7 +12,9 @@ export class AdminSignupComponent {
   providerForm!: FormGroup;
   payerForm!: FormGroup;
   providerCodeError!: Boolean;
-  emailError!: Boolean;
+  providerEmailError!: Boolean;
+  payerCodeError!: Boolean;
+  payerEmailError!: Boolean;
   constructor( private formBuilder:FormBuilder, private authService:AuthenticationService){  }
  
   ngOnInit(){   
@@ -38,8 +40,8 @@ export class AdminSignupComponent {
     const email = form.get('email');
     const password = form.get('password');
     var cred = {
-      providerName: providerName?.value,
-      providerCode: providerCode?.value,
+      name: providerName?.value,
+      code: providerCode?.value,
       username: username?.value,
       email: email?.value,
       password: password?.value
@@ -58,27 +60,28 @@ export class AdminSignupComponent {
         this.providerCodeError = true;        
       }
     );    
-    this.authService.findEmail(email?.value).subscribe(      
+    this.authService.findProviderEmail(email?.value).subscribe(      
       (response:any)=>{        
         if(response == null){
-          this.emailError = false;
+          this.providerEmailError = false;
         }
         else{
-          this.emailError = true;
+          this.providerEmailError = true;
         }       
       },
       (error:any)=>{
-        this.emailError = true;
+        this.providerEmailError = true;
       }
     )
    
-    if(this.providerCodeError == false && this.emailError == false){              
-      this.authService.register(cred).subscribe(
+    if(this.providerCodeError == false && this.providerEmailError == false){              
+      this.authService.registerProvider(cred).subscribe(
         (response:any)=>{
           console.log(response);
-          window.location.href="/login";    
+          window.location.href="/user/login";    
         },
         (error:any)=>{
+          window.location.href="/user/login";  
           console.log(error.status);  
         }
       )
@@ -87,7 +90,56 @@ export class AdminSignupComponent {
   }
 
   registerPayer(form:FormGroup){
-    console.log(form);
+    const payerName = form.get('payerName');
+    const payerCode = form.get('payerCode');    
+    const email = form.get('email');
+    const password = form.get('password');
+    var cred = {
+      name: payerName?.value,
+      code: payerCode?.value,      
+      email: email?.value,
+      password: password?.value
+    }
+
+    this.authService.findPayerCode(payerCode?.value).subscribe(
+      (response:any)=>{                     
+        if(response == false){              
+          this.payerCodeError = false;
+        }
+        else{          
+          this.payerCodeError = true;
+        }        
+      },
+      (error:any)=>{
+        this.payerCodeError = true;        
+      }
+    );    
+    this.authService.findPayerEmail(email?.value).subscribe(      
+      (response:any)=>{        
+        if(response == false){
+          this.payerEmailError = false;
+        }
+        else{
+          this.payerEmailError = true;
+        }       
+      },
+      (error:any)=>{
+        this.payerEmailError = true;
+      }
+    )
+   
+    if(this.payerCodeError == false && this.payerEmailError == false){              
+      this.authService.registerPayer(cred).subscribe(
+        (response:any)=>{
+          window.location.href="/user/login";    
+          console.log(response);
+        },
+        (error:any)=>{
+          window.location.href="/user/login";  
+          console.log(error.status);  
+        }
+      )
+    }
     
   }
 }

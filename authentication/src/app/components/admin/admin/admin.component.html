@@ -2,7 +2,7 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="loggedIn">
     <mat-toolbar color="primary" class="example-toolbar">
       <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-      <h1 class="example-app-name m-2">Admin Healcare System</h1>
+      <h1 class="example-app-name m-2">Admin Healthcare System</h1>
       <span mat-icon-button *ngIf="loggedIn" (click)="logout()"><a mat-button>Logout</a></span>
     </mat-toolbar>
   
@@ -24,7 +24,7 @@
 
   <div class="example-container" [class.example-is-mobile]="mobileQuery.matches" *ngIf="!loggedIn">
     <mat-toolbar color="primary" class="example-toolbar">    
-      <h1 class="example-app-name m-2">Healcare System</h1>
+      <h1 class="example-app-name m-2">Healthcare System</h1>
     </mat-toolbar>
     
     <router-outlet></router-outlet>
