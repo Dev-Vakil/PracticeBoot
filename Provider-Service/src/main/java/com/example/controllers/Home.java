@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.PayerProviderDto;
@@ -59,5 +60,10 @@ public class Home {
 	@GetMapping("/payerProvider")
 	public ResponseEntity<List<PayerProvider>> getPayerProviders(){
 		return payerProviderService.getAll();		
+	}
+	
+	@GetMapping("/payerProviderStatus")
+	public ResponseEntity<Boolean> getPayerProviderStatus(@RequestParam(name = "providerId") Integer providerId, @RequestParam(name = "payerId") Integer payerId){
+		return payerProviderService.getPayerProviderStatus(providerId,payerId);
 	}
 }

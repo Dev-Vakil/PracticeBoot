@@ -65,6 +65,23 @@ public class PayerProviderService {
 			return ResponseEntity.ok(null);
 		}
 	}
+
+	public ResponseEntity<Boolean> getPayerProviderStatus(Integer providerId, Integer payerId) {
+		try {
+			String status = payerProviderRepository.getPayerProviderStatus(providerId,payerId);
+			if(status.equals("ACTIVE")) {
+				return ResponseEntity.ok(true);
+			}else {
+				return ResponseEntity.ok(false);
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.ok(false);
+		}
+	}
+	
 	
 	
 }

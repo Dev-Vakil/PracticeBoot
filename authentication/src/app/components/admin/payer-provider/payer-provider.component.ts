@@ -1,6 +1,6 @@
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgControl, Validators } from '@angular/forms';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProvidersService } from 'src/app/services/providers.service';
@@ -40,6 +40,7 @@ export class PayerProviderComponent {
   constructor(private _liveAnnouncer: LiveAnnouncer, private formBuilder:FormBuilder, private providersService:ProvidersService){}
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('provider') provider!: number;  
 
   ngOnInit(){  
     this.payerProviderForm = this.formBuilder.group({ 
@@ -112,6 +113,19 @@ export class PayerProviderComponent {
       }
     )
     
+  }
+  
+ selectionChange(providerId : number,payerId:number){
+    if(providerId && payerId){  
+      this.providersService.getPayerProviderStatus(providerId,payerId).subscribe(
+        (response:any)=>{
+          this.status = response;            
+        },
+        (error:any)=>{
+          console.log(error);        
+        }
+      );
+    }
   }
 
   announceSortChange(sortState: any) {

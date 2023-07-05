@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -26,6 +26,13 @@ export class ProvidersService {
 
   getPayerProviders(){
     return this.http.get(`${this.providersUrl}/payerProvider`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    });
+  }
+
+  getPayerProviderStatus(providerId:number, payerId:number){
+    let queryParams = new HttpParams().append("providerId",providerId);
+    let queryParams2 = queryParams.append("payerId",payerId);
+    return this.http.get(`${this.providersUrl}/payerProviderStatus`,{params: queryParams2, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
     });
   }
 }
