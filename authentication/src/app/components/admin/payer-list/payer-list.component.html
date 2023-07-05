@@ -3,7 +3,7 @@
         <p class="fw-bold fs-2 text-center m-2 text-primary">Payer List</p>
     </div>
     <div class="row table-responsive w-100 border m-2">
-      <mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
            class="mat-elevation-z8">
     
       <!-- Position Column -->
@@ -40,7 +40,7 @@
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </mat-table>
+    </table>
     
     </div>
         

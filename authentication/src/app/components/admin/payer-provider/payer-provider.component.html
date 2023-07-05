@@ -1,0 +1,92 @@
+<div class="container">
+    <form [formGroup]="payerProviderForm" (ngSubmit)="onSubmit(payerProviderForm)">
+        <div class="row m-5">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Providers</mat-label>                    
+                    <mat-select formControlName="providerId" matInput>
+                    <mat-option *ngFor="let provider of providerNames" [value]="provider.providerId">
+                        {{provider.providerName}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="payerProviderForm.get('providerId')?.['touched'] && payerProviderForm.get('providerId')?.errors?.['required']">
+                        Provider is a Required Field
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Payers</mat-label>
+                    <mat-select formControlName="payerId" matInput>
+                    <mat-option *ngFor="let payer of payerNames" [value]="payer.payerId">
+                        {{payer.payerName}}
+                    </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="payerProviderForm.get('payerId')?.['touched'] && payerProviderForm.get('payerId')?.errors?.['required']">
+                        Payer is a Required Field
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-3 mt-2">
+                <button class="btn btn-success" *ngIf="status == true" (click)="changeStatus(false)">Enabled</button>
+                <button class="btn btn-danger" *ngIf="status == false" (click)="changeStatus(true)">Disabled</button>
+            </div>
+            <p class="col mt-1 border-end border-black" style="height: 50px; width: 10px !important;"></p>
+            <div class="col mt-2">
+                <button type="submit" mat-raised-button color="primary" [disabled]="payerProviderForm.invalid"> Submit</button>
+            </div>
+        </div>    
+    </form>    
+     <div class="row table-responsive w-100 border m-2">
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+           class="mat-elevation-z8">
+    
+      <!-- Position Column -->
+      <ng-container matColumnDef="providerId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+          providerId
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.providerId}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="providerName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by provider name">
+          Provider Name
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.providerName}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="payerId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">
+          payerId
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.payerId}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="payerName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by payer name">
+          Payer Name
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.payerName}} </td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
+          Status
+        </th>
+        <td mat-cell *matCellDef="let element">
+            <span class="text-success" *ngIf="element.status == 'ACTIVE'">{{element.status}}</span>
+            <span class="text-danger" *ngIf="element.status == 'INACTIVE'">{{element.status}}</span>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+    </div>
+</div>

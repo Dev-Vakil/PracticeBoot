@@ -8,10 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -19,29 +21,20 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
+@Builder
 @Table(name="payer_provider")
 public class PayerProvider {
 	
-	@Id
-	@ManyToOne
-	@JsonBackReference
-    @MapsId("providerId")
-    @JoinColumn(name = "provider_id")
-	private Providers provider;
-	
-	@Id
-	@ManyToOne
-	@JsonBackReference
-    @MapsId("payerId")
-    @JoinColumn(name = "payer_id")
-	private Payer payer;
+	@EmbeddedId
+	private PayerProviderId payerProviderId;
 	
 	@Enumerated(EnumType.STRING)
 	private Status status = Status.INACTIVE;
@@ -59,4 +52,6 @@ public class PayerProvider {
 	public enum Status{
 		ACTIVE,INACTIVE
 	}
+	
+	
 }

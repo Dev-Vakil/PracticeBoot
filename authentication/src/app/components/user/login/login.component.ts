@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit{
   PostData(form:FormGroup){        
     const email = form.get('email');
     const password = form.get('password');
-    const userType = form.get('userType');
-    console.log(userType);
+    const userType = form.get('userType');    
     var cred = {      
       email: email?.value,
       password: password?.value,

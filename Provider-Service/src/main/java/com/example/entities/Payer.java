@@ -64,9 +64,5 @@ public class Payer {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "modified_at", updatable = true, nullable = true)
 	private Date modifiedAt;
-    
-    @JsonManagedReference
-    @OneToMany(mappedBy="payer")
-    private List<PayerProvider> payerProvider;
-    
+        
 }

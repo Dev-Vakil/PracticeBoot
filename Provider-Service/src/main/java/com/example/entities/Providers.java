@@ -67,11 +67,7 @@ public class Providers{
      @JsonManagedReference
      @OneToMany(mappedBy="provider")
      private List<RoleAssociation> roleAssociation;
-     
-     @JsonManagedReference
-     @OneToMany(mappedBy="provider")
-     private List<PayerProvider> payerProvider;
-     
+          
      public enum Role{
     	 USER,ADMIN,PAYER
      }

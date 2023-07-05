@@ -19,4 +19,13 @@ export class ProvidersService {
     });
   }
 
+  savePayerProviders(credentials:object){  
+    return this.http.post(`${this.providersUrl}/payerProvider`,credentials,{ headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    });
+  }
+
+  getPayerProviders(){
+    return this.http.get(`${this.providersUrl}/payerProvider`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    });
+  }
 }
