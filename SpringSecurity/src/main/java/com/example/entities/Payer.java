@@ -67,10 +67,6 @@ public class Payer {
     
     @JsonBackReference
     @OneToMany(mappedBy="payer")
-    private List<PayerProvider> payerProvider;
-    
-    @JsonBackReference
-    @OneToMany(mappedBy="payer")
     private List<RoleAssociation> roleAssociation;
     
 }

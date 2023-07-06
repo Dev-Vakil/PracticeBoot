@@ -37,14 +37,12 @@ public class PayerProvider {
 	
 	@Id
 	@ManyToOne
-	@JsonManagedReference
     @MapsId("providerId")
     @JoinColumn(name = "provider_id")
 	private Providers provider;
 	
 	@Id
 	@ManyToOne
-	@JsonManagedReference
     @MapsId("payerId")
     @JoinColumn(name = "payer_id")
 	private Payer payer;

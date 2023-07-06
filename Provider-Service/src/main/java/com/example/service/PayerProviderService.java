@@ -68,13 +68,13 @@ public class PayerProviderService {
 
 	public ResponseEntity<Boolean> getPayerProviderStatus(Integer providerId, Integer payerId) {
 		try {
-			String status = payerProviderRepository.getPayerProviderStatus(providerId,payerId);
-			if(status.equals("ACTIVE")) {
-				return ResponseEntity.ok(true);
-			}else {
+			String status = payerProviderRepository.getPayerProviderStatus(providerId,payerId).orElse(null);
+			if(status == null || status.equals("INACTIVE")) {
 				return ResponseEntity.ok(false);
 			}
-			
+			else{	
+				return ResponseEntity.ok(true);
+			}			
 		}
 		catch(Exception e) {
 			e.printStackTrace();

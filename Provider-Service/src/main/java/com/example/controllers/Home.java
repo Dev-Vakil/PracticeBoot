@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,11 @@ import com.example.dto.TokenDataDto;
 import com.example.entities.Payer;
 import com.example.entities.PayerProvider;
 import com.example.entities.Providers;
-import com.example.repository.PayerRepository;
 import com.example.service.PayerProviderService;
 import com.example.service.PayerService;
 import com.example.service.ProvidersService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.core.Response;
 
 @RestController
 @RequestMapping("/provider")
@@ -43,13 +42,15 @@ public class Home {
 	}
 		
 	@GetMapping("/providers")
-	public ResponseEntity<List<Providers>> getProviders(){
-		return providersService.getProviders();
+	public ResponseEntity<List<Providers>> getProviders(@RequestParam("providerFilter") Optional<String> providerFilter){
+		String filterString = providerFilter.orElse("");	
+		return providersService.getProviders(filterString);
 	}
 	
 	@GetMapping("/payers")
-	public ResponseEntity<List<Payer>> getPayers(){
-		return payerService.getPayers();
+	public ResponseEntity<List<Payer>> getPayers(@RequestParam("payerFilter") Optional<String> payerFilter){			
+		String filterString = payerFilter.orElse("");
+		return payerService.getPayers(filterString);
 	}
 	
 	@PostMapping("/payerProvider")
@@ -66,4 +67,5 @@ public class Home {
 	public ResponseEntity<Boolean> getPayerProviderStatus(@RequestParam(name = "providerId") Integer providerId, @RequestParam(name = "payerId") Integer payerId){
 		return payerProviderService.getPayerProviderStatus(providerId,payerId);
 	}
+	
 }

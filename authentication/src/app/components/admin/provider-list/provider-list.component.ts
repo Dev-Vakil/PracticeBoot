@@ -33,17 +33,18 @@ export class ProviderListComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
-    this.providersService.allProviders().subscribe(
+    this.onSearch("");
+  }
+
+  onSearch(search:string){        
+    this.providersService.allProviders(search).subscribe(
       (response:any)=>{        
-        console.log(response);
         this.ELEMENT_DATA = response;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         this.dataSource.sort = this.sort;
       }
-    );
-    
+    );   
   }
-
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: any) {
     // This example uses English messages. If your application supports

@@ -9,13 +9,15 @@ export class ProvidersService {
   providersUrl="http://localhost:8080/provider"  
   constructor(private http:HttpClient) { }
 
-  allProviders(){
-    return this.http.get(`${this.providersUrl}/providers`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+  allProviders(search:string){
+    let queryParams = new HttpParams().append("providerFilter",search);
+    return this.http.get(`${this.providersUrl}/providers`, {params: queryParams, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
     });
   }
 
-  allPayers(){
-    return this.http.get(`${this.providersUrl}/payers`, { headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+  allPayers(search:string){
+    let queryParams = new HttpParams().append("payerFilter",search);
+    return this.http.get(`${this.providersUrl}/payers`, {params: queryParams, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
     });
   }
 

@@ -1,5 +1,6 @@
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProvidersService } from 'src/app/services/providers.service';
@@ -28,19 +29,22 @@ export class PayerListComponent {
   ELEMENT_DATA!: Payer[];
   
   constructor(private _liveAnnouncer: LiveAnnouncer, public providersService:ProvidersService) {   
-  }
+  } 
 
   @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
-    this.providersService.allPayers().subscribe(
-      (response:any)=>{        
-        console.log(response);
+    this.onSearch("");
+  }
+
+  onSearch(search:string){        
+    this.providersService.allPayers(search).subscribe(
+      (response:any)=>{                
         this.ELEMENT_DATA = response;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         this.dataSource.sort = this.sort;
       }
-    );
+    );   
   }
    /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: any) {

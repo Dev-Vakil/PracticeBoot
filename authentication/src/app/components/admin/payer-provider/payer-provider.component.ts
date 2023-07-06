@@ -48,7 +48,7 @@ export class PayerProviderComponent {
       payerId : ['', Validators.required],
      })
     
-    this.providersService.allProviders().subscribe(
+    this.providersService.allProviders("").subscribe(
       (response:any)=>{          
         let p:any;
         for(p in response){
@@ -59,7 +59,7 @@ export class PayerProviderComponent {
         console.log(error);
       }      
     );
-    this.providersService.allPayers().subscribe(
+    this.providersService.allPayers("").subscribe(
       (response:any)=>{          
         let p:any;
         for(p in response){

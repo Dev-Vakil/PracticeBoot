@@ -29,10 +29,9 @@ public class ProvidersService {
 		return ResponseEntity.ok(data);
 	}
 	
-	public ResponseEntity<List<Providers>> getProviders(){
+	public ResponseEntity<List<Providers>> getProviders(String providerFilter){
 		try {
-//			return ResponseEntity.ok(providerRepository.findAll());
-			return ResponseEntity.ok(providerRepository.findAllProviders()
+			return ResponseEntity.ok(providerRepository.findAllProviders(providerFilter)
 					.orElseThrow(()-> new NullPointerException("Provider Not found")));
 		}catch(Exception e) {			
 			e.printStackTrace();
