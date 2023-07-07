@@ -37,7 +37,7 @@ public class Payer {
 	
 	@Column(unique=true,name="payer_id")
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer payerId;
 	
 	@Column(name="payer_name", unique=true, nullable = false, length = 128)	 
@@ -64,5 +64,9 @@ public class Payer {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "modified_at", updatable = true, nullable = true)
 	private Date modifiedAt;
-        
+    
+    @JsonBackReference
+    @OneToMany(mappedBy="payer")
+    private List<RoleAssociation> roleAssociation;
+    
 }

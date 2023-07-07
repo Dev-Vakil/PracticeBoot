@@ -23,7 +23,6 @@ export class AuthenticationService {
 
   saveToken(token:string,roles:any){
     localStorage.setItem("token",token);    
-    console.log(roles);
     localStorage.setItem("roles",roles)
   }  
   

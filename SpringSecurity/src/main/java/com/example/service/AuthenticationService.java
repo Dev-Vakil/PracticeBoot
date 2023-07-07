@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthenticationService{
 	
 	@Autowired	
 	private RoleRepository roleRepository;
@@ -48,7 +48,7 @@ public class AuthenticationService {
 	@Autowired
 	private JwtService jwtService;
 
-	public AuthResponseDto registerProvider(UserDto details) {
+	public AuthResponseDto registerProvider(UserDto details){
 		try {
 			
 			Providers provider = Providers.builder()

@@ -35,7 +35,6 @@ import lombok.NoArgsConstructor;
 @Table(name="providers")
 public class Providers  implements UserDetails{
 		 
-
 	@Column(unique=true,name="provider_id")
 	 @Id
 	 @GeneratedValue(strategy= GenerationType.IDENTITY)

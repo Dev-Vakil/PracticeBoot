@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -64,7 +65,7 @@ public class Providers{
 	 @Column(name = "modified_at", updatable = true, nullable = true)
 	 private Date modifiedAt;
 
-     @JsonManagedReference
+     @JsonBackReference
      @OneToMany(mappedBy="provider")
      private List<RoleAssociation> roleAssociation;
           

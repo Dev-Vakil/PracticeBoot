@@ -19,14 +19,7 @@ export class AuthGuard {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    if (this.authService.isLoggedIn()) {     
-    //   let role = localStorage.getItem("role");
-    //   if(role === 'ADMIN'){
-    //     this.router.navigate(['']);    
-    //   }
-    //   else{
-    //     this.router.navigate(['login']);    
-    //   }
+    if (this.authService.isLoggedIn()) {        
       return true;
     }        
     this.router.navigate(['login']);    

@@ -2,7 +2,7 @@ package com.example.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,13 +20,13 @@ public class Role {
 	
 	 @Column(unique=true)
 	 @Id
-	 @GeneratedValue(strategy= GenerationType.AUTO)
+	 @GeneratedValue(strategy= GenerationType.IDENTITY)
 	 private Integer id;
 	 
 	 @Column(unique=true, length=15)
 	 private String name;
 	 
-	 @JsonManagedReference
+	 @JsonBackReference
 	 @OneToMany(mappedBy="role")
      private List<RoleAssociation> roleAssociation;
 }
