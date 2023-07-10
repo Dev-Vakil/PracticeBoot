@@ -19,7 +19,7 @@ public class PayerService {
 
 	public ResponseEntity<List<Payer>> getPayers(String payerFilter) {
 		try {									
-			return ResponseEntity.ok(payerRepository.findAll(hasRolePayer().and(hasPayerName(payerFilter).or(hasEmail(payerFilter)))));					
+			return ResponseEntity.ok(payerRepository.findAll(hasRolePayer().and(hasFilter(payerFilter))));					
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -27,13 +27,9 @@ public class PayerService {
 		}
 	}
 	
-	static Specification<Payer> hasPayerName(String name) {
-	    return (payer, cq, cb) -> cb.like(payer.get("payerName"), "%" + name + "%");	    
-	}
-	
-	static Specification<Payer> hasEmail(String email) {
-	    return (payer, cq, cb) -> cb.like(payer.get("email"), "%" + email + "%");
-	}
+	static Specification<Payer> hasFilter(String filter) {
+		return (payer, cq, cb) -> cb.or(cb.like(payer.get("payerName"), "%" + filter + "%"),cb.like(payer.get("email"), "%" + filter + "%"));
+	}	
 	
 	static Specification<Payer> hasRolePayer() {
 	    return (payer, cq, cb) -> cb.equal(payer.get("roleAssociation").get("role").get("id"), 3);

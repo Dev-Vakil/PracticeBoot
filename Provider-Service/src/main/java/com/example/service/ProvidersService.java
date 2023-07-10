@@ -33,20 +33,16 @@ public class ProvidersService {
 	
 	public ResponseEntity<List<Providers>> getProviders(String providerFilter){
 		try {
-			return ResponseEntity.ok(providerRepository.findAll(hasRoleUser().and(hasEmail(providerFilter).or(hasProviderName(providerFilter)))));			
+			return ResponseEntity.ok(providerRepository.findAll(hasRoleUser().and(hasFilter(providerFilter))));			
 		}catch(Exception e) {			
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-	}	
+	}		
 	
-	static Specification<Providers> hasProviderName(String name) {
-	    return (provider, cq, cb) -> cb.like(provider.get("providerName"), "%" + name + "%");	    
-	}
-	
-	static Specification<Providers> hasEmail(String email) {
-	    return (provider, cq, cb) -> cb.like(provider.get("email"), "%" + email + "%");
-	}
+	static Specification<Providers> hasFilter(String filter) {
+	    return (provider, cq, cb) -> cb.or(cb.like(provider.get("providerName"), "%" + filter + "%"),cb.like(provider.get("email"), "%" + filter + "%"));	    
+	}		
 	
 	static Specification<Providers> hasRoleUser() {
 	    return (provider, cq, cb) -> cb.equal(provider.get("roleAssociation").get("role").get("id"), 1);

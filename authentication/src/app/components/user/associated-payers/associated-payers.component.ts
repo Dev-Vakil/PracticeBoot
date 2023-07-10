@@ -26,7 +26,7 @@ export class AssociatedPayersComponent {
   displayedColumns: string[] = ['payerId', 'payerName', 'payerCode', 'email'];
   dataSource !:MatTableDataSource<Payer>;
   ELEMENT_DATA!: Payer[];
-  
+  email:string = ""
   constructor(private _liveAnnouncer: LiveAnnouncer, public providersService:ProvidersService, public authService:AuthenticationService) {   
   } 
 
@@ -34,29 +34,23 @@ export class AssociatedPayersComponent {
 
   ngAfterViewInit() {
     this.authService.findCurrentUser().subscribe(
-      (response:any)=>{        
-        this.providersService.getAssociatedPayer(response.email).subscribe(
-          (response:any)=>{
-            this.ELEMENT_DATA = response;
-            this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-            this.dataSource.sort = this.sort;
-          }
-        );
+      (response:any)=>{    
+        this.email = response.email;   
+        this.onSearch("");        
       },
       (error:any)=>{
         console.log(error);        
       }
-    );
-    // this.onSearch("");
+    );    
   }
   onSearch(search:string){        
-  //   this.providersService.allPayers(search).subscribe(
-  //     (response:any)=>{                
-  //       this.ELEMENT_DATA = response;
-  //       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-  //       this.dataSource.sort = this.sort;
-  //     }
-  //   );   
+    this.providersService.getAssociatedPayer(this.email,search).subscribe(
+      (response:any)=>{
+        this.ELEMENT_DATA = response;
+        this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+        this.dataSource.sort = this.sort;
+      }
+    );
   }
    /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: any) {

@@ -23,7 +23,7 @@ export interface Provider {
   styleUrls: ['./provider-list.component.css']
 })
 export class ProviderListComponent {
-  displayedColumns: string[] = ['providerId', 'providerName', 'providerCode', 'username'];
+  displayedColumns: string[] = ['providerId', 'providerName', 'providerCode', 'username', 'email'];
   dataSource !:MatTableDataSource<Provider>;
   ELEMENT_DATA!: Provider[];
   

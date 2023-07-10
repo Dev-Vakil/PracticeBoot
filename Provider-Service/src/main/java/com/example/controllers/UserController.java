@@ -2,6 +2,7 @@ package com.example.controllers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ public class UserController {
 	}
 	
 	@GetMapping("/payers")
-	public ResponseEntity<List<Payer>> associatedPayers(@RequestParam("email") String email){	
-		return payerProviderService.associatedPayers(email);
+	public ResponseEntity<List<Payer>> associatedPayers(@RequestParam("email") String email, @RequestParam("search") Optional<String> search){
+		String searchFilter = search.orElse("");	
+		return payerProviderService.associatedPayers(email, searchFilter);
 	}
 }

@@ -13,7 +13,6 @@ import com.example.entities.Providers;
 
 public interface ProvidersRepository extends JpaRepository<Providers, Integer>, JpaSpecificationExecutor<Providers>{
 
-//	@Query(value = "SELECT * FROM providers where email = ?1", nativeQuery = true)
 	Optional<Providers> findByEmail(String email);
 		
 }

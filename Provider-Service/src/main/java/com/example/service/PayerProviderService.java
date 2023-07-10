@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -87,22 +88,17 @@ public class PayerProviderService {
 		}
 	}
 	
-	public ResponseEntity<List<Payer>> associatedPayers(String email) {
+	public ResponseEntity<List<Payer>> associatedPayers(String email,String search) {
 		try {			
 			Optional<Providers> provider = providersRepository.findByEmail(email);
-			if(provider.isPresent()) {
-				return ResponseEntity.ok(payerProviderRepository.getPayerByProvider(provider.get()).orElse(null));			
-				
+			if(provider.isPresent()) {				
+				return ResponseEntity.ok(payerProviderRepository.getPayerByProvider(provider.get(),search).orElse(null));							
 			}
 			return null;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-//			return ResponseEntity.ok(false);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
-		return null;
 	}
-	
-	
-	
 }

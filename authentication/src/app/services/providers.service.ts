@@ -40,9 +40,10 @@ export class ProvidersService {
     });
   }  
   
-  getAssociatedPayer(email:string){
+  getAssociatedPayer(email:string,search:string){
     let queryParams = new HttpParams().append("email",email);
-    return this.http.get(`${this.UserUrl}/payers`,{params: queryParams, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    let queryParams2 = queryParams.append("search",search);
+    return this.http.get(`${this.UserUrl}/payers`,{params: queryParams2, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
     });
   }
 }

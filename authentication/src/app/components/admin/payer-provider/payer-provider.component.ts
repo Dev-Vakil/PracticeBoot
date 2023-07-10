@@ -42,7 +42,7 @@ export class PayerProviderComponent {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('provider') provider!: number;  
 
-  ngOnInit(){  
+  ngOnInit(){      
     this.payerProviderForm = this.formBuilder.group({ 
       providerId : ['',[Validators.required]],
       payerId : ['', Validators.required],
@@ -69,7 +69,8 @@ export class PayerProviderComponent {
       (error:any)=>{
         console.log(error);
       }      
-    );       
+    );             
+
   }
 
   ngAfterViewInit() {
@@ -84,6 +85,10 @@ export class PayerProviderComponent {
       },
       (error:any)=>{
         console.log(error);        
+      },
+      ()=>{
+        this.dataSource.filterPredicate = this.filterByProvider();    
+        this.dataSource.sort = this.sort;
       }
     );
   }
@@ -126,7 +131,26 @@ export class PayerProviderComponent {
         }
       );
     }
+
+    this.dataSource.filter = providerId.toString();
   }
+
+  filterByProvider() {
+    let filterFunction = 
+        (data: PayerProvider, filter: string): boolean => {
+          var providerId = Number(filter);
+          if (providerId) {
+            const id = data.providerId;
+            if(providerId == id){
+              return true;
+            }
+            return false;
+          } else {
+            return false;
+          }
+       };
+    return filterFunction;
+}
 
   announceSortChange(sortState: any) {
     // This example uses English messages. If your application supports
