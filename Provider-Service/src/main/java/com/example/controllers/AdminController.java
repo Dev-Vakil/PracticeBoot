@@ -24,8 +24,8 @@ import com.example.service.ProvidersService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/provider")
-public class Home {
+@RequestMapping("admin/provider")
+public class AdminController {
 	
 	@Autowired
 	private ProvidersService providersService;
@@ -67,5 +67,6 @@ public class Home {
 	public ResponseEntity<Boolean> getPayerProviderStatus(@RequestParam(name = "providerId") Integer providerId, @RequestParam(name = "payerId") Integer payerId){
 		return payerProviderService.getPayerProviderStatus(providerId,payerId);
 	}
+	
 	
 }

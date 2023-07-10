@@ -1,6 +1,8 @@
 package com.example.service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,13 +10,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.PayerProviderDto;
-
+import com.example.entities.Payer;
 import com.example.entities.PayerProvider;
 import com.example.entities.PayerProvider.Status;
 import com.example.entities.PayerProviderId;
+import com.example.entities.Providers;
 import com.example.repository.PayerProviderRepository;
 import com.example.repository.PayerRepository;
 import com.example.repository.ProvidersRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class PayerProviderService {
@@ -80,6 +85,22 @@ public class PayerProviderService {
 			e.printStackTrace();
 			return ResponseEntity.ok(false);
 		}
+	}
+	
+	public ResponseEntity<List<Payer>> associatedPayers(String email) {
+		try {			
+			Optional<Providers> provider = providersRepository.findByEmail(email);
+			if(provider.isPresent()) {
+				return ResponseEntity.ok(payerProviderRepository.getPayerByProvider(provider.get()).orElse(null));			
+				
+			}
+			return null;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+//			return ResponseEntity.ok(false);
+		}
+		return null;
 	}
 	
 	

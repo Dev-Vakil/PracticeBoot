@@ -6,10 +6,18 @@ spring:
             - id: provider-service
               uri: lb://PROVIDER-SERVICE
               predicates:
-                 - Path=/provider/**
+                 - Path=/admin/provider/**
               filters: 
                  - AuthenticationFilter
-                 - RoleAuthFilter=ADMIN              
+                 - RoleAuthFilter=ADMIN
+                 
+            - id: provider-service
+              uri: lb://PROVIDER-SERVICE
+              predicates:
+                 - Path=/user/provider/**
+              filters: 
+                 - AuthenticationFilter 
+                 - RoleAuthFilter=USER                                                              
                                              
             - id: authentication
               uri: lb://AUTHENTICATION

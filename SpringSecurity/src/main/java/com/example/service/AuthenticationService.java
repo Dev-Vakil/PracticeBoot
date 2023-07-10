@@ -70,7 +70,7 @@ public class AuthenticationService{
 			
 			AuthResponseDto response = new AuthResponseDto();		
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(provider);
+			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(provider.getProviderId());
 			
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
@@ -110,7 +110,7 @@ public class AuthenticationService{
 			
 			AuthResponseDto response = new AuthResponseDto();		
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByPayer(newPayers);
+			List<RoleAssociation> roles = roleAssociationRepository.findByPayer(newPayers.getPayerId());
 			
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
@@ -136,10 +136,18 @@ public class AuthenticationService{
 					)
 				);
 				UserDto userDto = new UserDto(); 
-				List<RoleAssociation> roles = new ArrayList<>(); 
-				if(details.getRole().equals("PROVIDER")) {
+				List<RoleAssociation> roles = new ArrayList<>();
+				if(details.getRole().equals("ADMIN")) {
+					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();						
+					roles = roleAssociationRepository.findByAdmin(user.getProviderId());
+					userDto.setName(user.getProviderName());
+					userDto.setCode(user.getProviderCode());
+					userDto.setUsername(user.getUsername());
+					userDto.setEmail(user.getEmail());
+				}
+				else if(details.getRole().equals("PROVIDER")) {
 					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();				
-					roles = roleAssociationRepository.findByProvider(user);
+					roles = roleAssociationRepository.findByProvider(user.getProviderId());
 					userDto.setName(user.getProviderName());
 					userDto.setCode(user.getProviderCode());
 					userDto.setUsername(user.getUsername());
@@ -147,7 +155,7 @@ public class AuthenticationService{
 				}
 				else {
 					var user = payerRepository.findByEmail(details.getEmail()).orElseThrow();
-					roles = roleAssociationRepository.findByPayer(user);
+					roles = roleAssociationRepository.findByPayer(user.getPayerId());
 					userDto.setName(user.getPayerName());
 					userDto.setCode(user.getPayerCode());
 					userDto.setEmail(user.getEmail());

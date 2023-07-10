@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class AuthenticationService {
     return this.http.post(`${this.authUrl}/payer/register`,credentials);
 }
   
-  login(credentials:object){
+  login(credentials:object){        
       return this.http.post(`${this.authUrl}/login`,credentials);
   }
 
@@ -76,6 +76,11 @@ export class AuthenticationService {
 
   findPayerEmail(email: string){    
     return this.http.post(`${this.authUrl}/findPayerEmail`,email);
+  }
+
+  findCurrentUser(){
+    return this.http.get(`${this.authUrl}/current-user`, {headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+    });
   }
 
   logout(){

@@ -94,8 +94,12 @@ public class AuthenticationController {
 	@GetMapping("/current-user")
 	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){		
 		try {				
-			UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();					
-			return ResponseEntity.ok(userDto);
+			UserDto data = new UserDto();
+			data.setName(request.getHeader("name"));
+			data.setCode(request.getHeader("code"));
+			data.setUsername(request.getHeader("username"));
+			data.setEmail(request.getHeader("email"));					
+			return ResponseEntity.ok(data);				
 		}
 		catch(Exception e) {
 			e.printStackTrace();

@@ -29,6 +29,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { ProviderListComponent } from './components/admin/provider-list/provider-list.component';
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
 import { PayerProviderComponent } from './components/admin/payer-provider/payer-provider.component';
+import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { PayerProviderComponent } from './components/admin/payer-provider/payer-
     AdminLoginComponent,
     ProviderListComponent,
     PayerListComponent,
-    PayerProviderComponent  
+    PayerProviderComponent,
+    AssociatedPayersComponent  
   ],
   imports: [
     BrowserModule,

@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit{
     this.authService.login(cred).subscribe(
       (response:any)=>{                       
         this.authService.saveToken(response.token,response.roles);
+        
         window.location.href="/user/dashboard";                
       },
       (error:any)=>{

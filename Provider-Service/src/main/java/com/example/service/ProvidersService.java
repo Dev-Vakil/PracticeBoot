@@ -38,7 +38,7 @@ public class ProvidersService {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}
-	}
+	}	
 	
 	static Specification<Providers> hasProviderName(String name) {
 	    return (provider, cq, cb) -> cb.like(provider.get("providerName"), "%" + name + "%");	    
@@ -51,4 +51,5 @@ public class ProvidersService {
 	static Specification<Providers> hasRoleUser() {
 	    return (provider, cq, cb) -> cb.equal(provider.get("roleAssociation").get("role").get("id"), 1);
 	}
+
 }
