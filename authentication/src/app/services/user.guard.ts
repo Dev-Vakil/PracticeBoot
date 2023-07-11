@@ -23,11 +23,19 @@ export class UserGuard {
       let roles:any = localStorage.getItem("roles");
       let role:string;
 
-      if(roles.includes('USER') || roles.includes('PAYER')){
+      if(roles.includes('USER')){
         return true;
       }
+      else if(roles.includes('PAYER')){
+        this.router.navigate(['/user/dashboard']);
+        return false;
+      }
+      else if(roles.includes('ADMIN')){
+        this.router.navigate(['/admin/provider-list']);
+        return false;
+      }
       else{
-        this.router.navigate(['/user/login'])
+        this.router.navigate(['/user/login']);
         return false;
       }
 

@@ -1,8 +1,5 @@
 package com.example.dto;
 
-
-
-import com.example.entities.PayerProvider.Status;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -93,12 +93,12 @@ public class JwtService {
 		} catch (MalformedJwtException ex) {
 			logger.error("Invalid Jwt Token");
 		} catch (ExpiredJwtException ex) {
-			System.out.println("Expired JWT token");
+			logger.error("Expired JWT token");
 		}  catch (IllegalArgumentException ex) {
-			System.out.println("JWT claims string is empty.");
+			logger.error("JWT claims string is empty.");
 		}  catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("Invalid JWT token");
+			logger.error("Invalid JWT token");
 		}
 		return false;
 	}	

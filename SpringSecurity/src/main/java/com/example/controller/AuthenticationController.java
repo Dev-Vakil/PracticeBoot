@@ -4,7 +4,6 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +37,7 @@ public class AuthenticationController {
 	
 	
 	@PostMapping("/provider/register")
-	public ResponseEntity<?> registerProvider(@RequestBody UserDto provider){
+	public ResponseEntity<AuthResponseDto> registerProvider(@RequestBody UserDto provider){
 		
 		AuthResponseDto result =  service.registerProvider(provider);			
 		if(result != null) {
@@ -50,7 +49,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/payer/register")
-	public ResponseEntity<?> registerPayer(@RequestBody UserDto payer){
+	public ResponseEntity<AuthResponseDto> registerPayer(@RequestBody UserDto payer){
 		
 		AuthResponseDto result =  service.registerPayer(payer);			
 		if(result != null) {
@@ -63,7 +62,7 @@ public class AuthenticationController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginDto details){
-		try {					
+		try {								
 			AuthResponseDto result = service.login(details);
 			if(result != null) {
 				return ResponseEntity.ok(result);
@@ -72,8 +71,7 @@ public class AuthenticationController {
 				return ResponseEntity.ok("Invalid Credentials");
 			}
 		}
-		catch(Exception e) {
-			e.printStackTrace();
+		catch(Exception e) {			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
@@ -92,7 +90,7 @@ public class AuthenticationController {
 	
 	
 	@GetMapping("/current-user")
-	public ResponseEntity<?> userDetailsFromToken(HttpServletRequest request){		
+	public ResponseEntity<UserDto> userDetailsFromToken(HttpServletRequest request){		
 		try {				
 			UserDto data = new UserDto();
 			data.setName(request.getHeader("name"));
@@ -120,7 +118,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/findPayerCode")
-	public ResponseEntity<?> findPayerCode(@RequestBody String payer_code){		
+	public ResponseEntity<Boolean> findPayerCode(@RequestBody String payer_code){		
 		try {			
 			Boolean result = payerService.findByPayerCode(payer_code);
 			return ResponseEntity.ok(result);
@@ -132,7 +130,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/findPayerEmail")
-	public ResponseEntity<?> findPayerEmail(@RequestBody String email){
+	public ResponseEntity<Boolean> findPayerEmail(@RequestBody String email){
 		try {			
 			Boolean result = payerService.findByEmail(email);
 			return ResponseEntity.ok(result);
@@ -144,7 +142,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/findProviderEmail")
-	public ResponseEntity<?> findProviderEmail(@RequestBody String email){
+	public ResponseEntity<Providers> findProviderEmail(@RequestBody String email){
 		try {
 			Providers result = providersService.loadUserByUsername(email);
 			return ResponseEntity.ok(result);

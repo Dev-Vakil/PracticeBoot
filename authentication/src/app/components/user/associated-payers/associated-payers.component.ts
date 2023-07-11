@@ -2,20 +2,9 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Payer } from 'src/app/interfaces/payer';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProvidersService } from 'src/app/services/providers.service';
-
-export interface Payer {
-  payerId: number;
-  payerName: string;
-  payerCode: string;  
-  password: string;
-  email: string;
-  isActive: boolean;
-  createdAt:string;
-  modifiedAt:string;
-  roleAssociation: number[];
-}
 
 @Component({
   selector: 'app-associated-payers',

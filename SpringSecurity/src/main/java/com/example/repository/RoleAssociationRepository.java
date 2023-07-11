@@ -11,12 +11,12 @@ import com.example.entities.RoleAssociation;
 
 public interface RoleAssociationRepository extends JpaRepository<RoleAssociation, Integer>{
 	
-	@Query(value = "SELECT * FROM role_association WHERE provider_id=?1 AND role_id = 1", nativeQuery = true)
+	@Query("FROM RoleAssociation WHERE provider.providerId=?1 AND role.id = 1")
 	List<RoleAssociation> findByProvider(Integer provider);
 
-	@Query(value = "SELECT * FROM role_association WHERE payer_id=?1 AND role_id = 3", nativeQuery = true)
+	@Query("FROM RoleAssociation WHERE payer.payerId=?1 AND role.id = 3")
 	List<RoleAssociation> findByPayer(Integer payer);
 	
-	@Query(value = "SELECT * FROM role_association WHERE provider_id=?1 AND role_id = 2", nativeQuery = true)
+	@Query("FROM RoleAssociation WHERE provider.providerId=?1 AND role.id = 2")
 	List<RoleAssociation> findByAdmin(Integer admin);
 }

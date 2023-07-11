@@ -11,7 +11,8 @@ export class UserComponent {
   mobileQuery: MediaQueryList;
   
   fillerNav = Array.from({length: 50}, (_, i) => `Nav Item ${i + 1}`);
-
+  rolesProvider : Boolean = false;
+  roles = localStorage.getItem("roles")?.includes("USER");  
   loggedIn: Boolean = this.authService.isUserLoggedIn();
   
   private _mobileQueryListener: () => void;

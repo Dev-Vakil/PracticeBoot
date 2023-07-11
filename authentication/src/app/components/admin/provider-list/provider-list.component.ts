@@ -2,20 +2,8 @@ import {LiveAnnouncer} from '@angular/cdk/a11y';
 import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Provider } from 'src/app/interfaces/provider';
 import { ProvidersService } from 'src/app/services/providers.service';
-
-export interface Provider {
-  providerId: number;
-  providerName: string;
-  providerCode: string;
-  username: string;
-  password: string;
-  email: string;
-  isActive: boolean;
-  createdAt:string;
-  modifiedAt:string;
-  roleAssociation: number[];
-}
 
 @Component({
   selector: 'app-provider-list',

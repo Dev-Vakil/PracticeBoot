@@ -26,6 +26,10 @@ export class AdminGuard {
       if(roles.includes('ADMIN')){
         return true;
       }
+      else if(roles.includes('USER') || roles.includes('PAYER')){
+        this.router.navigate(['/user/dashboard']);
+        return false;
+      }
       else{
         this.router.navigate(['/admin/register'])
         return false;

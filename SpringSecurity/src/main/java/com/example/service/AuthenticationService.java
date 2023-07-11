@@ -47,6 +47,9 @@ public class AuthenticationService{
 	
 	@Autowired
 	private JwtService jwtService;
+	
+	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
 
 	public AuthResponseDto registerProvider(UserDto details){
 		try {
@@ -70,7 +73,7 @@ public class AuthenticationService{
 			
 			AuthResponseDto response = new AuthResponseDto();		
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(provider.getProviderId());
+			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(save.getProviderId());
 			
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
@@ -97,9 +100,7 @@ public class AuthenticationService{
 					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();			
-			payerRepository.save(payer);			
-			Payer newPayers = payerRepository.findByEmail(payer.getEmail())
-					.orElseThrow(()-> new UsernameNotFoundException("user not found"));			
+			Payer newPayers = payerRepository.save(payer);									
 			
 			RoleAssociation roleAssociation = new RoleAssociation();
 			roleAssociation.setPayer(newPayers);			
@@ -128,17 +129,13 @@ public class AuthenticationService{
 	}
 	
 	public AuthResponseDto login(LoginDto details) {
-		try {
-			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							details.getEmail(),
-							details.getPassword()
-					)
-				);
+		try {							
 				UserDto userDto = new UserDto(); 
-				List<RoleAssociation> roles = new ArrayList<>();
+				List<RoleAssociation> roles;
 				if(details.getRole().equals("ADMIN")) {
-					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();						
+					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();
+					if(!encoder.matches(details.getPassword(),user.getPassword()))
+						throw new UsernameNotFoundException(null);
 					roles = roleAssociationRepository.findByAdmin(user.getProviderId());
 					userDto.setName(user.getProviderName());
 					userDto.setCode(user.getProviderCode());
@@ -146,7 +143,9 @@ public class AuthenticationService{
 					userDto.setEmail(user.getEmail());
 				}
 				else if(details.getRole().equals("PROVIDER")) {
-					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();				
+					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();	
+					if(!encoder.matches(details.getPassword(),user.getPassword()))
+						throw new UsernameNotFoundException(null);
 					roles = roleAssociationRepository.findByProvider(user.getProviderId());
 					userDto.setName(user.getProviderName());
 					userDto.setCode(user.getProviderCode());
@@ -155,13 +154,15 @@ public class AuthenticationService{
 				}
 				else {
 					var user = payerRepository.findByEmail(details.getEmail()).orElseThrow();
+					if(!encoder.matches(details.getPassword(),user.getPassword()))
+						throw new UsernameNotFoundException(null);
 					roles = roleAssociationRepository.findByPayer(user.getPayerId());
 					userDto.setName(user.getPayerName());
 					userDto.setCode(user.getPayerCode());
 					userDto.setEmail(user.getEmail());
 				}								
 				
-				String token = jwtService.generateToken(userDto,roles);
+				String token = jwtService.generateToken(userDto,roles);				
 				AuthResponseDto response = new AuthResponseDto();
 				response.setToken(token);
 				List<String>roleNames = new ArrayList<>();

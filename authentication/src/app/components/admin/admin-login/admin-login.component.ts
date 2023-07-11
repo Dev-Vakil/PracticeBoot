@@ -30,7 +30,7 @@ export class AdminLoginComponent {
     this.authService.login(cred).subscribe(
       (response:any)=>{                       
         this.authService.saveToken(response.token,response.roles);
-        window.location.href="/admin/provider-list";                
+        window.location.href="/admin/provider-list";            
       },
       (error:any)=>{
           console.log(error.status);          

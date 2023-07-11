@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.TokenDataDto;
-import com.example.entities.Payer;
 import com.example.entities.Providers;
 import com.example.repository.ProvidersRepository;
 

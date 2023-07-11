@@ -30,9 +30,11 @@ export class LoginComponent implements OnInit{
       role: userType?.value
     }
     this.authService.login(cred).subscribe(
-      (response:any)=>{                       
-        this.authService.saveToken(response.token,response.roles);
-        
+      (response:any)=>{  
+        if(response == null){
+          this.loginError = true;
+        }                     
+        this.authService.saveToken(response.token,response.roles);        
         window.location.href="/user/dashboard";                
       },
       (error:any)=>{

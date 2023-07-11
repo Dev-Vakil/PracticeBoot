@@ -3,19 +3,8 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import {MatSort, Sort, MatSortModule} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Payer } from 'src/app/interfaces/payer';
 import { ProvidersService } from 'src/app/services/providers.service';
-
-export interface Payer {
-  payerId: number;
-  payerName: string;
-  payerCode: string;  
-  password: string;
-  email: string;
-  isActive: boolean;
-  createdAt:string;
-  modifiedAt:string;
-  roleAssociation: number[];
-}
 
 @Component({
   selector: 'app-payer-list',
@@ -40,18 +29,17 @@ export class PayerListComponent {
   onSearch(search:string){        
     this.providersService.allPayers(search).subscribe(
       (response:any)=>{                
+        console.log(response);
+        
         this.ELEMENT_DATA = response;
         this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
         this.dataSource.sort = this.sort;
       }
     );   
   }
-   /** Announce the change in sort state for assistive technology. */
+   
+  
   announceSortChange(sortState: any) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {

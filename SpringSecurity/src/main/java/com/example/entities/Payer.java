@@ -1,10 +1,14 @@
 package com.example.entities;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -33,7 +37,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name="payer")
-public class Payer {
+public class Payer{
 	
 	@Column(unique=true,name="payer_id")
 	@Id
@@ -68,5 +72,4 @@ public class Payer {
     @JsonBackReference
     @OneToMany(mappedBy="payer")
     private List<RoleAssociation> roleAssociation;
-    
 }

@@ -1,11 +1,9 @@
 package com.example.service;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,8 +17,6 @@ import com.example.entities.Providers;
 import com.example.repository.PayerProviderRepository;
 import com.example.repository.PayerRepository;
 import com.example.repository.ProvidersRepository;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class PayerProviderService {
@@ -37,7 +33,7 @@ public class PayerProviderService {
 	public ResponseEntity<Boolean> save(PayerProviderDto details) {
 		try {
 			Status status;
-			if(details.getStatus() == true){
+			if(Boolean.TRUE.equals(details.getStatus())){
 				status = Status.ACTIVE;
 			}
 			else {
