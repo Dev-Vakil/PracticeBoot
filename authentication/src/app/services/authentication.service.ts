@@ -6,23 +6,20 @@ import { Injectable } from '@angular/core';
 })
 export class AuthenticationService {
 
-  authUrl="http://localhost:8080/auth"  
+  authUrl="http://localhost:8081/auth"  
 
   constructor(private http:HttpClient) { }
 
-  registerProvider(credentials:object){
-      return this.http.post(`${this.authUrl}/provider/register`,credentials);
+  register(credentials:object){
+      return this.http.post(`${this.authUrl}/register`,credentials);
   }
-  registerPayer(credentials:object){
-    return this.http.post(`${this.authUrl}/payer/register`,credentials);
-}
   
   login(credentials:object){        
       return this.http.post(`${this.authUrl}/login`,credentials);
   }
 
   saveToken(token:string,roles:any){
-    localStorage.setItem("token",token);    
+    localStorage.setItem("token",token);        
     localStorage.setItem("roles",roles)
   }  
   
@@ -66,16 +63,12 @@ export class AuthenticationService {
     return this.http.post(`${this.authUrl}/findProviderCode`,provider_code);
   }
 
-  findProviderEmail(email: string){    
-    return this.http.post(`${this.authUrl}/findProviderEmail`,email);
+  findEmail(email: string){    
+    return this.http.post(`${this.authUrl}/findEmail`,email);
   }
 
   findPayerCode(payer_code:string){    
     return this.http.post(`${this.authUrl}/findPayerCode`,payer_code);
-  }
-
-  findPayerEmail(email: string){    
-    return this.http.post(`${this.authUrl}/findPayerEmail`,email);
   }
 
   findCurrentUser(){
@@ -87,11 +80,11 @@ export class AuthenticationService {
     localStorage.setItem("token",'');
     if(localStorage.getItem("roles")?.includes("USER") || localStorage.getItem("roles")?.includes("PAYER")){
       localStorage.setItem("roles",'');
-      window.location.href = "/user/login";
+      window.location.href = "/login";
     }
     if(localStorage.getItem("roles")?.includes("ADMIN")){
       localStorage.setItem("roles",'');
-      window.location.href = "/admin/login";
+      window.location.href = "/login";
     }
   }
 }

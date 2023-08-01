@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { AdminComponent } from './components/admin/admin/admin.component';
 import { UserComponent } from './components/user/user/user.component';
 import { AdminSignupComponent } from './components/admin/admin-signup/admin-signup.component';
-import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AdminGuard } from './services/admin.guard';
 import { UserGuard } from './services/user.guard';
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
@@ -20,31 +19,30 @@ const routes: Routes = [
     path: '', 
     component: AppComponent,
     children: [
+      { path:'login',component:LoginComponent,pathMatch:'full'},
       { path: 'user', component: UserComponent, pathMatch: 'full'},
       { path: 'admin', component: AdminComponent, pathMatch: "full"},
-      {path: '',redirectTo:'/user/login',pathMatch:'full'},      
+      {path: '',redirectTo:'/login',pathMatch:'full'},               
     ]
   },
   { 
     path: 'user', 
     component: UserComponent,
-    children: [      
-      {path:'login',component:LoginComponent,pathMatch:'full'},
+    children: [           
       {path:'dashboard',component:DashboardComponent,pathMatch:'full', canActivate:[AuthGuard]},
-      {path:'payers',component:AssociatedPayersComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},
+      {path:'payers',component:AssociatedPayersComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},      
       {path: '**', redirectTo:'dashboard'}
     ]
   },
   { 
     path: 'admin', 
     component: AdminComponent,
-    children: [
-      {path:'login',component:AdminLoginComponent,pathMatch:'full'},
+    children: [      
       {path:'register',component:AdminSignupComponent,pathMatch:'full'},
-      {path:'provider-list',component:ProviderListComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
-      {path:'payer-list',component:PayerListComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
-      {path:'payer-provider', component:PayerProviderComponent,pathMatch:'full',canActivate:[AuthGuard,AdminGuard]},
-      { path: '**', redirectTo:'provider-list' }
+      {path:'provider-list',component:ProviderListComponent,pathMatch:'full',canActivate:[AdminGuard,AuthGuard]},
+      {path:'payer-list',component:PayerListComponent,pathMatch:'full',canActivate:[AdminGuard,AuthGuard]},
+      {path:'payer-provider', component:PayerProviderComponent,pathMatch:'full',canActivate:[AdminGuard,AuthGuard]},      
+      {path: '**', redirectTo:'provider-list'}
     ]
   },
   

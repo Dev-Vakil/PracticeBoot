@@ -11,5 +11,5 @@ public interface ProvidersRepository extends JpaRepository<Providers, Integer>{
 	
 	Optional<Providers> findByEmail(String email);
 
-	Optional<Providers> findByProviderCode(String provider_code);
+	Optional<Providers> findByProviderCode(String providerCode);
 }

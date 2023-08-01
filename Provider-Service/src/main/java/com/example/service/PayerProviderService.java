@@ -20,49 +20,42 @@ import com.example.repository.ProvidersRepository;
 
 @Service
 public class PayerProviderService {
-	
+
 	@Autowired
 	private PayerProviderRepository payerProviderRepository;
-	
+
 	@Autowired
 	private PayerRepository payerRepository;
-	
+
 	@Autowired
 	private ProvidersRepository providersRepository;
 
 	public ResponseEntity<Boolean> save(PayerProviderDto details) {
 		try {
 			Status status;
-			if(Boolean.TRUE.equals(details.getStatus())){
+			if (Boolean.TRUE.equals(details.getStatus())) {
 				status = Status.ACTIVE;
-			}
-			else {
+			} else {
 				status = Status.INACTIVE;
-			}			
+			}
 			PayerProvider payerProvider = PayerProvider.builder()
-			.payerProviderId(
-					PayerProviderId.builder()
-					.payer(payerRepository.findById(details.getPayer()).orElse(null))
-					.provider(providersRepository.findById(details.getProvider()).orElse(null))		
-					.build()
-			)									
-			.status(status)
-			.build();
+					.payerProviderId(
+							PayerProviderId.builder().payer(payerRepository.findById(details.getPayer()).orElse(null))
+									.provider(providersRepository.findById(details.getProvider()).orElse(null)).build())
+					.status(status).build();
 			payerProviderRepository.save(payerProvider);
 			return ResponseEntity.ok(true);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok(false);
-		}		
+		}
 	}
 
 	public ResponseEntity<List<PayerProvider>> getAll() {
-		try {			
+		try {
 			List<PayerProvider> ans = payerProviderRepository.findAll();
 			return ResponseEntity.ok(ans);
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok(null);
 		}
@@ -70,29 +63,25 @@ public class PayerProviderService {
 
 	public ResponseEntity<Boolean> getPayerProviderStatus(Integer providerId, Integer payerId) {
 		try {
-			String status = payerProviderRepository.getPayerProviderStatus(providerId,payerId).orElse(null);
-			if(status == null || status.equals("INACTIVE")) {
-				return ResponseEntity.ok(false);
-			}
-			else{	
-				return ResponseEntity.ok(true);
-			}			
-		}
-		catch(Exception e) {
+			Status status = payerProviderRepository
+					.findByPayerProviderId_Payer_PayerIdAndPayerProviderId_Provider_ProviderId(payerId, providerId)
+					.orElse(new PayerProvider()).getStatus();
+			return ResponseEntity.ok(status.equals(PayerProvider.Status.ACTIVE));
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.ok(false);
 		}
 	}
-	
-	public ResponseEntity<List<Payer>> associatedPayers(String email,String search) {
-		try {			
+
+	public ResponseEntity<List<Payer>> associatedPayers(String email, String search) {
+		try {
 			Optional<Providers> provider = providersRepository.findByEmail(email);
-			if(provider.isPresent()) {				
-				return ResponseEntity.ok(payerProviderRepository.getPayerByProvider(provider.get(),search).orElse(null));							
+			if (provider.isPresent()) {
+				return ResponseEntity
+						.ok(payerProviderRepository.getPayerByProvider(provider.get(), search).orElse(null));
 			}
 			return null;
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}

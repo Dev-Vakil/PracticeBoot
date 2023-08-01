@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,9 +38,6 @@ public class AuthenticationService{
 	private ProvidersRepository providersRepository;
 	
 	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
 	private PayerRepository payerRepository;
 	
 	@Autowired
@@ -53,7 +48,7 @@ public class AuthenticationService{
 
 	public AuthResponseDto registerProvider(UserDto details){
 		try {
-			
+			//save providers
 			Providers provider = Providers.builder()
 					.providerCode(details.getCode())
 					.providerName(details.getName())
@@ -61,20 +56,22 @@ public class AuthenticationService{
 					.email(details.getEmail())					
 					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
-					.build();			
-			Providers save = providersRepository.save(provider);			
+					.build();				
+			Providers savedProvider = providersRepository.save(provider);
+			
+			//save role association for providers
 			RoleAssociation roleAssociation = new RoleAssociation();
-			roleAssociation.setProvider(provider);
+			roleAssociation.setProvider(savedProvider);
 			roleAssociation.setPayer(null);
 			Role role = roleRepository.findByName("USER")
 					.orElseThrow(()-> new UsernameNotFoundException("user role not found"));
 			roleAssociation.setRole(role);
 			roleAssociationRepository.save(roleAssociation);
 			
-			AuthResponseDto response = new AuthResponseDto();		
+			AuthResponseDto response = new AuthResponseDto();								
+			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(savedProvider.getProviderId());
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByProvider(save.getProviderId());
-			
+			//generating and sending token via response
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
 			List<String>roleNames = new ArrayList<>();
@@ -93,6 +90,7 @@ public class AuthenticationService{
 
 	public AuthResponseDto registerPayer(UserDto details) {
 		try {
+			//save payer
 			Payer payer = Payer.builder()
 					.payerName(details.getName())
 					.payerCode(details.getCode())
@@ -100,19 +98,20 @@ public class AuthenticationService{
 					.isActive(true)
 					.password(new BCryptPasswordEncoder().encode(details.getPassword()))					
 					.build();			
-			Payer newPayers = payerRepository.save(payer);									
+			Payer savedPayers = payerRepository.save(payer);									
 			
+			//save role association for providers
 			RoleAssociation roleAssociation = new RoleAssociation();
-			roleAssociation.setPayer(newPayers);			
+			roleAssociation.setPayer(savedPayers);			
 			Role role = roleRepository.findByName("PAYER")
 					.orElseThrow(()-> new UsernameNotFoundException("user role not found"));
 			roleAssociation.setRole(role);
 			roleAssociationRepository.save(roleAssociation);
 			
-			AuthResponseDto response = new AuthResponseDto();		
+			AuthResponseDto response = new AuthResponseDto();					
+			List<RoleAssociation> roles = roleAssociationRepository.findByPayer(savedPayers.getPayerId());
 			
-			List<RoleAssociation> roles = roleAssociationRepository.findByPayer(newPayers.getPayerId());
-			
+			//generating and sending token via response
 			String token = jwtService.generateToken(details,roles);
 			response.setToken(token);
 			List<String>roleNames = new ArrayList<>();
@@ -131,37 +130,29 @@ public class AuthenticationService{
 	public AuthResponseDto login(LoginDto details) {
 		try {							
 				UserDto userDto = new UserDto(); 
-				List<RoleAssociation> roles;
-				if(details.getRole().equals("ADMIN")) {
-					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();
-					if(!encoder.matches(details.getPassword(),user.getPassword()))
+				List<RoleAssociation> roles;						
+				var payer = payerRepository.findByEmail(details.getEmail()).orElse(null);
+				if(payer == null) {
+					var provider = providersRepository.findByEmail(details.getEmail()).orElseThrow();	
+					System.out.println(provider.getProviderCode());
+					if(!encoder.matches(details.getPassword(),provider.getPassword()))
 						throw new UsernameNotFoundException(null);
-					roles = roleAssociationRepository.findByAdmin(user.getProviderId());
-					userDto.setName(user.getProviderName());
-					userDto.setCode(user.getProviderCode());
-					userDto.setUsername(user.getUsername());
-					userDto.setEmail(user.getEmail());
+					roles = roleAssociationRepository.findByProvider(provider.getProviderId());
+					if(roles.isEmpty())
+						roles = roleAssociationRepository.findByAdmin(provider.getProviderId());
+					userDto.setName(provider.getProviderName());
+					userDto.setCode(provider.getProviderCode());
+					userDto.setUsername(provider.getUsername());
+					userDto.setEmail(provider.getEmail());
 				}
-				else if(details.getRole().equals("PROVIDER")) {
-					var user = providersRepository.findByEmail(details.getEmail()).orElseThrow();	
-					if(!encoder.matches(details.getPassword(),user.getPassword()))
+				else {					
+					if(!encoder.matches(details.getPassword(),payer.getPassword()))
 						throw new UsernameNotFoundException(null);
-					roles = roleAssociationRepository.findByProvider(user.getProviderId());
-					userDto.setName(user.getProviderName());
-					userDto.setCode(user.getProviderCode());
-					userDto.setUsername(user.getUsername());
-					userDto.setEmail(user.getEmail());
+					roles = roleAssociationRepository.findByPayer(payer.getPayerId());
+					userDto.setName(payer.getPayerName());
+					userDto.setCode(payer.getPayerCode());
+					userDto.setEmail(payer.getEmail());
 				}
-				else {
-					var user = payerRepository.findByEmail(details.getEmail()).orElseThrow();
-					if(!encoder.matches(details.getPassword(),user.getPassword()))
-						throw new UsernameNotFoundException(null);
-					roles = roleAssociationRepository.findByPayer(user.getPayerId());
-					userDto.setName(user.getPayerName());
-					userDto.setCode(user.getPayerCode());
-					userDto.setEmail(user.getEmail());
-				}								
-				
 				String token = jwtService.generateToken(userDto,roles);				
 				AuthResponseDto response = new AuthResponseDto();
 				response.setToken(token);

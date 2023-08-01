@@ -44,7 +44,8 @@ export class AdminSignupComponent {
       code: providerCode?.value,
       username: username?.value,
       email: email?.value,
-      password: password?.value
+      password: password?.value,
+      userType: "PROVIDER"
     }
 
     this.authService.findProviderCode(providerCode?.value).subscribe(
@@ -60,9 +61,9 @@ export class AdminSignupComponent {
         this.providerCodeError = true;        
       }
     );    
-    this.authService.findProviderEmail(email?.value).subscribe(      
+    this.authService.findEmail(email?.value).subscribe(      
       (response:any)=>{        
-        if(response == null){
+        if(response == false){
           this.providerEmailError = false;
         }
         else{
@@ -75,13 +76,13 @@ export class AdminSignupComponent {
     )
    
     if(this.providerCodeError == false && this.providerEmailError == false){              
-      this.authService.registerProvider(cred).subscribe(
+      this.authService.register(cred).subscribe(
         (response:any)=>{
           console.log(response);
-          window.location.href="/user/login";    
+          window.location.href="/login";    
         },
         (error:any)=>{
-          window.location.href="/user/login";  
+          window.location.href="/login";  
           console.log(error.status);  
         }
       )
@@ -98,7 +99,8 @@ export class AdminSignupComponent {
       name: payerName?.value,
       code: payerCode?.value,      
       email: email?.value,
-      password: password?.value
+      password: password?.value,
+      userType: "PAYER"
     }
 
     this.authService.findPayerCode(payerCode?.value).subscribe(
@@ -114,7 +116,7 @@ export class AdminSignupComponent {
         this.payerCodeError = true;        
       }
     );    
-    this.authService.findPayerEmail(email?.value).subscribe(      
+    this.authService.findEmail(email?.value).subscribe(      
       (response:any)=>{        
         if(response == false){
           this.payerEmailError = false;
@@ -129,13 +131,13 @@ export class AdminSignupComponent {
     )
    
     if(this.payerCodeError == false && this.payerEmailError == false){              
-      this.authService.registerPayer(cred).subscribe(
+      this.authService.register(cred).subscribe(
         (response:any)=>{
-          window.location.href="/user/login";    
+          window.location.href="/login";    
           console.log(response);
         },
         (error:any)=>{
-          window.location.href="/user/login";  
+          window.location.href="/login";  
           console.log(error.status);  
         }
       )

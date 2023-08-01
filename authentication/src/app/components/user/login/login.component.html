@@ -1,18 +1,12 @@
-<div class="bootstrap wrapper">
-    <div class="container mt-3">
-        <div class="row">
+    <div class="container">
+        <div class="row pt-5">
             <div class="col-md-6 offset-md-3 card p-sm-5 p-3 bg-form">                
                 <h1 class="strong text-primary text-center">Login</h1>
                 <span class="text-danger m-3" *ngIf="loginError == true">
                     <small>Incorrect User Credentials</small> 
                 </span>
                 <form [formGroup]="loginForm" (ngSubmit)="PostData(loginForm)">
-                    <div class="custom">
-                        <mat-radio-group class="m-2" aria-label="Select an option" formControlName="userType" matInput>
-                            <mat-label class="fw-bold text-secondary m-1">Select Type of User: </mat-label><br>                    
-                            <mat-radio-button name="" value="PROVIDER" >Provider</mat-radio-button>
-                            <mat-radio-button name="" value="PAYER">Payer</mat-radio-button>                                             
-                        </mat-radio-group>
+                    <div class="custom">                        
                     <mat-form-field class="w-100 formGroup" >
                         <mat-label>Email</mat-label>
                         <input formControlName="email" type="text" placeholder="Email" matInput />
@@ -43,4 +37,3 @@
             </div>
         </div>
     </div>
-</div>

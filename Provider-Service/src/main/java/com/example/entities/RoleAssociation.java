@@ -3,15 +3,17 @@ package com.example.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.lang.Nullable;
+
 import lombok.Data;
 
 @Data
@@ -26,7 +28,8 @@ public class RoleAssociation {
 	 
 	 @JsonManagedReference
 	 @ManyToOne	 
-	 @JoinColumn(name="provider_id")
+	 @JoinColumn(name="provider_id",nullable = true)
+	 @Nullable
 	 private Providers provider; 
 	 
 	 @JsonManagedReference
@@ -36,7 +39,7 @@ public class RoleAssociation {
 	 private Payer payer; 
 	 	 
 	 @JsonManagedReference
-	 @ManyToOne
+	 @ManyToOne()
 	 @JoinColumn(name="role_id",nullable = true)
 	 private Role role;
 	 	 

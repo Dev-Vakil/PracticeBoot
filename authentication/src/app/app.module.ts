@@ -24,7 +24,6 @@ import { DashboardComponent } from './components/user/dashboard/dashboard.compon
 import { AdminComponent } from './components/admin/admin/admin.component';
 import { AdminSignupComponent } from './components/admin/admin-signup/admin-signup.component';
 import { UserComponent } from './components/user/user/user.component';
-import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import {MatSelectModule} from '@angular/material/select';
 import { ProviderListComponent } from './components/admin/provider-list/provider-list.component';
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
@@ -40,7 +39,6 @@ import { AssociatedPayersComponent } from './components/user/associated-payers/a
     AdminComponent,
     AdminSignupComponent,
     UserComponent,
-    AdminLoginComponent,
     ProviderListComponent,
     PayerListComponent,
     PayerProviderComponent,

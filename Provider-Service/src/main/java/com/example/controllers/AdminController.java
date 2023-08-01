@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,10 +24,14 @@ import com.example.service.PayerProviderService;
 import com.example.service.PayerService;
 import com.example.service.ProvidersService;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
+//@PreAuthorize("isAuthenticated()")
+
+@RequestMapping("/admin")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
-@RequestMapping("admin/provider")
+@CrossOrigin
 public class AdminController {
 	
 	@Autowired
@@ -35,14 +42,12 @@ public class AdminController {
 	
 	@Autowired
 	private PayerProviderService payerProviderService;
+
 	
-	@GetMapping("/current-user")
-	public ResponseEntity<TokenDataDto> fetchUserDetails(HttpServletRequest request) {
-		return providersService.fetchUserDetails(request);
-	}
-		
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+
 	@GetMapping("/providers")
-	public ResponseEntity<List<Providers>> getProviders(@RequestParam("providerFilter") Optional<String> providerFilter){
+	public ResponseEntity<List<Providers>> getProviders(@RequestParam("providerFilter") Optional<String> providerFilter){		
 		String filterString = providerFilter.orElse("");	
 		return providersService.getProviders(filterString);
 	}
@@ -67,6 +72,5 @@ public class AdminController {
 	public ResponseEntity<Boolean> getPayerProviderStatus(@RequestParam(name = "providerId") Integer providerId, @RequestParam(name = "payerId") Integer payerId){
 		return payerProviderService.getPayerProviderStatus(providerId,payerId);
 	}
-	
 	
 }

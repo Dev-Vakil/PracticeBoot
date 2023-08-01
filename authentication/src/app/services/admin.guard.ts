@@ -31,17 +31,9 @@ export class AdminGuard {
         return false;
       }
       else{
-        this.router.navigate(['/admin/register'])
+        this.router.navigate(['/login'])
         return false;
-      }
-
-      // for(role in  roles){
-      //   if(role == "ADMIN"){
-      //     return true;
-      //   }
-      // }
-      // this.router.navigate(['/admin/login']);    
-      // return false;
+      }     
     }        
 
   }

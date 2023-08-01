@@ -35,17 +35,9 @@ export class UserGuard {
         return false;
       }
       else{
-        this.router.navigate(['/user/login']);
+        this.router.navigate(['/login']);
         return false;
-      }
-
-      // for(role in  roles){
-      //   if(role == "ADMIN"){
-      //     return true;
-      //   }
-      // }
-      // this.router.navigate(['/admin/login']);    
-      // return false;
+      }     
     }        
 
   }

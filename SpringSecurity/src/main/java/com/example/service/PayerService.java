@@ -19,12 +19,7 @@ public class PayerService{
 		
 		Payer payer = payerRepository.findByEmail(email).orElse(null);
 		try {
-			if(payer != null) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return (payer != null);
 		}
 		catch(Exception e) {
 			return true;
@@ -44,6 +39,10 @@ public class PayerService{
 		catch(Exception e) {
 			return true;
 		}		
+	}
+	
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		return (UserDetails) payerRepository.findByEmail(email).orElse(null);		
 	}
 	
 }

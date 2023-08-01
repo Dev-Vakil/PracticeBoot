@@ -24,7 +24,8 @@ export class AssociatedPayersComponent {
   ngAfterViewInit() {
     this.authService.findCurrentUser().subscribe(
       (response:any)=>{    
-        this.email = response.email;   
+        console.log(response);
+        this.email = response.principal.email;  
         this.onSearch("");        
       },
       (error:any)=>{

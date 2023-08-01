@@ -2,6 +2,7 @@ package com.example.config;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,11 @@ import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.example.dto.UserDto;
-import com.example.entities.Providers;
 import com.example.entities.RoleAssociation;
 
 import io.jsonwebtoken.Claims;
@@ -54,19 +56,18 @@ public class JwtService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 	
-	public String generateToken(UserDto details, List<RoleAssociation> roleAssociation) {
+	public String generateToken(UserDto details, List<RoleAssociation> roleAssociation) {		
 		Map<String, Object> map= new HashMap<>();
 		map.put("name", details.getName());
 		map.put("code", details.getCode());
 		map.put("username", details.getUsername());
-		map.put("email", details.getEmail());
-		
+		map.put("email", details.getEmail());			
 		
 		List<String> roles = new ArrayList<>();		
 		for(RoleAssociation r :roleAssociation) {
 			roles.add(r.getRole().getName());
 		}
-		
+			
 		map.put("roles", roles);
 		return generateToken(map,details);
 	}
@@ -82,9 +83,8 @@ public class JwtService {
 				.compact();
 	}
 	
-	public boolean isTokenValid(String token, Providers providers) {		
-		final String useremail = extractEmail(token);		
-		return (useremail).equals(providers.getEmail()) && !isTokenExpired(token);
+	public boolean isTokenValid(String token) {						
+		return !isTokenExpired(token);
 	}
 
 	public boolean isTokenExpired(String token) {

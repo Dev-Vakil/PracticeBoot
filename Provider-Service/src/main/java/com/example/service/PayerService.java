@@ -19,7 +19,7 @@ public class PayerService {
 
 	public ResponseEntity<List<Payer>> getPayers(String payerFilter) {
 		try {									
-			return ResponseEntity.ok(payerRepository.findAll(hasRolePayer().and(hasFilter(payerFilter))));					
+			return ResponseEntity.ok(payerRepository.findAll(hasFilter(payerFilter)));					
 		}
 		catch(Exception e) {
 			e.printStackTrace();

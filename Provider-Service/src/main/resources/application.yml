@@ -1,0 +1,23 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/securitydemo
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: true
+security:
+  oauth2:
+    client:
+      clientId: api-client
+      clientSecret: secret
+      accessTokenUri: http://localhost:8081/auth/check_token
+      grant-type: token
+      scope: server
+    resource:
+      tokenInfoUri: http://localhost:8081/auth/check_token
+      userInfoUri: http://localhost:8081/auth/current-user
+  allowedOrigin: http://localhost:4200

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>SpringSecurity</artifactId>
-	<version>3.0.1</version>
+	<version>2.7.0</version>
 	<name>SpringSecurity</name>
 	<description>Demo project for Spring Boot Security</description>
 	<properties>
@@ -81,10 +81,10 @@
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-config</artifactId>
-		</dependency>
+		</dependency>			
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-resource-server</artifactId>		
 		</dependency>
 	</dependencies>
 	

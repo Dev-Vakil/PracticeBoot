@@ -20,24 +20,20 @@ public class WebSecurityConfig {
 	
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthFilter;
-	
-	@Autowired
-	private AuthenticationProvider authenticationProvider;
 
 	@Bean
 	public SecurityFilterChain filterchain(HttpSecurity http) throws Exception{
+		
         http
-       		.csrf(csrf -> csrf.disable())
-       		.authorizeHttpRequests(authz -> authz
-       		        .requestMatchers("/**").permitAll()
-	       		        .anyRequest().authenticated()
+       		.csrf(csrf -> csrf.disable()).cors(cors->cors.disable())
+       		.authorizeHttpRequests(authz -> authz       		        
+	       		        .anyRequest().permitAll()	
 	       		)
        		.sessionManagement(management -> management
 	   		        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	   		)
-       		.authenticationProvider(authenticationProvider)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);		
-		
+	   		)  	
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        		
 		return http.build();	
 	}
 }

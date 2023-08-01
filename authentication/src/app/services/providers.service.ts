@@ -6,8 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class ProvidersService {
 
-  AdminUrl="http://localhost:8080/admin/provider"  
-  UserUrl="http://localhost:8080/user/provider"
+  AdminUrl="http://localhost:8083/admin"  
+  UserUrl="http://localhost:8083/user"
 
   constructor(private http:HttpClient) { }
 

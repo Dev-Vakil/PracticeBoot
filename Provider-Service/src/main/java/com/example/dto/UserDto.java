@@ -1,11 +1,12 @@
 package com.example.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,4 +32,6 @@ public class UserDto {
 	private String password;
 	
 	private String userType;
+	
+	private Boolean active;
 }

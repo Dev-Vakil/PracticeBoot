@@ -9,12 +9,11 @@ import com.example.entities.Providers;
 import com.example.repository.ProvidersRepository;
 
 @Service
-public class ProvidersService implements UserDetailsService{
+public class ProvidersService{
 
 	@Autowired
 	private ProvidersRepository providersRepository;
 	
-	@Override
 	public Providers loadUserByUsername(String email) throws UsernameNotFoundException {		
 		return providersRepository.findByEmail(email)
 				.orElseThrow(()-> new UsernameNotFoundException("user not found"));
@@ -24,12 +23,7 @@ public class ProvidersService implements UserDetailsService{
 	public Boolean findProviderCode(String provider_code) {
 		Providers provider = providersRepository.findByProviderCode(provider_code).orElse(null);		
 		try {
-			if(provider != null) {
-				return true;
-			}
-			else {
-				return false;
-			}
+			return (provider != null);			
 		}
 		catch(Exception e) {
 			return true;

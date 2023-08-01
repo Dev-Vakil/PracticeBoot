@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name="providers")
-public class Providers  implements UserDetails{
+public class Providers{
 		 
 	@Column(unique=true,name="provider_id")
 	 @Id
@@ -75,31 +75,5 @@ public class Providers  implements UserDetails{
      public enum Role{
     	 USER,ADMIN,PAYER
      }
-     
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();	
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-		
 	  
 }
