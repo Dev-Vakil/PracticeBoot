@@ -60,7 +60,7 @@ public class AdminController {
 	
 	@PostMapping("/payerProvider")
 	public ResponseEntity<Boolean> savePayerProvider(@RequestBody PayerProviderDto payerProviderDto){
-		return payerProviderService.save(payerProviderDto);
+		return payerProviderService.save(payerProviderDto);		
 	}
 	
 	@GetMapping("/payerProvider")

@@ -140,6 +140,7 @@ public class AuthenticationService{
 					roles = roleAssociationRepository.findByProvider(provider.getProviderId());
 					if(roles.isEmpty())
 						roles = roleAssociationRepository.findByAdmin(provider.getProviderId());
+					userDto.setId(provider.getProviderId());
 					userDto.setName(provider.getProviderName());
 					userDto.setCode(provider.getProviderCode());
 					userDto.setUsername(provider.getUsername());
@@ -149,6 +150,7 @@ public class AuthenticationService{
 					if(!encoder.matches(details.getPassword(),payer.getPassword()))
 						throw new UsernameNotFoundException(null);
 					roles = roleAssociationRepository.findByPayer(payer.getPayerId());
+					userDto.setId(payer.getPayerId());
 					userDto.setName(payer.getPayerName());
 					userDto.setCode(payer.getPayerCode());
 					userDto.setEmail(payer.getEmail());

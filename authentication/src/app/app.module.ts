@@ -29,6 +29,7 @@ import { ProviderListComponent } from './components/admin/provider-list/provider
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
 import { PayerProviderComponent } from './components/admin/payer-provider/payer-provider.component';
 import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';
+import { PricelistComponent } from './components/user/pricelist/pricelist.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { AssociatedPayersComponent } from './components/user/associated-payers/a
     ProviderListComponent,
     PayerListComponent,
     PayerProviderComponent,
-    AssociatedPayersComponent  
+    AssociatedPayersComponent,
+    PricelistComponent  
   ],
   imports: [
     BrowserModule,

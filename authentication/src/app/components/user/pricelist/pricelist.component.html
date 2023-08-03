@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="p-5">
+        <h1 class="text-primary strong">Download available service price list</h1>
+        <form [formGroup]="pricelistDownload" (ngSubmit)="download(pricelistDownload)">
+            <mat-form-field>
+                <mat-label>Payers</mat-label>                    
+                <mat-select formControlName="payerId" (selectionChange)="selectionChange(payer.value)" #payer matInput>
+                <mat-option *ngFor="let payer of payerNames" [value]="payer.payerId">
+                    {{payer.payerName}}
+                </mat-option>
+                </mat-select>
+                <mat-error *ngIf="pricelistDownload.get('payerId')?.['touched'] && pricelistDownload.get('payerId')?.errors?.['required']">
+                    payer is a Required Field
+                </mat-error>
+            </mat-form-field>
+            <button class="mx-5 p-3" type="submit" mat-raised-button color="primary" [disabled]="pricelistDownload.invalid">Download</button>
+        </form>
+        <hr>
+    </div>
+    
+</div>

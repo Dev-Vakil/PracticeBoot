@@ -13,6 +13,7 @@ import { UserGuard } from './services/user.guard';
 import { PayerListComponent } from './components/admin/payer-list/payer-list.component';
 import { PayerProviderComponent } from './components/admin/payer-provider/payer-provider.component';
 import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';  
+import { PricelistComponent } from './components/user/pricelist/pricelist.component';
 
 const routes: Routes = [
   { 
@@ -30,7 +31,8 @@ const routes: Routes = [
     component: UserComponent,
     children: [           
       {path:'dashboard',component:DashboardComponent,pathMatch:'full', canActivate:[AuthGuard]},
-      {path:'payers',component:AssociatedPayersComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},      
+      {path:'payers',component:AssociatedPayersComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},   
+      {path:'pricelist',component:PricelistComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},   
       {path: '**', redirectTo:'dashboard'}
     ]
   },

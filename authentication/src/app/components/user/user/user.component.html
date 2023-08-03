@@ -13,6 +13,7 @@
         <mat-nav-list class="px-2">          
           <a class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/dashboard">Dashboard</a>
           <a *ngIf="roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/payers">Associated Payers</a>
+          <a *ngIf="roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/pricelist">Pricelist</a>
         </mat-nav-list>
       </mat-sidenav>
   

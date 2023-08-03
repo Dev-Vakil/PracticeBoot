@@ -12,8 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class UserDto {
-		
+public class UserDto {	
+	
+	@NotBlank(message="Id should not be blank")
+	private Integer id;
+	
 	@NotBlank(message = "Product name cannot be blank")	
 	private String name;
 		
