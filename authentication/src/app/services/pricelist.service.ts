@@ -20,4 +20,9 @@ export class PricelistService {
     return this.http.get(`${this.pricelistUrl}/service/download`, { params: queryParams, headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
     });
   }
+
+  uploadServicePricelist(file:FormData){ 
+    return this.http.post(`${this.pricelistUrl}/service/upload`,file,{ headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})   
+   });
+  }
 }

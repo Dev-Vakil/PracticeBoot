@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.savePayerlistDto;
+import com.example.dto.UploadFileDto;
 import com.example.entities.Pricelist;
 import com.example.service.AvailableServicePricelistService;
 import com.example.service.PricelistService;
@@ -41,7 +42,9 @@ public class PricelistController {
 	}
 		
 	@PostMapping("service/upload")
-	public ResponseEntity<Boolean> uploadNewServicePricelist(@RequestParam("file") MultipartFile file) throws IOException{		
+	public ResponseEntity<Boolean> uploadNewServicePricelist(@RequestParam("file") MultipartFile file) throws IOException{	
+//		MultipartFile excel = file.getFile();
+//		System.out.println(excel);
 		Boolean result = availableServicePricelistService.uploadPricelistService(file,1);
 		return ResponseEntity.ok(result);
 	}			

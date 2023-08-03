@@ -30,7 +30,7 @@ import { PayerListComponent } from './components/admin/payer-list/payer-list.com
 import { PayerProviderComponent } from './components/admin/payer-provider/payer-provider.component';
 import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';
 import { PricelistComponent } from './components/user/pricelist/pricelist.component';
-
+import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -61,6 +61,7 @@ import { PricelistComponent } from './components/user/pricelist/pricelist.compon
     MatRadioModule,
     MatTableModule,
     MatSelectModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
