@@ -1,27 +1,31 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.savePayerlistDto;
-import com.example.dto.UploadFileDto;
 import com.example.entities.Pricelist;
 import com.example.service.AvailableServicePricelistService;
 import com.example.service.PricelistService;
 
-@RequestMapping("/provider")
+@RequestMapping("/payers/{payerId}/pricelist")
 @RestController
 @PreAuthorize("isAuthenticated()")
 @CrossOrigin
@@ -33,24 +37,26 @@ public class PricelistController {
 	@Autowired
 	private PricelistService pricelistService;
 	
-	@GetMapping("service/download")
-	public ResponseEntity<Boolean> downloadAvailablePricelistService(@RequestParam("payerId") Integer payerId) throws IOException{
+	@GetMapping("/download")
+	public void downloadAvailablePricelistService(HttpServletResponse response, @PathVariable("payerId") Integer payerId) throws IOException{		
 		
-		Boolean result = availableServicePricelistService.downloadAvailablePricelistService(payerId);
-
-		return ResponseEntity.ok(result);
-	}
+		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+        String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
+        response.setHeader("Content-Disposition", fileType);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	        
+	        	
+		availableServicePricelistService.downloadAvailablePricelistService(response, payerId);
+	}	
 		
-	@PostMapping("service/upload")
-	public ResponseEntity<Boolean> uploadNewServicePricelist(@RequestParam("file") MultipartFile file) throws IOException{	
-//		MultipartFile excel = file.getFile();
-//		System.out.println(excel);
-		Boolean result = availableServicePricelistService.uploadPricelistService(file,1);
+	@PostMapping("/upload")
+	public ResponseEntity<Boolean> uploadNewServicePricelist(@RequestParam("file") MultipartFile file, @PathVariable("payerId") String payerId) throws IOException{	
+		Integer id  = Integer.parseInt(payerId);
+		Boolean result = availableServicePricelistService.uploadPricelistService(file,id);
 		return ResponseEntity.ok(result);
 	}			
 
-	@GetMapping("pricelist")
-	public ResponseEntity<?> getAllPricelist(){
+	@GetMapping("")
+	public ResponseEntity<List<Pricelist>> getAllPricelist(){
 		List<Pricelist> pricelist = pricelistService.getAllPriceList();
 		return ResponseEntity.ok(pricelist);
 	}

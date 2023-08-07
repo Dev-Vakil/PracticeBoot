@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Pricelist } from 'src/app/interfaces/pricelist';
 import { PricelistService } from 'src/app/services/pricelist.service';
-
+import { saveAs } from 'file-saver';
+import Swal from 'sweetalert2';
 
 interface PayerList {
   payerId: number;
@@ -34,8 +35,7 @@ export class PricelistComponent {
       (response:any)=>{
         let p:any;
         for(p in response){
-          this.payerNames.push({'payerId':response[p].payerId,'payerName':response[p].payerId})
-                    
+          this.payerNames.push({'payerId':response[p].payerId,'payerName':response[p].payerId})                    
         }               
       },
       (error:any)=>{
@@ -48,14 +48,41 @@ export class PricelistComponent {
     this.payerId = payerId;    
  }
 
+//  downloadFile(data: Response) {
+//   const blob = new Blob([data], { type: 'application/octet-stream' });
+//   const url= window.URL.createObjectURL(blob);
+//   window.open(url);
+// }
+
  download(form:any){
-    this.pricelistService.downloadServicePricelist(this.payerId).subscribe(
+    this.pricelistService.downloadServicePricelist(this.payerId).subscribe(            
       (response:any)=>{
-        if(response == true){
-          alert("Downloaded")
+        // const reader = new FileReader();
+        // reader.onloadend = () => {
+        //   var base64data = reader.result;                
+        //       console.log(base64data);
+        // }
+        // reader.readAsDataURL(response); 
+        // console.log(response.headers.ge);
+
+        if(response){                   
+          saveAs(response,"Available_Service_List.xlsx")                      
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'File Downloaded',
+            showConfirmButton: false,
+            timer: 1000
+          })
         }
         else{
-          alert("Errror")
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'File Not Downloaded',
+            showConfirmButton: false,
+            timer: 1000
+          })
         }
       }
     )
@@ -72,13 +99,25 @@ export class PricelistComponent {
   console.log(form.get('file'))
   const formData = new FormData();
   formData.append('file',this.file);
+  formData.append('payerId',String(this.payerId));
    this.pricelistService.uploadServicePricelist(formData).subscribe(
       (response:any)=>{
-        alert("success");           
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'File Uploaded',
+          showConfirmButton: false,
+          timer: 1000
+        })          
       },
       (error:any)=>{
-        alert("Error");
-        console.log(error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'File Not Uploaded',
+          showConfirmButton: false,
+          timer: 1000
+        })
       }
     );
  }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.config.JwtService;
 import com.example.dto.UserDto;
 import com.example.dto.AuthResponseDto;
+import com.example.dto.AuthResponseRecord;
 import com.example.dto.LoginDto;
 import com.example.entities.Payer;
 import com.example.entities.Providers;
@@ -118,7 +119,7 @@ public class AuthenticationService{
 			for(RoleAssociation r : roles) {
 				roleNames.add(r.getRole().getName());
 			}
-			response.setRoles(roleNames);
+			response.setRoles(roleNames);			
 			return response;
 		}		
 		catch(Exception e) {

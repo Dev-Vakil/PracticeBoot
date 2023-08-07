@@ -11,7 +11,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,20 +46,27 @@ public class AvailableServicePricelistService {
 	@Autowired
 	private ServicePricelistRepo servicePricelistRepo;
 
-	public Boolean downloadAvailablePricelistService(Integer payerId) {
+	public void downloadAvailablePricelistService(HttpServletResponse response, Integer payerId) {
 		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
 				.orElse(null);
-
+		
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("list");
+		
+		CellStyle cellStyle = workbook.createCellStyle();
 
+        //set border to table
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
+		
+		// put data of available service pricelist into map 
 		Map<Integer, Object[]> data = new TreeMap<Integer, Object[]>();
 		int num = 0;
 		data.put(num++, new Object[] { "Service Code", "Service Description", "Default Price" });
 		for (AvailableServicesPricelist obj : servicesPriceList) {
 			data.put(num++, new Object[] { obj.getServiceCode(), obj.getServiceDescription(), obj.getDefaultPrice() });
 		}
-
+		
+		//
 		Set<Integer> keySet = data.keySet();
 		int rownum = 0;
 		for (Integer key : keySet) {
@@ -63,21 +75,20 @@ public class AvailableServicePricelistService {
 			int cellnum = 0;
 			for (Object obj : objArr) {
 				Cell cell = row.createCell(cellnum++);
-				if (obj instanceof String)
+				if (obj instanceof String) {
 					cell.setCellValue((String) obj);
-				else if (obj instanceof Integer)
+					cell.setCellStyle(cellStyle);
+				}
+				else if (obj instanceof Integer) {
 					cell.setCellValue((Integer) obj);
+					cell.setCellStyle(cellStyle);
+				}					
 			}
 		}
-		try {
-			String home = System.getProperty("user.home");
-			FileOutputStream out = new FileOutputStream(new File(home + "/Downloads/DemoList.xlsx"));
-			workbook.write(out);
-			out.close();
-			return true;
+		try {			
+			workbook.write(response.getOutputStream());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
 	}
 
@@ -90,6 +101,7 @@ public class AvailableServicePricelistService {
 			
 		FileInputStream fileData = (FileInputStream) file.getInputStream();
 		XSSFWorkbook workbook = new XSSFWorkbook(fileData);
+		
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.rowIterator();
 		rowIterator.next();
