@@ -48,12 +48,6 @@ export class PricelistComponent {
     this.payerId = payerId;    
  }
 
-//  downloadFile(data: Response) {
-//   const blob = new Blob([data], { type: 'application/octet-stream' });
-//   const url= window.URL.createObjectURL(blob);
-//   window.open(url);
-// }
-
  download(form:any){
     this.pricelistService.downloadServicePricelist(this.payerId).subscribe(            
       (response:any)=>{
@@ -102,19 +96,30 @@ export class PricelistComponent {
   formData.append('payerId',String(this.payerId));
    this.pricelistService.uploadServicePricelist(formData).subscribe(
       (response:any)=>{
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'File Uploaded',
-          showConfirmButton: false,
-          timer: 1000
-        })          
+        if(response == true){
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'File Uploaded',
+            showConfirmButton: false,
+            timer: 1000
+          })          
+        }
+        else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'File Not Uploaded',
+            showConfirmButton: false,
+            timer: 1000
+          })
+        }
       },
       (error:any)=>{
         Swal.fire({
           position: 'top-end',
           icon: 'error',
-          title: 'File Not Uploaded',
+          title: 'Error File Not Uploaded',
           showConfirmButton: false,
           timer: 1000
         })
