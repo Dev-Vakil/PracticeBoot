@@ -1,8 +1,6 @@
 package com.example.service;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -13,15 +11,14 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -64,9 +61,9 @@ public class AvailableServicePricelistService {
 		data.put(num++, new Object[] { "Service Code", "Service Description", "Default Price" });
 		for (AvailableServicesPricelist obj : servicesPriceList) {
 			data.put(num++, new Object[] { obj.getServiceCode(), obj.getServiceDescription(), obj.getDefaultPrice() });
-		}
+		}		
 		
-		//
+//		puting data from map to workbook
 		Set<Integer> keySet = data.keySet();
 		int rownum = 0;
 		for (Integer key : keySet) {
@@ -98,14 +95,19 @@ public class AvailableServicePricelistService {
 				.orElse(null);		
 		List<String> ogServiceCode = servicesPriceList.stream().map(AvailableServicesPricelist::getServiceCode)
 				.collect(Collectors.toList());
-			
+		
+		System.out.println("List= "+	ogServiceCode);
 		FileInputStream fileData = (FileInputStream) file.getInputStream();
 		XSSFWorkbook workbook = new XSSFWorkbook(fileData);
 		
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		Iterator<Row> rowIterator = sheet.rowIterator();
-		rowIterator.next();
-		//Iterates Every row
+		rowIterator.next();	
+		
+		//soft deleted all services of the payer
+		servicePricelistRepo.deletePricelistService(payerId);
+		
+		//Iterates Every row		
 		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			String[] data = new String[3];
@@ -113,13 +115,18 @@ public class AvailableServicePricelistService {
 			Iterator<Cell> cellIterator = row.cellIterator();
 			//Iterates every column and stores data in List of string
 			while (cellIterator.hasNext()) {
-				Cell cell = cellIterator.next();
-				data[index] = cell.toString();
-				if (!ogServiceCode.contains(data[0]))
+				Cell cell = cellIterator.next();	
+				 if (cell == null || cell.getCellType() == CellType.BLANK) {
+					break;
+				 }
+				data[index] = cell.toString();		
+				
+				if (!ogServiceCode.contains(data[0])) {
 					return false;
+				}
 				index++;
 			}
-			
+									
 			//get Principal from security context
 			Map<String, Object> map = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();						
 			Map<String, Object> principal =  (Map<String, Object>) map.get("principal");
@@ -136,22 +143,28 @@ public class AvailableServicePricelistService {
 						.build();
 					pricelist = pricelistRepo.save(pricelistBuilder);
 				}			
-				//check for servicepricelist if doesn't exists makes a new entry
-				ServicePricelist checkServicePricelist = servicePricelistRepo.findByServiceCodeAndPricelist(data[0],pricelist).orElse(null);
-				if(checkServicePricelist == null) {
-					ServicePricelist servicePricelist = ServicePricelist.builder()
-							.serviceCode(data[0])
-							.serviceDescription(data[1])
-							.price(Integer.valueOf((int) Double.parseDouble(data[2])))
-							.pricelist(pricelist)
-							.status(com.example.entities.ServicePricelist.Status.PENDING)
-							.isDeleted(false)
-							.build();
-					servicePricelistRepo.save(servicePricelist);
-				}
+				
+				//check for service-pricelist if doesn't exists makes a new entry				
+				ServicePricelist checkServicePricelist = servicePricelistRepo.findByServiceCodeAndPricelist(data[0],pricelist).orElse(new ServicePricelist());
+				ServicePricelist servicePricelist = ServicePricelist.builder()
+						.pricelistServiceId(checkServicePricelist.getPricelistServiceId())
+						.serviceCode(data[0])
+						.serviceDescription(data[1])
+						.price(Integer.valueOf((int) Double.parseDouble(data[2])))
+						.pricelist(pricelist)
+						.status(com.example.entities.ServicePricelist.Status.PENDING)
+						.isDeleted(false)
+						.rejectionReason(checkServicePricelist.getRejectionReason())
+						.createdAt(checkServicePricelist.getCreatedAt())
+						.build();
+				servicePricelistRepo.save(servicePricelist);	
 			}
 		}
 		return true;
+	}
+
+	public List<AvailableServicesPricelist> getAll() {
+		return availableServicePricelistRepo.findAll();		
 	}
 
 }

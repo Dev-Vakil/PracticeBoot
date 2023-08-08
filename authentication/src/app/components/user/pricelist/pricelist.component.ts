@@ -32,10 +32,14 @@ export class PricelistComponent {
       file : ['', Validators.required],
      })
     this.pricelistService.allPricelist().subscribe(
-      (response:any)=>{
+      (response:any)=>{    
         let p:any;
+        let mySet = new Set();  
         for(p in response){
-          this.payerNames.push({'payerId':response[p].payerId,'payerName':response[p].payerId})                    
+          mySet.add(response[p].payerId)        
+        }        
+        for(p of mySet){          
+          this.payerNames.push({'payerId':p,'payerName':p})
         }               
       },
       (error:any)=>{
@@ -57,14 +61,14 @@ export class PricelistComponent {
         //       console.log(base64data);
         // }
         // reader.readAsDataURL(response); 
-        // console.log(response.headers.ge);
+        // console.log(reader);
 
         if(response){                   
           saveAs(response,"Available_Service_List.xlsx")                      
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'File Downloaded',
+            title: 'File Downloaded', 
             showConfirmButton: false,
             timer: 1000
           })

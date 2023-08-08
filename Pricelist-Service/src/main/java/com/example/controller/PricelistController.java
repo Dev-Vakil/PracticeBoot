@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.entities.AvailableServicesPricelist;
 import com.example.entities.Pricelist;
 import com.example.service.AvailableServicePricelistService;
 import com.example.service.PricelistService;
@@ -56,9 +57,14 @@ public class PricelistController {
 	}			
 
 	@GetMapping("")
-	public ResponseEntity<List<Pricelist>> getAllPricelist(){
-		List<Pricelist> pricelist = pricelistService.getAllPriceList();
-		return ResponseEntity.ok(pricelist);
+	public ResponseEntity<List<AvailableServicesPricelist>> getAllPricelist(){
+		List<AvailableServicesPricelist> availServices = availableServicePricelistService.getAll();
+		return ResponseEntity.ok(availServices);
+	}
+	
+	@PostMapping("putFile")
+	public ResponseEntity<?> putFile(@RequestParam("demo") Integer demo){
+		return null;		
 	}
 }
 
