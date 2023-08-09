@@ -52,8 +52,8 @@ public class Pricelist {
 	public enum Status{
 		NEW,ACTIVE,DISABLE
 	}
-	
-	@Column(name="is_deleted")
+		
+	@Column(name="is_deleted", nullable = false)
 	private Boolean isDeleted;
 	
 	@CreationTimestamp

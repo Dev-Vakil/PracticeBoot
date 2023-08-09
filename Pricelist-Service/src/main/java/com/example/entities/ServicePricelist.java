@@ -30,13 +30,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="pricelist_service")
+@Table(name="service_pricelist")
 public class ServicePricelist {
 	
 	@Id
-	@Column(name="pricelist_service_id", unique=true)
+	@Column(name="service_pricelist_id", unique=true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer pricelistServiceId;
+	private Integer servicePricelistId;
 	
 	@Column(name="service_code", length=64, nullable=false)
     private String serviceCode;

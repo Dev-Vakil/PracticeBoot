@@ -31,6 +31,10 @@ import { PayerProviderComponent } from './components/admin/payer-provider/payer-
 import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';
 import { PricelistComponent } from './components/user/pricelist/pricelist.component';
 import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
+import {MatRippleModule} from '@angular/material/core';
+import { UploadPricelistComponent } from './components/user/upload-pricelist/upload-pricelist.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ServicePricelistComponent } from './components/user/service-pricelist/service-pricelist.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,9 @@ import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
     PayerListComponent,
     PayerProviderComponent,
     AssociatedPayersComponent,
-    PricelistComponent  
+    PricelistComponent,
+    UploadPricelistComponent,
+    ServicePricelistComponent  
   ],
   imports: [
     BrowserModule,
@@ -61,7 +67,9 @@ import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
     MatRadioModule,
     MatTableModule,
     MatSelectModule,
+    MatPaginatorModule,
     MatTooltipModule,
+    MatRippleModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

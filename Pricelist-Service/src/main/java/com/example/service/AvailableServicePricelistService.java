@@ -43,7 +43,7 @@ public class AvailableServicePricelistService {
 	@Autowired
 	private ServicePricelistRepo servicePricelistRepo;
 
-	public void downloadAvailablePricelistService(HttpServletResponse response, Integer payerId) {
+	public void downloadAvailableServicePricelist(HttpServletResponse response, Integer payerId) {
 		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
 				.orElse(null);
 		
@@ -51,7 +51,6 @@ public class AvailableServicePricelistService {
 		XSSFSheet sheet = workbook.createSheet("list");
 		
 		CellStyle cellStyle = workbook.createCellStyle();
-
         //set border to table
         cellStyle.setAlignment(HorizontalAlignment.LEFT);
 		
@@ -89,14 +88,13 @@ public class AvailableServicePricelistService {
 		}
 	}
 
-	public Boolean uploadPricelistService(MultipartFile file, Integer payerId) throws IOException {
+	public Boolean uploadServicePricelist(MultipartFile file, Integer payerId) throws IOException {
 		
 		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
 				.orElse(null);		
 		List<String> ogServiceCode = servicesPriceList.stream().map(AvailableServicesPricelist::getServiceCode)
 				.collect(Collectors.toList());
 		
-		System.out.println("List= "+	ogServiceCode);
 		FileInputStream fileData = (FileInputStream) file.getInputStream();
 		XSSFWorkbook workbook = new XSSFWorkbook(fileData);
 		
@@ -105,7 +103,7 @@ public class AvailableServicePricelistService {
 		rowIterator.next();	
 		
 		//soft deleted all services of the payer
-		servicePricelistRepo.deletePricelistService(payerId);
+		servicePricelistRepo.deleteServicePricelist(payerId);
 		
 		//Iterates Every row		
 		while (rowIterator.hasNext()) {
@@ -139,6 +137,7 @@ public class AvailableServicePricelistService {
 						.payerId(payerId)
 						.providerId((Integer) principal.get("id"))
 						.uploadedBy((String) principal.get("name"))
+						.isDeleted(false)
 						.status(Status.NEW)
 						.build();
 					pricelist = pricelistRepo.save(pricelistBuilder);
@@ -147,7 +146,7 @@ public class AvailableServicePricelistService {
 				//check for service-pricelist if doesn't exists makes a new entry				
 				ServicePricelist checkServicePricelist = servicePricelistRepo.findByServiceCodeAndPricelist(data[0],pricelist).orElse(new ServicePricelist());
 				ServicePricelist servicePricelist = ServicePricelist.builder()
-						.pricelistServiceId(checkServicePricelist.getPricelistServiceId())
+						.servicePricelistId(checkServicePricelist.getServicePricelistId())
 						.serviceCode(data[0])
 						.serviceDescription(data[1])
 						.price(Integer.valueOf((int) Double.parseDouble(data[2])))

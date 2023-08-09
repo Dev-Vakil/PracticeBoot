@@ -134,8 +134,7 @@ public class AuthenticationService{
 				List<RoleAssociation> roles;						
 				var payer = payerRepository.findByEmail(details.getEmail()).orElse(null);
 				if(payer == null) {
-					var provider = providersRepository.findByEmail(details.getEmail()).orElseThrow();	
-					System.out.println(provider.getProviderCode());
+					var provider = providersRepository.findByEmail(details.getEmail()).orElseThrow();		
 					if(!encoder.matches(details.getPassword(),provider.getPassword()))
 						throw new UsernameNotFoundException(null);
 					roles = roleAssociationRepository.findByProvider(provider.getProviderId());

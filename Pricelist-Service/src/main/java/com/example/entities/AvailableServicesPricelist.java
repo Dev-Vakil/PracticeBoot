@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="available_pricelist_services")
+@Table(name="available_services_pricelist")
 public class AvailableServicesPricelist {
 	
 	@Id
