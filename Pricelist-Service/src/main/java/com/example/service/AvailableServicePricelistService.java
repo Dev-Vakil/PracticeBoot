@@ -2,15 +2,18 @@ package com.example.service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.math3.exception.NoDataException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -20,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,6 +62,10 @@ public class AvailableServicePricelistService {
 		Map<Integer, Object[]> data = new TreeMap<Integer, Object[]>();
 		int num = 0;
 		data.put(num++, new Object[] { "Service Code", "Service Description", "Default Price" });
+		if(servicesPriceList.isEmpty()) {
+			throw new NoDataException();
+//			data.put(num++, new Object[] { "p"+payerId+"_1", "Cancer", "1000000" });
+		}
 		for (AvailableServicesPricelist obj : servicesPriceList) {
 			data.put(num++, new Object[] { obj.getServiceCode(), obj.getServiceDescription(), obj.getDefaultPrice() });
 		}		
@@ -92,8 +100,8 @@ public class AvailableServicePricelistService {
 		
 		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
 				.orElse(null);		
-		List<String> ogServiceCode = servicesPriceList.stream().map(AvailableServicesPricelist::getServiceCode)
-				.collect(Collectors.toList());
+//		List<String> ogServiceCode = servicesPriceList.stream().map(AvailableServicesPricelist::getServiceCode)
+//				.collect(Collectors.toList());
 		
 		FileInputStream fileData = (FileInputStream) file.getInputStream();
 		XSSFWorkbook workbook = new XSSFWorkbook(fileData);
@@ -104,6 +112,10 @@ public class AvailableServicePricelistService {
 		
 		//soft deleted all services of the payer
 		servicePricelistRepo.deleteServicePricelist(payerId);
+		
+		List<Integer> errorList = new ArrayList<>();
+		List<Integer> emptyDescriptionList = new ArrayList<>();
+		List<Integer> emptypriceList = new ArrayList<>();
 		
 		//Iterates Every row		
 		while (rowIterator.hasNext()) {
@@ -117,27 +129,35 @@ public class AvailableServicePricelistService {
 				 if (cell == null || cell.getCellType() == CellType.BLANK) {
 					break;
 				 }
-				data[index] = cell.toString();		
-				
-				if (!ogServiceCode.contains(data[0])) {
-					return false;
-				}
+				data[index] = cell.toString();						
 				index++;
-			}
+			}			
 									
 			//get Principal from security context
 			Map<String, Object> map = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();						
 			Map<String, Object> principal =  (Map<String, Object>) map.get("principal");
 			
 			//check for pricelist if doesn't exists makes a new entry
-			if (data[0] != null) {		
+			if (data[0] != null) {
+				if (!Pattern.matches("^p"+payerId+"_.$", data[0])) {		
+					errorList.add(row.getRowNum());		
+					continue;
+				}
+				if(data[1]==null || data[1].isEmpty() || data[1].equals("")) {
+					emptyDescriptionList.add(row.getRowNum());
+					continue;
+				}
+				if(data[2]==null || data[2].isEmpty() || data[2].equals("0")) {
+					emptypriceList.add(row.getRowNum());
+					continue;
+				}
+				
 				Pricelist pricelist =  pricelistRepo.findByProviderIdAndPayerId((Integer) principal.get("id"),payerId).orElse(null);
 				if(pricelist == null) {
 					Pricelist pricelistBuilder = Pricelist.builder()
 						.payerId(payerId)
 						.providerId((Integer) principal.get("id"))
 						.uploadedBy((String) principal.get("name"))
-						.isDeleted(false)
 						.status(Status.NEW)
 						.build();
 					pricelist = pricelistRepo.save(pricelistBuilder);
@@ -159,11 +179,60 @@ public class AvailableServicePricelistService {
 				servicePricelistRepo.save(servicePricelist);	
 			}
 		}
+		if(!errorList.isEmpty()) {
+			throw new InvalidRequestException("Service Code is Invalid on line: "+errorList);
+		}
+		if(!emptyDescriptionList.isEmpty()) {
+			throw new InvalidRequestException("Service Description is Invalid on line: "+emptyDescriptionList);
+		}
+		if(!emptypriceList.isEmpty()) {
+			throw new InvalidRequestException("Price is Invalid on line: "+emptypriceList);
+		}
 		return true;
 	}
 
 	public List<AvailableServicesPricelist> getAll() {
 		return availableServicePricelistRepo.findAll();		
+	}
+
+	public void downloadSampleFile(HttpServletResponse response,Integer payerId) {
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("list");
+		
+		CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setAlignment(HorizontalAlignment.LEFT);
+		
+		// put data of available service pricelist into map 
+		Map<Integer, Object[]> data = new TreeMap<Integer, Object[]>();
+		int num = 0;
+		data.put(num++, new Object[] { "Service Code", "Service Description", "Default Price" });		
+		data.put(num++, new Object[] { "p"+payerId+"_1", "Cancer", "1000000" });		
+		
+//		puting data from map to workbook
+		Set<Integer> keySet = data.keySet();
+		int rownum = 0;
+		for (Integer key : keySet) {
+			Row row = sheet.createRow(rownum++);
+			Object[] objArr = data.get(key);
+			int cellnum = 0;
+			for (Object obj : objArr) {
+				Cell cell = row.createCell(cellnum++);
+				if (obj instanceof String) {
+					cell.setCellValue((String) obj);
+					cell.setCellStyle(cellStyle);
+				}
+				else if (obj instanceof Integer) {
+					cell.setCellValue((Integer) obj);
+					cell.setCellStyle(cellStyle);
+				}					
+			}
+		}
+		try {			
+			workbook.write(response.getOutputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 
 }

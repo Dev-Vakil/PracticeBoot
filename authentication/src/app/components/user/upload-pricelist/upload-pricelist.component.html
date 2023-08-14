@@ -1,33 +1,36 @@
-<div class="container card my-5" matRipple  [matRippleRadius]="10" [matRippleColor]="color">
-    <div class="p-5">
+<div class="container my-5" matRipple  [matRippleRadius]="10" [matRippleColor]="color">
+    <div class="px-5 p-3 card">
+        <div class="col-4">
+            <h2 class="text-secondary">Selected Payer: {{payerName}}</h2>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-outline-secondary" (click)="openDialog()">change</button>
+        </div>
+    </div>    
+    <div class="p-5 card">
         <h1 class="text-primary strong">Download available service price list
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"   matTooltipPosition="right" matTooltip="Remove Unwanted service and upload in below section.">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"   matTooltipPosition="right" matTooltip="Download a file add/remove new services and keep formating same.">
                 <mat-icon>information</mat-icon>
             </button>
         </h1>
-        <form [formGroup]="pricelistDownload" (ngSubmit)="download(pricelistDownload)">
-            <mat-form-field>
-                <mat-label>Payers</mat-label>                    
-                <mat-select formControlName="payerId" (selectionChange)="selectionChange(payer.value)" #payer matInput>
-                <mat-option *ngFor="let payer of payerNames" [value]="payer.payerId">
-                    {{payer.payerName}}
-                </mat-option>
-                </mat-select>
-                <mat-error *ngIf="pricelistDownload.get('payerId')?.['touched'] && pricelistDownload.get('payerId')?.errors?.['required']">
-                    payer is a Required Field
-                </mat-error>
-            </mat-form-field>
-            <button class="mx-5 p-3" type="submit" mat-raised-button color="primary" [disabled]="pricelistDownload.invalid">Download</button>
-        </form>
+        <div class="d-flex align-items-center">
+            <form [formGroup]="pricelistDownload" (ngSubmit)="download(pricelistDownload)">
+                <button class="mx-5 p-3" type="submit" mat-raised-button color="primary">Download</button>
+            </form>
+            <button class="mx-5 p-3" (click)="downloadSample()" mat-raised-button color="accent">Sample File</button>    
+        </div>        
+        <br>
+            <mat-error>{{downloadError}}</mat-error>   
         <hr>
         <h1 class="text-primary strong mt-3">Upload updated service price list
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"   matTooltipPosition="right" matTooltip="Keep the format same as above downloaded file.">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"   matTooltipPosition="right" matTooltip="Upload the edited file of pricelist services here.">
                 <mat-icon>information</mat-icon>
             </button>
         </h1>
-        <form [formGroup]="pricelistUpload" enctype="multipart/form-data" (ngSubmit)="fileUpload(pricelistUpload)">
-            <input class="mx-5 p-3" type="file" [disabled]="pricelistDownload.invalid" #file (change)="selectFile($event)">
-            <button class="mx-5 p-3" type="submit" mat-raised-button color="primary" [disabled]="pricelistDownload.invalid">Submit</button>
+        <form [formGroup]="pricelistUpload" enctype="multipart/form-data" (ngSubmit)="fileUpload(pricelistUpload)">            
+            <input class="mx-5 p-3" formControlName="file" type="file" #file (change)="selectFile($event)">
+            <button class="mx-5 p-3" type="submit" mat-raised-button color="primary" [disabled]="pricelistUpload.invalid">Submit</button>
+            <br><mat-error>{{errorDescription}}</mat-error>
         </form>
     </div>
 </div>

@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.naming.directory.InvalidAttributesException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,27 +41,52 @@ public class PricelistUploadDownloadController {
 	private PricelistService pricelistService;
 	
 	@GetMapping("/download")
-	public void downloadAvailablePricelistService(HttpServletResponse response, @PathVariable("payerId") Integer payerId) throws IOException{		
-		
-		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
-        String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
-        response.setHeader("Content-Disposition", fileType);
-        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	        
-	        	
-		availableServicePricelistService.downloadAvailableServicePricelist(response, payerId);
+	public void downloadAvailablePricelistService(HttpServletResponse response, @PathVariable("payerId") Integer payerId) throws IOException{
+		try {			
+			DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+			String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
+			response.setHeader("Content-Disposition", fileType);
+			response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	        
+			
+			availableServicePricelistService.downloadAvailableServicePricelist(response, payerId);
+		}catch(Exception e) {
+			response.sendError(404,"File Not Found");
+		}
 	}	
 		
 	@PostMapping("/upload")
-	public ResponseEntity<Boolean> uploadNewServicePricelist(@RequestParam("file") MultipartFile file, @PathVariable("payerId") String payerId) throws IOException{	
-		Integer id  = Integer.parseInt(payerId);
-		Boolean result = availableServicePricelistService.uploadServicePricelist(file,id);
-		return ResponseEntity.ok(result);
+	public ResponseEntity<?> uploadNewServicePricelist(@RequestParam("file") MultipartFile file, @PathVariable("payerId") String payerId) throws IOException{
+		try {			
+			Integer id  = Integer.parseInt(payerId);
+			Boolean result = availableServicePricelistService.uploadServicePricelist(file,id);
+			return ResponseEntity.ok(result);
+		}		
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e);
+		}
 	}			
 
+	@GetMapping("/sampleDownload")
+	public void downloadSampleFile(HttpServletResponse response, @PathVariable("payerId") Integer payerId){
+		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+        String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
+        response.setHeader("Content-Disposition", fileType);
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	 
+        
+		availableServicePricelistService.downloadSampleFile(response, payerId);
+	}
+	
 	@GetMapping("")
-	public ResponseEntity<List<AvailableServicesPricelist>> getAllAvailableServicePricelist(){
-		List<AvailableServicesPricelist> availServices = availableServicePricelistService.getAll();
-		return ResponseEntity.ok(availServices);
+	public ResponseEntity<?> getAllAvailableServicePricelist(){
+		try {
+			List<AvailableServicesPricelist> availServices = availableServicePricelistService.getAll();
+			return ResponseEntity.ok(availServices);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body("pricelist list not found");
+		}
 	}
 	
 }

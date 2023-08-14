@@ -21,6 +21,13 @@ export class PricelistService {
     return this.http.get(`${this.uploadPricelistUrl}/`+payerId+`/pricelist/download`, {responseType:  'blob', headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
   });
   }
+  
+  downloadServicePricelistSample(payerId: number){    
+    return this.http.get(`${this.uploadPricelistUrl}/`+payerId+`/pricelist/sampleDownload`, {responseType:  'blob', headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})
+  });
+  }
+
+
 
   uploadServicePricelist(file:FormData){ 
     return this.http.post(`${this.uploadPricelistUrl}/`+file.get("payerId")+`/pricelist/upload`,file,{ headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})   
@@ -34,10 +41,12 @@ export class PricelistService {
   });
   }
 
-  getServicePricelist(page:Pageable){
-    let queryParams = new HttpParams().append("page",page.page);
-    let queryParams2 = queryParams.append("size",page.size);
-    return this.http.get(`${this.servicePricelistUrl}/`,{params: queryParams2, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
+  getServicePricelist(page:Pageable, pricelistId:number, status:string){
+    let queryParams1 = new HttpParams().append("page",page.page);
+    let queryParams2 = queryParams1.append("size",page.size);
+    let queryParams3 = queryParams2.append("pricelistId",pricelistId);
+    let queryParams4 = queryParams3.append("status",status);
+    return this.http.get(`${this.servicePricelistUrl}/`,{params: queryParams4, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
   });
   }
 }

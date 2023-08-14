@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
 
@@ -34,7 +34,12 @@ import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
 import {MatRippleModule} from '@angular/material/core';
 import { UploadPricelistComponent } from './components/user/upload-pricelist/upload-pricelist.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { ServicePricelistComponent } from './components/user/service-pricelist/service-pricelist.component';
+import { SelectPayerIdModalComponent } from './components/modals/select-payer-id-modal/select-payer-id-modal.component';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import { ServicePricelistModalComponent } from './components/modals/service-pricelist-modal/service-pricelist-modal.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { GlobalErrorHandlerService } from './error-handler/global-error-handler.service';
 
 @NgModule({
   declarations: [
@@ -50,7 +55,8 @@ import { ServicePricelistComponent } from './components/user/service-pricelist/s
     AssociatedPayersComponent,
     PricelistComponent,
     UploadPricelistComponent,
-    ServicePricelistComponent  
+    SelectPayerIdModalComponent,
+    ServicePricelistModalComponent  
   ],
   imports: [
     BrowserModule,
@@ -68,13 +74,18 @@ import { ServicePricelistComponent } from './components/user/service-pricelist/s
     MatTableModule,
     MatSelectModule,
     MatPaginatorModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatDialogModule,
     MatTooltipModule,
     MatRippleModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide:ErrorHandler, useClass:GlobalErrorHandlerService}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

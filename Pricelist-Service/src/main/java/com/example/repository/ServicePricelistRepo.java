@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.entities.Pricelist;
 import com.example.entities.ServicePricelist;
+import com.example.entities.ServicePricelist.Status;
 
 public interface ServicePricelistRepo extends JpaRepository<ServicePricelist, Integer>{
 
@@ -23,9 +24,11 @@ public interface ServicePricelistRepo extends JpaRepository<ServicePricelist, In
 
 	@Transactional
 	@Modifying
-	@Query("update ServicePricelist s set s.isDeleted = true where pricelist in(from Pricelist p where p.payerId = :payerId)")
+	@Query("update ServicePricelist s set s.isDeleted = true, s.status = 'REJECTED' where pricelist in(from Pricelist p where p.payerId = :payerId)")
 	void deleteServicePricelist(@Param("payerId") Integer payerId);
 
 	Page<ServicePricelist> findByIsDeletedFalse(Pageable pageable);
+
+	Page<ServicePricelist> findByPricelist_PricelistIdAndStatusAndIsDeletedFalse(Pageable pageable, Integer pricelistId, Status status);
 	
 }

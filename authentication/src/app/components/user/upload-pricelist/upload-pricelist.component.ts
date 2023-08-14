@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Pricelist } from 'src/app/interfaces/pricelist';
 import { PricelistService } from 'src/app/services/pricelist.service';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
+import { SelectPayerIdModalComponent } from '../../modals/select-payer-id-modal/select-payer-id-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 interface PayerList {
   payerId: number;
-  payerName: number;
+  payerName: string;
 }
 @Component({
   selector: 'app-upload-pricelist',
@@ -19,41 +21,66 @@ export class UploadPricelistComponent {
   pricelistUpload!: FormGroup;
   payerNames: PayerList[] = [];
   pricelists!: Pricelist;
-  payerId!:number;
   file!:File;
   color: string = "";
+  errorDescription!:string;
+  downloadError!:string;
+  payers!: PayerList;  
+  payerName!:string;
 
-  constructor(private pricelistService:PricelistService, private formBuilder:FormBuilder){}
-  ngOnInit(){
+  constructor(private pricelistService:PricelistService, private formBuilder:FormBuilder, private dialog: MatDialog){
+    const dialogRef = this.dialog.open(SelectPayerIdModalComponent, {disableClose: true
+    });    
+    dialogRef.afterClosed().subscribe(
+      data=> this.payers =  data
+    );
+    dialogRef.afterClosed().subscribe(
+      data=> this.payerName =  data.payerName
+    );
+  }
+
+  ngOnInit(){           
+    this.pricelistUpload = this.formBuilder.group({       
+     file : ['', Validators.required]
+    })
     this.pricelistDownload = this.formBuilder.group({       
       payerId : ['', Validators.required],
      })
-     this.pricelistUpload = this.formBuilder.group({       
-      file : ['', Validators.required],
-     })
-    this.pricelistService.allPricelist().subscribe(
-      (response:any)=>{    
-        let p:any;
-        let mySet = new Set();  
-        for(p in response){
-          mySet.add(response[p].payerId)        
-        }        
-        for(p of mySet){          
-          this.payerNames.push({'payerId':p,'payerName':p})
-        }               
-      },
-      (error:any)=>{
-        console.log(error);        
-      }     
-    )
   }
-    
- selectionChange(payerId:number){
-    this.payerId = payerId;    
+
+  openDialog(){
+    window.location.reload();    
+  }
+  
+ downloadSample(){
+  this.downloadError = "";
+  this.pricelistService.downloadServicePricelistSample(this.payers.payerId).subscribe(   
+    (response:any)=>{
+      if(response){                   
+        saveAs(response,"Sample_"+this.payers.payerId+"_Available_Service_List.xlsx")                      
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'File Downloaded', 
+          showConfirmButton: false,
+          timer: 1000
+        })
+      }
+      else{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'File Not Downloaded',
+          showConfirmButton: false,
+          timer: 1000
+        })
+      }
+    }
+  )
  }
 
  download(form:any){
-    this.pricelistService.downloadServicePricelist(this.payerId).subscribe(            
+    this.pricelistService.downloadServicePricelist(this.payers.payerId).subscribe(            
       (response:any)=>{
         // const reader = new FileReader();
         // reader.onloadend = () => {
@@ -63,8 +90,9 @@ export class UploadPricelistComponent {
         // reader.readAsDataURL(response); 
         // console.log(reader);
 
-        if(response){                   
-          saveAs(response,"payerID_"+this.payerId+"_Available_Service_List.xlsx")                      
+        if(response){
+          this.downloadError = "";
+          saveAs(response,"payerID_"+this.payers.payerId+"_Available_Service_List.xlsx")                      
           Swal.fire({
             position: 'top-end',
             icon: 'success',
@@ -74,6 +102,7 @@ export class UploadPricelistComponent {
           })
         }
         else{
+          this.downloadError = "File Not Found"
           Swal.fire({
             position: 'top-end',
             icon: 'error',
@@ -82,6 +111,10 @@ export class UploadPricelistComponent {
             timer: 1000
           })
         }
+      },
+      (error:any)=>{
+        console.log(error);        
+        this.downloadError = "File Not Found. Try downloading the sample file";
       }
     )
  }
@@ -97,9 +130,10 @@ export class UploadPricelistComponent {
   console.log(form.get('file'))
   const formData = new FormData();
   formData.append('file',this.file);
-  formData.append('payerId',String(this.payerId));
+  formData.append('payerId',String(this.payers.payerId));
    this.pricelistService.uploadServicePricelist(formData).subscribe(
       (response:any)=>{
+        this.errorDescription = ""; 
         if(response == true){
           Swal.fire({
             position: 'top-end',
@@ -119,7 +153,8 @@ export class UploadPricelistComponent {
           })
         }
       },
-      (error:any)=>{
+      (error:any)=>{       
+        this.errorDescription = error.error.error_description;
         Swal.fire({
           position: 'top-end',
           icon: 'error',

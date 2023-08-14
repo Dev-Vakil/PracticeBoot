@@ -1,0 +1,28 @@
+<div mat-dialog-title>
+  Associated Payers
+</div>
+<div mat-dialog-content>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Select Payers</h1>          
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="associatedPayerForm" (ngSubmit)="formSubmit(associatedPayerForm)">
+            <mat-form-field>
+              <mat-label>Payers</mat-label>                    
+              <mat-select formControlName="payerId" matInput>
+              <mat-option *ngFor="let payer of payers" [value]="payer">
+                  {{payer.payerName}}
+              </mat-option>
+              </mat-select>
+              <mat-error *ngIf="associatedPayerForm.get('payerId')?.['touched'] && associatedPayerForm.get('payerId')?.errors?.['required']">
+                  payer is a Required Field
+              </mat-error>            
+          </mat-form-field><br>
+          <button type="submit" class="btn btn-primary" [disabled]="associatedPayerForm.invalid">Submit</button>
+          </form>
+        </div>        
+      </div>
+    </div>
+</div>

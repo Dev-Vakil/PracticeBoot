@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  username!:string;
 
+  constructor(private authService:AuthenticationService){}
+
+  ngOnInit(){
+    this.authService.findCurrentUser().subscribe(
+      (response:any)=>{        
+        this.username = response.principal.username;
+      }
+    )
+  }
 }

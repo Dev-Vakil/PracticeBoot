@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Pageable } from 'src/app/interfaces/pageable';
+import { MatDialog } from '@angular/material/dialog';
+import { ServicePricelistModalComponent } from '../../modals/service-pricelist-modal/service-pricelist-modal.component';
 
 @Component({
   selector: 'app-pricelist',
@@ -14,17 +16,27 @@ import { Pageable } from 'src/app/interfaces/pageable';
   styleUrls: ['./pricelist.component.css']
 })
 export class PricelistComponent {
-  displayedColumns: string[] = ['pricelistId', 'providerId', 'payerId', 'status', 'uploadedBy'];
+  displayedColumns: string[] = ['pricelistId', 'providerId', 'payerId', 'status', 'uploadedBy','services'];
   dataSource !:MatTableDataSource<Pricelist>;
   ELEMENT_DATA!: Pricelist[];
   totalElements: number = 0;
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private pricelistService:PricelistService){}
+  constructor(private _liveAnnouncer: LiveAnnouncer, private pricelistService:PricelistService, private dialog: MatDialog){
+  }
 
   @ViewChild(MatSort) sort!: MatSort;
 
+  openDialog(pricelistId:number,status:string){    
+    this.dialog.open(ServicePricelistModalComponent, {
+      data: {
+        "pricelistId": pricelistId,
+        "status": status
+      }
+    });
+  }
+
   ngOnInit(){
-    this.getPricelist({page: 0, size: 1});
+    this.getPricelist({page: 0, size: 10});
   }
 
   private getPricelist(request:Pageable){

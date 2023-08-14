@@ -100,7 +100,7 @@ public class AuthenticationController {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
 	
