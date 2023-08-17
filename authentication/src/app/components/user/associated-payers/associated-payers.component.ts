@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Payer } from 'src/app/interfaces/payer';
@@ -16,6 +16,8 @@ export class AssociatedPayersComponent {
   dataSource !:MatTableDataSource<Payer>;
   ELEMENT_DATA!: Payer[];
   email:string = ""
+  @Input() payerId!: number;
+
   constructor(private _liveAnnouncer: LiveAnnouncer, public providersService:ProvidersService, public authService:AuthenticationService) {   
   } 
 

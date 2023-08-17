@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Pricelist } from 'src/app/interfaces/pricelist';
 import { PricelistService } from 'src/app/services/pricelist.service';
@@ -20,6 +20,7 @@ export class PricelistComponent {
   dataSource !:MatTableDataSource<Pricelist>;
   ELEMENT_DATA!: Pricelist[];
   totalElements: number = 0;
+  @Input() payerId!: number;
 
   constructor(private _liveAnnouncer: LiveAnnouncer, private pricelistService:PricelistService, private dialog: MatDialog){
   }

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -8,14 +9,16 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class DashboardComponent {
   username!:string;
+  payerId!: number;
 
-  constructor(private authService:AuthenticationService){}
+  constructor(private authService:AuthenticationService){ 
+  }
 
-  ngOnInit(){
+  ngOnInit(){    
     this.authService.findCurrentUser().subscribe(
       (response:any)=>{        
         this.username = response.principal.username;
       }
     )
-  }
+  }  
 }

@@ -40,6 +40,7 @@ import { ServicePricelistModalComponent } from './components/modals/service-pric
 import {MatMenuModule} from '@angular/material/menu';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { GlobalErrorHandlerService } from './error-handler/global-error-handler.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { GlobalErrorHandlerService } from './error-handler/global-error-handler.
     MatRippleModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [
     {provide:ErrorHandler, useClass:GlobalErrorHandlerService}

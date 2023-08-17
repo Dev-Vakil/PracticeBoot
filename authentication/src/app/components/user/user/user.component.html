@@ -3,7 +3,14 @@
     <mat-toolbar color="primary" class="example-toolbar">
       <button (click)="rotate()" [@rotatedState]='state' mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
       <h1 class="example-app-name m-2">Healthcare System</h1>
-      <span class="ms-auto"  mat-icon-button *ngIf="loggedIn" (click)="logout()"><a mat-button>Logout</a></span>
+      <div class="ms-auto row">
+        <div class="me-5 pe-5 col">
+          <span class="text-white">Payer Name: </span>
+          <span class="small text-white-50">{{payerName}}</span>
+          <button mat-raised-button class="mx-2 ms-5" color="warn" (click)="openDialog()">Change</button>
+        </div>
+        <div class="col" mat-icon-button *ngIf="loggedIn" (click)="logout()"><a mat-raised-button color="primary">Logout</a></div>        
+      </div>
     </mat-toolbar>
   
     <mat-sidenav-container class="example-sidenav-container"
@@ -11,32 +18,27 @@
       <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened> 
         <mat-nav-list class="px-2">          
-          <a class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/dashboard">Dashboard</a>
-          <a *ngIf="roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/payers">Associated Payers</a>                 
+          <a class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/{{payerId}}/dashboard">Dashboard</a>
           <mat-accordion >
-            <mat-expansion-panel hideToggle>
+            <mat-expansion-panel (click)="rotate2()" hideToggle>
               <mat-expansion-panel-header class="border-top border-bottom border-primary">
-                <mat-panel-title>
-                  <a *ngIf="roles" class="p-0 m-0 w-100" mat-list-item>Price List</a>                                   
+                <mat-panel-title class="w-100 p-0 m-0" >
+                  <a *ngIf="roles" class="p-0" mat-list-item>Price List</a>
+                  <fa-icon [@rotatedState]='state2' [icon]="dropDown" [styles]="{'stroke': '#3f51b5', 'color': '#3f51b5'}" size="lg" [rotate]='270' ></fa-icon>
                 </mat-panel-title>                
               </mat-expansion-panel-header>
-              <mat-panel-description class="m-0 p-0">
-                <ul>
-                  <li>
-                    <a *ngIf="roles" mat-list-item routerLink="/user/upload-pricelist">Upload Pricelist</a>
-                    </li>
-                    <li>
-                      <a *ngIf="roles" mat-list-item routerLink="/user/pricelist">Pricelist</a>
-                    </li>
-                </ul>
-              </mat-panel-description>
+              <mat-nav-list class="p-0 m-0">
+                <a class="p-0 m-0" *ngIf="roles" mat-list-item (click)="redirectUrl('/user/{{payerId}}/upload-pricelist')">Upload Pricelist</a>
+                <a class="p-0 m-0" *ngIf="roles" mat-list-item routerLink="/user/{{payerId}}/pricelist">Pricelist</a>
+              </mat-nav-list>        
             </mat-expansion-panel>          
           </mat-accordion>
-
+          
+          <a *ngIf="roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/{{payerId}}/payers">Associated Payers</a>                 
         </mat-nav-list>
       </mat-sidenav>
   
-      <mat-sidenav-content>    
+      <mat-sidenav-content>
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>

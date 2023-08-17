@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ProvidersService } from 'src/app/services/providers.service';
+import { UserComponent } from '../../user/user/user.component';
 
 interface PayerList {
   payerId: number;
@@ -21,6 +22,7 @@ export class SelectPayerIdModalComponent {
   
   constructor(private authService:AuthenticationService, private providerService:ProvidersService, private formBuilder:FormBuilder, public dialogRef: MatDialogRef<SelectPayerIdModalComponent>,@Inject(MAT_DIALOG_DATA) public data:PayerList){ }
 
+  
   ngOnInit(){
     this.associatedPayerForm = this.formBuilder.group({
       payerId: ['',Validators.required],

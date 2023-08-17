@@ -1,12 +1,4 @@
-<div class="container my-5" matRipple  [matRippleRadius]="10" [matRippleColor]="color">
-    <div class="px-5 p-3 card">
-        <div class="col-4">
-            <h2 class="text-secondary">Selected Payer: {{payerName}}</h2>
-        </div>
-        <div class="col-4">
-            <button class="btn btn-outline-secondary" (click)="openDialog()">change</button>
-        </div>
-    </div>    
+<div class="container my-5" matRipple  [matRippleRadius]="10" [matRippleColor]="color">    
     <div class="p-5 card">
         <h1 class="text-primary strong">Download available service price list
             <button mat-icon-button color="primary" aria-label="Example icon button with a home icon"   matTooltipPosition="right" matTooltip="Download a file add/remove new services and keep formating same.">
@@ -14,7 +6,7 @@
             </button>
         </h1>
         <div class="d-flex align-items-center">
-            <form [formGroup]="pricelistDownload" (ngSubmit)="download(pricelistDownload)">
+            <form (ngSubmit)="download()">
                 <button class="mx-5 p-3" type="submit" mat-raised-button color="primary">Download</button>
             </form>
             <button class="mx-5 p-3" (click)="downloadSample()" mat-raised-button color="accent">Sample File</button>    

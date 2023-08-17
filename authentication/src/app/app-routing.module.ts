@@ -22,13 +22,13 @@ const routes: Routes = [
     component: AppComponent,
     children: [
       { path:'login',component:LoginComponent,pathMatch:'full'},
-      { path: 'user', component: UserComponent, pathMatch: 'full'},
+      { path: 'user/:payerId', component: UserComponent, pathMatch: 'full'},
       { path: 'admin', component: AdminComponent, pathMatch: "full"},
       {path: '',redirectTo:'/login',pathMatch:'full'},               
     ]
   },
   { 
-    path: 'user', 
+    path: 'user/:payerId', 
     component: UserComponent,
     children: [           
       {path:'dashboard',component:DashboardComponent,pathMatch:'full', canActivate:[AuthGuard]},
