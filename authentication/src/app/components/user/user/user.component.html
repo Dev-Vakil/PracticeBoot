@@ -4,7 +4,7 @@
       <button (click)="rotate()" [@rotatedState]='state' mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
       <h1 class="example-app-name m-2">Healthcare System</h1>
       <div class="ms-auto row">
-        <div class="me-5 pe-5 col">
+        <div class="me-5 pe-5 col" *ngIf="roles">
           <span class="text-white">Payer Name: </span>
           <span class="small text-white-50">{{payerName}}</span>
           <button mat-raised-button class="mx-2 ms-5" color="warn" (click)="openDialog()">Change</button>
@@ -19,7 +19,7 @@
                    [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" opened> 
         <mat-nav-list class="px-2">          
           <a class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/{{payerId}}/dashboard">Dashboard</a>
-          <mat-accordion >
+          <mat-accordion *ngIf="roles">
             <mat-expansion-panel (click)="rotate2()" hideToggle>
               <mat-expansion-panel-header class="border-top border-bottom border-primary">
                 <mat-panel-title class="w-100 p-0 m-0" >
@@ -28,13 +28,14 @@
                 </mat-panel-title>                
               </mat-expansion-panel-header>
               <mat-nav-list class="p-0 m-0">
-                <a class="p-0 m-0" *ngIf="roles" mat-list-item (click)="redirectUrl('/user/{{payerId}}/upload-pricelist')">Upload Pricelist</a>
-                <a class="p-0 m-0" *ngIf="roles" mat-list-item routerLink="/user/{{payerId}}/pricelist">Pricelist</a>
+                <a class="p-0 m-0" *ngIf="roles" mat-list-item (click)="redirectUrl('/upload-pricelist')">Upload Pricelist</a>
+                <a class="p-0 m-0" *ngIf="roles" mat-list-item routerLink="/user/{{payerId}}/pricelist">Pricelist</a>                
               </mat-nav-list>        
             </mat-expansion-panel>          
-          </mat-accordion>
-          
+          </mat-accordion>          
           <a *ngIf="roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/{{payerId}}/payers">Associated Payers</a>                 
+
+          <a class="p-0 m-0" *ngIf="!roles" class="p-4 border-primary border-top border-bottom" mat-list-item routerLink="/user/0/payer-pricelist">Pricelist</a>
         </mat-nav-list>
       </mat-sidenav>
   

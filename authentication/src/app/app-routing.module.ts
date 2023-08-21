@@ -15,6 +15,7 @@ import { PayerProviderComponent } from './components/admin/payer-provider/payer-
 import { AssociatedPayersComponent } from './components/user/associated-payers/associated-payers.component';  
 import { PricelistComponent } from './components/user/pricelist/pricelist.component';
 import { UploadPricelistComponent } from './components/user/upload-pricelist/upload-pricelist.component';
+import { PayerPricelistComponent } from './components/user/payer-pricelist/payer-pricelist.component';
 
 const routes: Routes = [
   { 
@@ -35,6 +36,7 @@ const routes: Routes = [
       {path:'payers',component:AssociatedPayersComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},   
       {path:'upload-pricelist',component:UploadPricelistComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},  
       {path:'pricelist',component:PricelistComponent,pathMatch:'full', canActivate:[AuthGuard,UserGuard]},    
+      {path:'payer-pricelist',component:PayerPricelistComponent,pathMatch:'full', canActivate:[AuthGuard]},    
       {path: '**', redirectTo:'dashboard'}
     ]
   },

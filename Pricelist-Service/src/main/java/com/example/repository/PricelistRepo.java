@@ -12,8 +12,12 @@ import com.example.entities.Pricelist;
 @Repository
 public interface PricelistRepo extends JpaRepository<Pricelist, Integer>{
 
-	Optional<Pricelist> findByProviderIdAndPayerId(Integer integer, Integer payerId);
+	Optional<Pricelist> findByProviderIdAndPayerId(Integer integer, Integer payerId);	
 
-	Page<Pricelist> findByIsDeletedFalse(Pageable pageable);
+	Page<Pricelist> findByPayerIdAndIsDeletedFalse(Pageable pageable, Integer payerId);
+
+	Page<Pricelist> findByProviderIdAndIsDeletedFalse(Pageable pageable, Integer providerId);	
+
+	Optional<Pricelist> findByPayerIdAndProviderId(Integer payerId, Integer providerId);
 
 }

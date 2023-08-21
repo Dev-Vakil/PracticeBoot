@@ -24,8 +24,8 @@ public interface ServicePricelistRepo extends JpaRepository<ServicePricelist, In
 
 	@Transactional
 	@Modifying
-	@Query("update ServicePricelist s set s.isDeleted = true, s.status = 'REJECTED' where pricelist in(from Pricelist p where p.payerId = :payerId)")
-	void deleteServicePricelist(@Param("payerId") Integer payerId);
+	@Query("update ServicePricelist s set s.isDeleted = true, s.status = 'REJECTED' where pricelist in(from Pricelist p where p.pricelistId = :pricelistId)")
+	void deleteServicePricelist(@Param("pricelistId") Integer pricelistId);
 
 	Page<ServicePricelist> findByIsDeletedFalse(Pageable pageable);
 

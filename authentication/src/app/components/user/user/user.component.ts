@@ -43,17 +43,21 @@ export class UserComponent {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-
-    const dialogRef = this.dialog.open(SelectPayerIdModalComponent, {disableClose: true });    
-    dialogRef.afterClosed().subscribe(
-      data=> this.payerId =  data.payerId
-    );
-    dialogRef.afterClosed().subscribe(
-      data=> this.payerName =  data.payerName
-    );
-    dialogRef.afterClosed().subscribe(
-      data=> this.router.navigate(['/user/',this.payerId,'/dashboard'], { state: [this.payerId], relativeTo: this.activatedRoute })
-    );
+    if(this.roles){
+      const dialogRef = this.dialog.open(SelectPayerIdModalComponent, {disableClose: true });    
+      dialogRef.afterClosed().subscribe(
+        data=> this.payerId =  data.payerId
+      );
+      dialogRef.afterClosed().subscribe(
+        data=> this.payerName =  data.payerName
+      );
+      dialogRef.afterClosed().subscribe(
+        data=> this.router.navigate(['/user/'+this.payerId+this.router.url.substring(7)], { state: [this.payerId], relativeTo: this.activatedRoute })
+      );
+    }
+    else{
+      this.payerId= 0;
+    }
   }
 
   openDialog(){
@@ -81,6 +85,6 @@ export class UserComponent {
   }
 
   redirectUrl(url:string){
-    this.router.navigate([url], { state: [this.payerId], relativeTo: this.activatedRoute })
+    this.router.navigate(["/user/"+this.payerId+"/"+url], { state: [this.payerId], relativeTo: this.activatedRoute })
   }
 }

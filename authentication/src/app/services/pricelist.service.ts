@@ -7,9 +7,9 @@ import { Pageable } from '../interfaces/pageable';
 })
 export class PricelistService {  
   
-  uploadPricelistUrl="http://localhost:8082/payers"  
-  pricelistUrl = "http://localhost:8082/pricelist"
-  servicePricelistUrl = "http://localhost:8082/servicePricelist"
+  uploadPricelistUrl="http://localhost:8082/provider/associatedPayer"  
+  providerPricelistUrl = "http://localhost:8082/provider/pricelist"
+  payerPricelistUrl = "http://localhost:8082/payer/pricelist"
   constructor(private http:HttpClient) { }
   
   allPricelist(){    
@@ -27,17 +27,24 @@ export class PricelistService {
   });
   }
 
-
-
   uploadServicePricelist(file:FormData){ 
     return this.http.post(`${this.uploadPricelistUrl}/`+file.get("payerId")+`/pricelist/upload`,file,{ headers: new HttpHeaders({'Authorization': 'Bearer ' + localStorage.getItem("token")})   
   });
   }
 
-  getPricelist(page:Pageable) {
+  getPricelist(page:Pageable, providerId:number) {
     let queryParams = new HttpParams().append("page",page.page);
     let queryParams2 = queryParams.append("size",page.size);
-    return this.http.get(`${this.pricelistUrl}/`,{params: queryParams2, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
+    let queryParams3 = queryParams2.append("providerId",providerId);
+    return this.http.get(`${this.providerPricelistUrl}/`,{params: queryParams3, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
+  });
+  }
+  
+  getPayerPricelist(page:Pageable, payerId:number) {
+    let queryParams = new HttpParams().append("page",page.page);
+    let queryParams2 = queryParams.append("size",page.size);
+    let queryParams3 = queryParams2.append("payerId",payerId);
+    return this.http.get(`${this.payerPricelistUrl}/`,{params: queryParams3, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
   });
   }
 
@@ -46,7 +53,7 @@ export class PricelistService {
     let queryParams2 = queryParams1.append("size",page.size);
     let queryParams3 = queryParams2.append("pricelistId",pricelistId);
     let queryParams4 = queryParams3.append("status",status);
-    return this.http.get(`${this.servicePricelistUrl}/`,{params: queryParams4, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
+    return this.http.get(`${this.providerPricelistUrl}/service`,{params: queryParams4, headers: new HttpHeaders({'Authorization': 'Bearer '+ localStorage.getItem("token")})
   });
   }
 }

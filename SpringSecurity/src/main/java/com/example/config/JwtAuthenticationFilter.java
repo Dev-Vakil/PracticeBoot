@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 				userDto.setId((Integer) claims.get("id"));
 				userDto.setName(claims.get("name").toString());
 				userDto.setCode(claims.get("code").toString());
-				userDto.setUsername(claims.get("username").toString());
+//				userDto.setUsername(claims.get("username").toString());
 				userDto.setEmail(claims.get("email").toString());
 				userDto.setPassword("********");								
 				

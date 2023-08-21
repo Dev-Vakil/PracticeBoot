@@ -12,17 +12,16 @@ import { ServicePricelistModalComponent } from '../../modals/service-pricelist-m
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-  selector: 'app-pricelist',
-  templateUrl: './pricelist.component.html',
-  styleUrls: ['./pricelist.component.css']
+  selector: 'app-payer-pricelist',
+  templateUrl: './payer-pricelist.component.html',
+  styleUrls: ['./payer-pricelist.component.css']
 })
-export class PricelistComponent {
+export class PayerPricelistComponent {
   displayedColumns: string[] = ['pricelistId', 'providerId', 'payerId', 'status', 'uploadedBy','services'];
   dataSource !:MatTableDataSource<Pricelist>;
   ELEMENT_DATA!: Pricelist[];
   totalElements: number = 0;
-  providerId!:number;
-  @Input() payerId!: number;
+  payerId!:number;
 
   constructor(private _liveAnnouncer: LiveAnnouncer, private authService:AuthenticationService, private pricelistService:PricelistService, private dialog: MatDialog){    
   }
@@ -41,14 +40,14 @@ export class PricelistComponent {
   ngOnInit(){
     this.authService.findCurrentUser().subscribe(
       (response:any)=>{
-        this.providerId = response.principal.id;
+        this.payerId = response.principal.id;
         this.getPricelist({page: 0, size: 10});
       }
     )    
   }
 
   private getPricelist(request:Pageable){
-    this.pricelistService.getPricelist(request,this.providerId).subscribe(
+    this.pricelistService.getPayerPricelist(request,this.payerId).subscribe(
       (response:any)=>{                    
         this.ELEMENT_DATA = response['content'];        
         this.totalElements = response['totalElements']      

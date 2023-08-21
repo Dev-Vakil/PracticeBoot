@@ -41,6 +41,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { GlobalErrorHandlerService } from './error-handler/global-error-handler.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PayerPricelistComponent } from './components/user/payer-pricelist/payer-pricelist.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PricelistComponent,
     UploadPricelistComponent,
     SelectPayerIdModalComponent,
-    ServicePricelistModalComponent  
+    ServicePricelistModalComponent,
+    PayerPricelistComponent  
   ],
   imports: [
     BrowserModule,

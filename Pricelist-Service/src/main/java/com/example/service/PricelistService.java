@@ -21,8 +21,12 @@ public class PricelistService {
 		return pricelistRepo.findAll();
 	}
 
-	public Page<Pricelist> getPricelistPage(Pageable pageable) {
-		return pricelistRepo.findByIsDeletedFalse(pageable);				
+	public Page<Pricelist> getPricelistPage(Pageable pageable, Integer providerId) {
+		return pricelistRepo.findByProviderIdAndIsDeletedFalse(pageable,providerId);				
+	}
+
+	public Page<Pricelist> getPricelistByPayerIdPage(Pageable pageable, Integer payerId) {
+		return pricelistRepo.findByPayerIdAndIsDeletedFalse(pageable,payerId);
 	}
 	
 }

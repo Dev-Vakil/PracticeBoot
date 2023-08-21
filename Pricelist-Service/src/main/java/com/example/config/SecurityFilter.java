@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 		ArrayList<Map<String,String>> roles =  (ArrayList<Map<String, String>>) map.get("authorities");
 		
 		Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(roles.get(0).get("authority")));
-		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(map, null, authorities));
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(map.get("principal"), null, authorities));
 		
 		filterChain.doFilter(request,response);
 	}

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import com.example.entities.Pricelist;
 import com.example.service.AvailableServicePricelistService;
 import com.example.service.PricelistService;
 
-@RequestMapping("/payers/{payerId}/pricelist")
+@RequestMapping("provider/associatedPayer/{payerId}/pricelist")
 @RestController
 @PreAuthorize("isAuthenticated()")
 @CrossOrigin
@@ -43,7 +44,7 @@ public class PricelistUploadDownloadController {
 	@GetMapping("/download")
 	public void downloadAvailablePricelistService(HttpServletResponse response, @PathVariable("payerId") Integer payerId) throws IOException{
 		try {			
-			DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD:HH:MM:SS");
 			String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
 			response.setHeader("Content-Disposition", fileType);
 			response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	        
@@ -69,7 +70,7 @@ public class PricelistUploadDownloadController {
 
 	@GetMapping("/sampleDownload")
 	public void downloadSampleFile(HttpServletResponse response, @PathVariable("payerId") Integer payerId){
-		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD:HH:MM:SS");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD:HH:MM:SS");
         String fileType = "attachment; filename=pricelist_details_" + dateFormat.format(new Date()) + ".xls";
         response.setHeader("Content-Disposition", fileType);
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM.getType());	 

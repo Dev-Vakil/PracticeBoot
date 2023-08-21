@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class DashboardComponent {
   constructor(private authService:AuthenticationService){ 
   }
 
-  ngOnInit(){    
+  ngOnInit(){        
     this.authService.findCurrentUser().subscribe(
       (response:any)=>{        
         this.username = response.principal.username;

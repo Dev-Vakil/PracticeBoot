@@ -82,7 +82,7 @@ public class AuthenticationController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/check_token")
-	public ResponseEntity<Boolean> UserDetails(){		
+	public ResponseEntity<Boolean> userDetails(){		
 		try {
 			return ResponseEntity.ok(true);
 		}
@@ -95,7 +95,7 @@ public class AuthenticationController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/current-user")	
 	public ResponseEntity<UsernamePasswordAuthenticationToken> currentUser(HttpServletRequest request,UsernamePasswordAuthenticationToken token){		
-		try {				
+		try {							
 			return ResponseEntity.ok(token);
 		}
 		catch(Exception e) {

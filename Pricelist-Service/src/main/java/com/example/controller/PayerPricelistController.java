@@ -14,23 +14,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.Pricelist;
+import com.example.entities.ServicePricelist;
 import com.example.service.PricelistService;
+import com.example.service.ServicePricelistService;
 
-@RequestMapping("/pricelist")
+@RequestMapping("payer/pricelist")
 @RestController
 @PreAuthorize("isAuthenticated()")
 @CrossOrigin
-public class PricelistController {
+public class PayerPricelistController {
 	
 	@Autowired
 	private PricelistService pricelistService;
 	
+	@Autowired
+	private ServicePricelistService servicePricelistService; 
+	
 	@GetMapping("/")	
-	public ResponseEntity<Page<Pricelist>> viewPricelistPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size){
+	public ResponseEntity<Page<Pricelist>> viewPricelistPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size, @RequestParam("payerId") Integer payerId){
 		Pageable pageable = PageRequest.of(page, size);
-		Page<Pricelist> pricelist = pricelistService.getPricelistPage(pageable);
+		Page<Pricelist> pricelist = pricelistService.getPricelistByPayerIdPage(pageable, payerId);		
 		if(pricelist.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		return ResponseEntity.ok(pricelist);		
 	}
 	
+	@GetMapping("/service")	
+	public ResponseEntity<?> viewPricelistPage(@RequestParam("page") Integer page,@RequestParam("size") Integer size,@RequestParam("pricelistId") Integer pricelistId,@RequestParam("status") String status){
+		Pageable pageable = PageRequest.of(page, size);								
+		Page<ServicePricelist> servicePricelist = servicePricelistService.getServicePricelistPage(pageable, pricelistId, status);
+		if(servicePricelist.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("No Services Found");
+		return ResponseEntity.ok(servicePricelist);
+	}
 }

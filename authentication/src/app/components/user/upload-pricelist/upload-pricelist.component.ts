@@ -20,10 +20,9 @@ export class UploadPricelistComponent {
   errorDescription!:string;
   downloadError!:string;
   payerName!:string;
-  payerId!: number ;
+  payerId: number  = 0;
   
-  constructor(private pricelistService:PricelistService, private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute){
-    this.payerId = history.state[0];        
+  constructor(private pricelistService:PricelistService, private formBuilder:FormBuilder, private activatedRoute: ActivatedRoute){   
   }
 
   ngOnInit(){
@@ -33,6 +32,11 @@ export class UploadPricelistComponent {
   }
   
  downloadSample(){
+  this.payerId = history.state[0];
+  console.log(history.state[0]);
+  console.log(history);
+
+  
   this.downloadError = "";
   this.pricelistService.downloadServicePricelistSample(this.payerId).subscribe(   
     (response:any)=>{
@@ -46,7 +50,7 @@ export class UploadPricelistComponent {
           timer: 1000
         })
       }
-      else{
+      else{        
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -60,7 +64,10 @@ export class UploadPricelistComponent {
  }
 
  download(){ 
-  
+  this.payerId =  Number(history.state[0]);
+  console.log(history.state[0]);
+  console.log(history);
+  console.log(this.payerId);
     this.pricelistService.downloadServicePricelist(this.payerId).subscribe(            
       (response:any)=>{
         // const reader = new FileReader();
@@ -108,6 +115,7 @@ export class UploadPricelistComponent {
   }
  }
  fileUpload(form:any){
+  this.payerId = history.state[0];
   console.log(form.get('file'))
   const formData = new FormData();
   formData.append('file',this.file);

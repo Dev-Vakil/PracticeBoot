@@ -32,11 +32,11 @@ export class LoginComponent implements OnInit{
           this.loginError = true;
         }                     
         this.authService.saveToken(response.token,response.roles);
-        if(localStorage.getItem("roles")=="PAYER"||localStorage.getItem("roles")=="PROVIDER"){
-          window.location.href="/user/dashboard";                
+        if(localStorage.getItem("roles")=="PAYER"||localStorage.getItem("roles")=="USER"){      
+          window.location.href="/user/0/dashboard";          
         }
         else{
-          window.location.href="/admin/provider -list";   
+          window.location.href="/admin/provider-list";   
         }
       },
       (error:any)=>{

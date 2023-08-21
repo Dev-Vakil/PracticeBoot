@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.apache.commons.math3.exception.NoDataException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,6 +23,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
 import org.springframework.stereotype.Service;
@@ -95,11 +97,14 @@ public class AvailableServicePricelistService {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public Boolean uploadServicePricelist(MultipartFile file, Integer payerId) throws IOException {
 		
-		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
-				.orElse(null);		
+		Map<String,Object> principal = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
+		Integer providerId = (Integer) principal.get("id");		
+		
+//		List<AvailableServicesPricelist> servicesPriceList = availableServicePricelistRepo.findAllByPayerId(payerId)
+//				.orElse(null);		
 //		List<String> ogServiceCode = servicesPriceList.stream().map(AvailableServicesPricelist::getServiceCode)
 //				.collect(Collectors.toList());
 		
@@ -110,8 +115,11 @@ public class AvailableServicePricelistService {
 		Iterator<Row> rowIterator = sheet.rowIterator();
 		rowIterator.next();	
 		
-		//soft deleted all services of the payer
-		servicePricelistRepo.deleteServicePricelist(payerId);
+		Pricelist pricelist = pricelistRepo.findByProviderIdAndPayerId(providerId, payerId).orElse(null);
+		if(pricelist != null) {			
+			//soft deleted all services of the payer
+			servicePricelistRepo.deleteServicePricelist(pricelist.getPricelistId());
+		}
 		
 		List<Integer> errorList = new ArrayList<>();
 		List<Integer> emptyDescriptionList = new ArrayList<>();
@@ -132,10 +140,6 @@ public class AvailableServicePricelistService {
 				data[index] = cell.toString();						
 				index++;
 			}			
-									
-			//get Principal from security context
-			Map<String, Object> map = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();						
-			Map<String, Object> principal =  (Map<String, Object>) map.get("principal");
 			
 			//check for pricelist if doesn't exists makes a new entry
 			if (data[0] != null) {
@@ -151,13 +155,13 @@ public class AvailableServicePricelistService {
 					emptypriceList.add(row.getRowNum());
 					continue;
 				}
-				
-				Pricelist pricelist =  pricelistRepo.findByProviderIdAndPayerId((Integer) principal.get("id"),payerId).orElse(null);
+								
 				if(pricelist == null) {
 					Pricelist pricelistBuilder = Pricelist.builder()
 						.payerId(payerId)
 						.providerId((Integer) principal.get("id"))
 						.uploadedBy((String) principal.get("name"))
+						.isDeleted(false)
 						.status(Status.NEW)
 						.build();
 					pricelist = pricelistRepo.save(pricelistBuilder);
@@ -195,7 +199,7 @@ public class AvailableServicePricelistService {
 		return availableServicePricelistRepo.findAll();		
 	}
 
-	public void downloadSampleFile(HttpServletResponse response,Integer payerId) {
+	public void downloadSampleFile(HttpServletResponse response,Integer payerId){
 		
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet("list");
@@ -230,7 +234,7 @@ public class AvailableServicePricelistService {
 		}
 		try {			
 			workbook.write(response.getOutputStream());
-		} catch (Exception e) {
+		} catch (Exception e) {		
 			e.printStackTrace();
 		}		
 	}

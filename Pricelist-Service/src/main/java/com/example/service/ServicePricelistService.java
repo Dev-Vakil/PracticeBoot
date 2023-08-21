@@ -20,7 +20,6 @@ public class ServicePricelistService {
 
 	public Page<ServicePricelist> getServicePricelistPage(Pageable pageable, Integer pricelistId, String status) {				
 		return servicePricelistRepo.findByPricelist_PricelistIdAndStatusAndIsDeletedFalse(pageable,pricelistId,Status.valueOf(status));
-//		return servicePricelistRepo.findByIsDeletedFalse(pageable);
 	}
 	
 }
